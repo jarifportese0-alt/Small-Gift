@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Happy Birthday, Tasnim</title>
+    
+    <!-- Importing cute handwritten fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Pacifico&display=swap" rel="stylesheet">
+    
+<style>
+    :root {
+        --primary-glow: rgba(255, 255, 255, 0.8);
+        --btn-glow: rgba(255, 153, 194, 0.8);
+    }
+
+    body {
+        margin: 0;
+        /* Change '1384.jpg' to '1379.jpg' or '1378.jpg' if you want to switch backgrounds */
+        background-image: url('1379.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-position: center;
+        font-family: 'Caveat', cursive; /* Cute handwriting font for general text */
+        text-align: center;
+        min-height: 100vh; 
+        overflow-x: hidden;
+        /* Fallback color if image doesn't load immediately */
+        background-color: #7ab3d6; 
+    }
+
+    /* --- BACKGROUND GLOW TRACE --- */
+    #glow-trace {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 120px;
+        height: 120px;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, transparent 70%);
+        border-radius: 50%;
+        pointer-events: none; 
+        z-index: 0;
+        opacity: 0;
+        transition: opacity 0.3s ease, transform 0.1s ease-out; 
+        will-change: transform, opacity; 
+    }
+
+    h1, .book, .btn-container {
+        position: relative;
+        z-index: 10;
+    }
+
+    h1 {
+        margin-top: 50px;
+        color: #ffffff;
+        font-family: 'Pacifico', cursive;
+        font-size: 2.5rem;
+        text-shadow: 2px 2px 0px #ff99c2, 0 4px 15px rgba(255, 255, 255, 0.6);
+        letter-spacing: 2px;
+        line-height: 1.2;
+    }
+
+    /* --- REDESIGNED SCRAPBOOK LAYOUT --- */
+    .book {
+        display: grid;
+        /* Forces a 2-column layout on slightly larger screens */
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 30px;
+        padding: 20px;
+        max-width: 700px;
+        margin: 20px auto 60px auto;
+        justify-items: center;
+    }
+        .page {
+        background: #fdfbf7; 
+        width: 100%;
+        max-width: 240px;
+        /* Make padding uniform; the text will push the bottom down naturally */
+        padding: 15px; 
+        border-radius: 2px;
+        box-shadow: 2px 8px 20px rgba(0,0,0,0.2);
+        transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
+    }
+
+    .caption {
+        color: #222;
+        font-size: 1.4rem;
+        /* Removed absolute positioning so it doesn't overlap the image */
+        margin: 15px 0 5px 0; 
+        text-align: center;
+        line-height: 1.2; /* Helps space out multi-line text nicely */
+    }
+
+
+    /* Staggered tilting effect */
+    .page:nth-child(1) { transform: rotate(-4deg); }
+    .page:nth-child(2) { transform: rotate(3deg) translateY(10px); }
+    .page:nth-child(3) { transform: rotate(2deg); }
+    .page:nth-child(4) { transform: rotate(-3deg) translateY(5px); }
+
+    .page:hover {
+        transform: scale(1.05) rotate(0deg) translateY(0);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.3), 0 0 20px var(--primary-glow);
+        z-index: 20;
+    }
+
+    .page img {
+        width: 100%;
+        height: 240px;
+        object-fit: cover;
+        border-radius: 2px;
+        background-color: #eee; /* Placeholder color before load */
+    }
+    
+    .btn-link {
+        display: inline-block;
+        padding: 12px 35px;
+        font-family: 'Pacifico', cursive;
+        font-size: 1.3rem;
+        letter-spacing: 1px;
+        text-decoration: none;
+        color: #ffffff;
+        background-color: rgba(255, 255, 255, 0.15);
+        border: 3px solid #ff99c2;
+        border-radius: 50px;
+        box-shadow: 0 0 15px var(--btn-glow), inset 0 0 10px var(--btn-glow);
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        backdrop-filter: blur(4px);
+        transition: all 0.3s ease;
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent; 
+    }
+
+    .btn-link:hover {
+        background-color: #ff99c2;
+        color: #fff;
+        transform: translateY(-3px);
+        box-shadow: 0 0 25px var(--btn-glow), inset 0 0 15px rgba(255,255,255,0.5);
+    }
+        .btn-container {
+        /* You can reduce this negative value to pull it up even higher if you want! */
+        margin-top: -4px; 
+        margin-bottom: 70px; 
+        }
+    .btn-link.is-clicked {
+        transform: translateY(2px) scale(0.95); 
+        box-shadow: 0 0 40px 20px rgba(255, 153, 194, 1), inset 0 0 15px rgba(0, 0, 0, 0.2); 
+        background-color: #ff66a3; 
+    }
+
+    /* Mobile adjustments */
+    @media (max-width: 600px) {
+        h1 {
+            font-size: 2.5rem;
+            margin-top: 40px;
+        }
+        .book {
+            gap: 25px;
+        }
+        .page {
+            max-width: 220px;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+    <div id="glow-trace"></div>
+
+    <h1>Happy <br> Birthday Girl!</h1>
+
+    <div class="book">
+
+        <div class="page">
+            <img src="img15~2.jpg" alt="a red feather">
+            <p class="caption">A bird with a red feather</p>
+        </div>
+
+        <div class="page">
+            <img src="IMG_3549.JPG" alt="blue">
+            <p class="caption">You were born with a beauty deeper than a butterfly's blue</p>
+        </div>
+
+        <div class="page">
+            <img src="red_.jpg" alt="red">
+            <p class="caption">A friend who makes ordinary moments feel special</p>
+        </div>
+
+        <div class="page">
+            <img src="IMG_3626.JPG" alt="Memory">
+            <p class="caption">When the Moon truely laughed</p>
+        </div>
+        
+    </div>
+
+    <div class="btn-container">
+        <a href="endpage.html" rel="noopener noreferrer" class="btn-link" id="magic-btn">There's More</a>
+    </div>
+
+    <!-- --- JAVASCRIPT --- -->
+    <script>
+        // --- 1. GLOW TRACE LOGIC ---
+        const glowTrace = document.getElementById('glow-trace');
+
+        function moveGlow(event) {
+            let x = event.clientX;
+            let y = event.clientY;
+
+            if (event.touches && event.touches.length > 0) {
+                x = event.touches[0].clientX;
+                y = event.touches[0].clientY;
+            }
+            
+            if (x !== undefined && y !== undefined) {
+                glowTrace.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%)`;
+                glowTrace.style.opacity = '1';
+            }
+        }
+
+        document.addEventListener('mousemove', moveGlow);
+        document.addEventListener('mouseleave', () => glowTrace.style.opacity = '0');
+        document.addEventListener('touchmove', moveGlow, { passive: true });
+        document.addEventListener('touchend', () => glowTrace.style.opacity = '0');
+        document.addEventListener('touchstart', moveGlow, { passive: true });
+        document.addEventListener('click', () => glowTrace.style.opacity = '0');
+    
+        // --- 2. BUTTON CLICK DELAY & GLOW LOGIC ---
+        const magicBtn = document.getElementById('magic-btn');
+
+        magicBtn.addEventListener('click', function(event) {
+            event.preventDefault(); 
+            const targetPage = this.href; 
+            this.classList.add('is-clicked'); 
+            
+            setTimeout(function() {
+                window.location.href = targetPage;
+            }, 1000); 
+        });
+    </script>
+</body>
+</html>

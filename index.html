@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Happy Birthday, Tasnim</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            
+            /* --- CUSTOM BACKGROUND WALLPAPER --- */
+            background-image: url('back.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            /* ----------------------------------- */
+
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #ffffff;
+            overflow: hidden;
+            -webkit-tap-highlight-color: transparent; 
+        }
+
+        /* --- BACKGROUND GLOW TRACE --- */
+        #glow-trace {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, transparent 75%);
+            border-radius: 50%;
+            pointer-events: none; 
+            z-index: 0;
+            opacity: 0;
+            transition: opacity 0.3s ease; 
+            will-change: transform, opacity; 
+        }
+
+        /* Main Card Style */
+        .card {
+            position: relative;
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 50px 40px;
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 30px 40px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 1.2s ease-out forwards;
+        }
+        
+        /* --- STICKER STYLE --- */
+        .sticker {
+            position: absolute;
+            top: -60px; /* Moves the sticker up so it overlaps the top edge */
+            left: 50%;
+            transform: translateX(-50%); /* Keeps it perfectly centered */
+            width: 120px; /* Adjust this size to fit your image perfectly */
+            height: auto;
+            z-index: 20;
+            filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.4)); /* Adds a realistic shadow */
+            animation: bounceIn 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        /* Optional: A cute pop-in animation for the sticker */
+        @keyframes bounceIn {
+            0% { opacity: 0; transform: translateX(-50%) scale(0.3); }
+            50% { opacity: 1; transform: translateX(-50%) scale(1.05); }
+            100% { transform: translateX(-50%) scale(1); }
+        }
+
+        h2 {
+            font-size: 1.10rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+            color: #ffeedd;
+            margin-top: 15px; /* Added slight margin so sticker doesn't crowd the text */
+        }
+
+        p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 35px;
+            color: #e0e0e0;
+        }
+
+        .btn-link {
+            display: inline-block;
+            padding: 14px 32px;
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-decoration: none;
+            color: #1f1c2c;
+            background-color: #ffffff;
+            border-radius: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn-link:hover {
+            background-color: #f0f0f0;
+            transform: translateY(-3px);
+            box-shadow: 0 0 20px 5px rgba(255, 255, 255, 0.6), inset 0 0 10px rgba(255, 255, 255, 0.4); 
+        }
+
+        .btn-link:active {
+            transform: translateY(0) scale(0.95);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- MODAL & KEYPAD STYLES --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(31, 28, 44, 0.85); 
+            backdrop-filter: blur(8px);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            overflow-y: auto;
+            padding: 40px 20px;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .keypad-container {
+            margin: auto;
+            padding: 25px 20px 25px 20px !important;
+            max-width: 290px;
+        }
+        
+        .keypad-header {
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+            color: #ffeedd;
+            letter-spacing: 1px;
+        }
+
+        .passcode-display {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            border: 2px solid #ffffff;
+            transition: background-color 0.2s ease;
+        }
+
+        .dot.filled { background-color: #ffffff; }
+
+        .keypad {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 0 auto 20px auto;
+        }
+
+        .key {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 1.3rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.09s ease;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        /* The Custom Glow for Keypad Buttons on Hover (PC) and Active (Mobile/PC) */
+        .key:hover { 
+            background: rgba(255, 255, 255, 0.2); 
+        }
+        
+        /* This handles the glow ONLY on the keypad buttons when touched/clicked */
+        .key:active { 
+            background: rgba(255, 255, 255, 0.8) !important; 
+            color: #000 !important;
+            transform: scale(0.92); 
+            box-shadow: 0 0 25px 8px rgba(255, 255, 255, 0.7), inset 0 0 15px rgba(255, 255, 255, 0.8); 
+        }
+        
+        .key-clear { font-size: 0.9rem; font-weight: bold; background: rgba(255, 255, 255, 0.05); }
+
+        .cancel-btn {
+            background: transparent;
+            border: none;
+            color: #e0e0e0;
+            font-size: 0.9rem;
+            cursor: pointer;
+            text-decoration: underline;
+            margin-top: 10px;
+        }
+
+        /* Shake Animation */
+        .shake { animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both; }
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-2px, 0, 0); }
+            20%, 80% { transform: translate3d(4px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-8px, 0, 0); }
+            40%, 60% { transform: translate3d(8px, 0, 0); }
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- Background tracking glow -->
+    <div id="glow-trace"></div>
+    
+    <!-- Main Birthday Card -->
+    <div class="card">
+        <!-- Sticker Image -->
+        <img src="200w (2).webp" alt="Birthday Sticker" class="sticker">
+        
+        <h2><i><b>Happy Birthday, TASNIM!</b></i></h2><br>
+        <p><b>A different way to wish you on your special day</b></p>
+        <a href="notepage.html" id="partyBtn" class="btn-link">More surprise → </a>
+    </div>
+
+    <!-- The Hidden Passcode Modal -->
+    <div id="passcodeModal" class="modal-overlay">
+        <div id="keypad-card" class="card keypad-container">
+            <h3 class="keypad-header">ENTER PIN TO UNLOCK</h3>
+            
+            <div class="passcode-display" id="dots">
+                <div class="dot"></div><div class="dot"></div> <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+            </div>
+
+            <div class="keypad">
+                <button class="key" onclick="pressKey(1)">1</button>
+                <button class="key" onclick="pressKey(2)">2</button>
+                <button class="key" onclick="pressKey(3)">3</button>
+                <button class="key" onclick="pressKey(4)">4</button>
+                <button class="key" onclick="pressKey(5)">5</button>
+                <button class="key" onclick="pressKey(6)">6</button>
+                <button class="key" onclick="pressKey(7)">7</button>
+                <button class="key" onclick="pressKey(8)">8</button>
+                <button class="key" onclick="pressKey(9)">9</button>
+                <button class="key key-clear" onclick="clearPIN()">CLR</button>
+                <button class="key" onclick="pressKey(0)">0</button>
+                <div></div>
+            </div>
+
+            <button class="cancel-btn" onclick="closeModal()">Cancel</button>
+        </div>
+    </div>
+
+    <!-- Confetti Library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
+    <!-- Custom Logic -->
+    <script>
+        // SET THE PASSCODE HERE
+        const CORRECT_PIN = "021007"; 
+        
+        let currentPin = "";
+        let pendingHref = "";
+        const modal = document.getElementById('passcodeModal');
+        const keypadCard = document.getElementById('keypad-card');
+        const glowTrace = document.getElementById('glow-trace');
+
+        // 1. Button click opens the modal
+        document.getElementById('partyBtn').addEventListener('click', function(e) {
+            e.preventDefault(); 
+            pendingHref = this.href; 
+            modal.classList.add('active'); 
+        });
+
+        // 2. Close modal function
+        function closeModal() {
+            modal.classList.remove('active');
+            setTimeout(clearPIN, 400); 
+        }
+
+        // 3. Keypad Logic
+        function pressKey(num) {
+            // FORCE background glow OFF immediately when a keypad button is pressed
+            glowTrace.style.opacity = '0';
+            clearTimeout(glowTimeout);
+            
+            if (currentPin.length >= 6) return; 
+            currentPin += num;
+            updateDots();
+            
+            if (currentPin.length === 6) {
+                setTimeout(checkPin, 200); 
+            }
+        }
+
+        function clearPIN() {
+            glowTrace.style.opacity = '0';
+
+            currentPin = "";
+            updateDots();
+            keypadCard.classList.remove('shake');
+        }
+
+        function updateDots() {
+            const dots = document.querySelectorAll('.dot');
+            dots.forEach((dot, index) => {
+                if (index < currentPin.length) dot.classList.add('filled');
+                else dot.classList.remove('filled');
+            });
+        }
+
+        function checkPin() {
+            if (currentPin === CORRECT_PIN) {
+                modal.classList.remove('active');
+                
+                confetti({
+                    particleCount: 150,
+                    spread: 100,
+                    origin: { y: 0.6 },
+                    colors: ['#9333ea', '#e9d5ff', '#ffffff']
+                });
+
+                setTimeout(function() {
+                    window.location.href = pendingHref;
+                }, 1500); 
+                
+            } else {
+                keypadCard.classList.add('shake');
+                setTimeout(() => {
+                    clearPIN();
+                }, 500);
+            }
+        }
+
+        // --- BACKGROUND GLOW LOGIC (MOBILE & PC) ---
+        let isTouchScreen = false;
+        let glowTimeout; 
+
+        function moveGlow(event) {
+            let x, y;
+
+            if (event.touches && event.touches.length > 0) {
+                x = event.touches[0].clientX;
+                y = event.touches[0].clientY;
+            } else {
+                x = event.clientX;
+                y = event.clientY;
+            }
+            
+            if (x !== undefined && y !== undefined) {
+                glowTrace.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%)`;
+                glowTrace.style.opacity = '1';
+                
+                // Idle timer for PC: fades out if the mouse stops moving for 500ms
+                clearTimeout(glowTimeout);
+                glowTimeout = setTimeout(() => {
+                    glowTrace.style.opacity = '0';
+                }, 500);
+            }
+        }
+
+        // Only show glow on mobile WHEN the screen is actively being touched
+        document.addEventListener('touchstart', (e) => {
+            isTouchScreen = true; 
+            moveGlow(e);
+        }, { passive: true });
+        
+        document.addEventListener('touchmove', moveGlow, { passive: true });
+        
+        // Hide glow INSTANTLY when finger is lifted on mobile
+        document.addEventListener('touchend', () => { glowTrace.style.opacity = '0'; clearTimeout(glowTimeout); });
+        document.addEventListener('touchcancel', () => { glowTrace.style.opacity = '0'; clearTimeout(glowTimeout); });
+
+        // PC Mouse movement
+        document.addEventListener('mousemove', (e) => {
+            if (!isTouchScreen) moveGlow(e);
+        });
+        
+        // Hide glow if mouse leaves the screen
+        document.addEventListener('mouseleave', () => { glowTrace.style.opacity = '0'; clearTimeout(glowTimeout); });
+    </script>
+</body>
+</html>
