@@ -12,71 +12,67 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            
-            /* --- CUSTOM BACKGROUND WALLPAPER --- */
-            background-image: url('back.jpg');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            /* ----------------------------------- */
-
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+            background: url('back.jpg') center/cover no-repeat fixed;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            color: #ffffff;
+            color: #fff;
             overflow: hidden;
-            -webkit-tap-highlight-color: transparent; 
+            -webkit-tap-highlight-color: transparent;
         }
 
-        /* --- BACKGROUND GLOW TRACE --- */
         #glow-trace {
             position: fixed;
             top: 0;
             left: 0;
             width: 200px;
             height: 200px;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, transparent 75%);
+            background: radial-gradient(circle, rgba(255,255,255,0.4) 0%, transparent 75%);
             border-radius: 50%;
-            pointer-events: none; 
+            pointer-events: none;
             z-index: 0;
             opacity: 0;
-            transition: opacity 0.3s ease; 
-            will-change: transform, opacity; 
+            transition: opacity 0.3s ease;
+            will-change: transform, opacity;
         }
 
-        /* Main Card Style */
         .card {
             position: relative;
             z-index: 10;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(15px);
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 28px;
             padding: 50px 40px;
             text-align: center;
             max-width: 500px;
             width: 90%;
-            box-shadow: 0 30px 40px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3), inset 0 1px 1px rgba(255,255,255,0.3);
             animation: fadeIn 1.2s ease-out forwards;
-        }
-        
-        /* --- STICKER STYLE --- */
-        .sticker {
-            position: absolute;
-            top: -60px; /* Moves the sticker up so it overlaps the top edge */
-            left: 50%;
-            transform: translateX(-50%); /* Keeps it perfectly centered */
-            width: 120px; /* Adjust this size to fit your image perfectly */
-            height: auto;
-            z-index: 20;
-            filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.4)); /* Adds a realistic shadow */
-            animation: bounceIn 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            transform: translateZ(0);
+            -webkit-transform: translateZ(0);
         }
 
-        /* Optional: A cute pop-in animation for the sticker */
+        .sticker {
+            position: absolute;
+            top: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 120px;
+            z-index: 20;
+            filter: drop-shadow(0 8px 20px rgba(0,0,0,0.4));
+            animation: bounceIn 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            background: url('200w (2).webp') center/contain no-repeat;
+            pointer-events: none;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
         @keyframes bounceIn {
             0% { opacity: 0; transform: translateX(-50%) scale(0.3); }
             50% { opacity: 1; transform: translateX(-50%) scale(1.05); }
@@ -84,45 +80,73 @@
         }
 
         h2 {
-            font-size: 1.10rem;
-            letter-spacing: 2px;
+            font-size: 1.15rem;
+            font-weight: 600;
+            letter-spacing: 1.5px;
             text-transform: uppercase;
-            margin-bottom: 5px;
-            color: #ffeedd;
-            margin-top: 15px; /* Added slight margin so sticker doesn't crowd the text */
+            margin: 15px 0 8px;
+            color: #fff;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.3);
         }
 
         p {
-            font-size: 1.1rem;
-            line-height: 1.6;
+            font-size: 1.05rem;
+            font-weight: 400;
+            line-height: 1.5;
             margin-bottom: 35px;
-            color: #e0e0e0;
+            color: #f0f0f0;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.3);
         }
 
         .btn-link {
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
             padding: 14px 32px;
             font-size: 1rem;
             font-weight: 600;
             letter-spacing: 1px;
             text-transform: uppercase;
             text-decoration: none;
-            color: #1f1c2c;
-            background-color: #ffffff;
+            color: #1c1c1e;
+            background-color: rgba(255, 255, 255, 0.95);
             border-radius: 30px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
             cursor: pointer;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
         }
 
         .btn-link:hover {
-            background-color: #f0f0f0;
-            transform: translateY(-3px);
-            box-shadow: 0 0 20px 5px rgba(255, 255, 255, 0.6), inset 0 0 10px rgba(255, 255, 255, 0.4); 
+            background-color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px 5px rgba(255,255,255,0.5), inset 0 0 10px rgba(255,255,255,0.4);
         }
 
         .btn-link:active {
             transform: translateY(0) scale(0.95);
+            box-shadow: 0 0 30px 12px rgba(255,255,255,0.8), inset 0 0 15px rgba(255,255,255,0.9);
+            background-color: #fff;
+        }
+
+        .spinner-white {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-top: 2px solid #fff;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            vertical-align: middle;
+            margin-left: 8px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         @keyframes fadeIn {
@@ -130,12 +154,15 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* --- MODAL & KEYPAD STYLES --- */
         .modal-overlay {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(31, 28, 44, 0.85); 
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
             backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             display: flex;
             justify-content: center;
             align-items: flex-start;
@@ -145,6 +172,8 @@
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.4s ease;
+            transform: translateZ(0);
+            -webkit-transform: translateZ(0);
         }
 
         .modal-overlay.active {
@@ -154,117 +183,219 @@
 
         .keypad-container {
             margin: auto;
-            padding: 25px 20px 25px 20px !important;
+            padding: 25px 20px !important;
             max-width: 290px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            will-change: transform;
         }
-        
+
         .keypad-header {
-            font-size: 1.1rem;
+            font-size: 1.05rem;
+            font-weight: 500;
             margin-bottom: 25px;
-            color: #ffeedd;
+            color: #fff;
             letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .passcode-display {
             display: flex;
             justify-content: center;
+            align-items: center;
             gap: 15px;
             margin-bottom: 30px;
+            height: 20px;
         }
 
         .dot {
+            position: relative;
             width: 14px;
             height: 14px;
             border-radius: 50%;
-            border: 2px solid #ffffff;
-            transition: background-color 0.2s ease;
+            border: 1.5px solid rgba(255, 255, 255, 0.6);
+            background-color: transparent;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+            flex-shrink: 0;
         }
 
-        .dot.filled { background-color: #ffffff; }
+        .dot.filled {
+            background-color: #fff;
+            border-color: #fff;
+            border-radius: 50%;
+            width: 14px;
+            height: 14px;
+            box-shadow: 0 0 12px 2px rgba(255, 255, 255, 0.95), 
+                        0 0 24px 6px rgba(255, 255, 255, 0.6);
+        }
+
+        /* --- ANDROID 16 SHAPE MORPHS --- */
+        
+        /* 1. Star / Diamond */
+        .dot.morph-star { animation: starMorph 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        @keyframes starMorph {
+            0% { transform: scale(0.4) rotate(0deg); border-radius: 50%; opacity: 0.5; }
+            50% { transform: scale(1.25) rotate(45deg); border-radius: 30%; width: 20px; height: 20px; }
+            100% { transform: scale(1) rotate(0deg); border-radius: 50%; width: 14px; height: 14px; opacity: 1; }
+        }
+
+        /* 2. Eight-Lobed Starburst / Flower */
+        .dot.morph-flower { animation: flowerMorphParent 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        .dot.morph-flower::after {
+            content: "";
+            position: absolute;
+            inset: -1.5px; /* Aligns perfectly with the parent's border */
+            background: #fff;
+            border-radius: inherit;
+            box-shadow: 0 0 12px 2px rgba(255, 255, 255, 0.95), 0 0 24px 6px rgba(255, 255, 255, 0.6);
+            animation: flowerMorphChild 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        @keyframes flowerMorphParent {
+            0% { transform: scale(0.4); border-radius: 50%; opacity: 0.5; }
+            50% { transform: scale(1.25); border-radius: 30%; width: 20px; height: 20px; }
+            100% { transform: scale(1); border-radius: 50%; width: 14px; height: 14px; opacity: 1; }
+        }
+        @keyframes flowerMorphChild {
+            0% { transform: rotate(45deg); opacity: 0; }
+            30% { opacity: 1; }
+            50% { transform: rotate(45deg); opacity: 1; }
+            80% { opacity: 0; }
+            100% { transform: rotate(45deg); opacity: 0; }
+        }
+
+        /* 3. Horizontal Pill */
+        .dot.morph-pill { animation: pillMorph 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        @keyframes pillMorph {
+            0% { transform: scale(0.4); border-radius: 50%; opacity: 0.5; }
+            50% { transform: scale(1.2); border-radius: 8px; width: 28px; height: 14px; }
+            100% { transform: scale(1); border-radius: 50%; width: 14px; height: 14px; opacity: 1; }
+        }
+
+        /* 4. Squircle (Bold rounded square) */
+        .dot.morph-squircle { animation: squircleMorph 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        @keyframes squircleMorph {
+            0% { transform: scale(0.4); border-radius: 50%; opacity: 0.5; }
+            50% { transform: scale(1.25); border-radius: 25%; width: 20px; height: 20px; }
+            100% { transform: scale(1); border-radius: 50%; width: 14px; height: 14px; opacity: 1; }
+        }
+
 
         .keypad {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 15px;
-            margin: 0 auto 20px auto;
+            margin: 0 auto 20px;
         }
 
         .key {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: #ffffff;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: #fff;
             border-radius: 50%;
             width: 60px;
             height: 60px;
-            font-size: 1.3rem;
+            font-size: 1.4rem;
+            font-weight: 400;
             cursor: pointer;
             display: flex;
             justify-content: center;
             align-items: center;
             transition: all 0.09s ease;
             margin: 0 auto;
-            position: relative;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
 
-        /* The Custom Glow for Keypad Buttons on Hover (PC) and Active (Mobile/PC) */
-        .key:hover { 
-            background: rgba(255, 255, 255, 0.2); 
+        .key:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.4);
         }
-        
-        /* This handles the glow ONLY on the keypad buttons when touched/clicked */
-        .key:active { 
-            background: rgba(255, 255, 255, 0.8) !important; 
-            color: #000 !important;
-            transform: scale(0.92); 
-            box-shadow: 0 0 25px 8px rgba(255, 255, 255, 0.7), inset 0 0 15px rgba(255, 255, 255, 0.8); 
+
+        .key:active {
+            background: rgba(255, 255, 255, 0.85) !important;
+            color: #0 !important;
+            transform: scale(0.92);
+            box-shadow: 0 0 25px 8px rgba(255, 255, 255, 0.7), inset 0 0 15px rgba(255, 255, 255, 0.8);
         }
-        
-        .key-clear { font-size: 0.9rem; font-weight: bold; background: rgba(255, 255, 255, 0.05); }
+
+        .key-clear {
+            font-size: 0.9rem;
+            font-weight: 600;
+            background: transparent;
+        }
 
         .cancel-btn {
-            background: transparent;
-            border: none;
-            color: #e0e0e0;
-            font-size: 0.9rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
             cursor: pointer;
-            text-decoration: underline;
+            padding: 10px 24px;
+            border-radius: 20px;
             margin-top: 10px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
 
-        /* Shake Animation */
-        .shake { animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both; }
-        @keyframes shake {
-            10%, 90% { transform: translate3d(-2px, 0, 0); }
-            20%, 80% { transform: translate3d(4px, 0, 0); }
+        .cancel-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .cancel-btn:active {
+            transform: translateY(0);
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .shake {
+            animation: shakeAnim 0.4s cubic-bezier(.36, .07, .19, .97) both;
+        }
+
+        @keyframes shakeAnim {
+            10%, 90% { transform: translate3d(-3px, 0, 0); }
+            20%, 80% { transform: translate3d(5px, 0, 0); }
             30%, 50%, 70% { transform: translate3d(-8px, 0, 0); }
             40%, 60% { transform: translate3d(8px, 0, 0); }
         }
     </style>
 </head>
 <body>
-    
-    <!-- Background tracking glow -->
     <div id="glow-trace"></div>
     
-    <!-- Main Birthday Card -->
     <div class="card">
-        <!-- Sticker Image -->
-        <img src="200w (2).webp" alt="Birthday Sticker" class="sticker">
-        
-        <h2><i><b>Happy Birthday, TASNIM!</b></i></h2><br>
-        <p><b>A different way to wish you on your special day</b></p>
-        <a href="notepage.html" id="partyBtn" class="btn-link">More surprise → </a>
+        <div class="sticker" aria-label="Birthday Sticker"></div>
+        <h2>Happy Birthday, TASNIM!</h2><br>
+        <p>A different approach to wish you on your special day, mate!</p>
+        <a id="partyBtn" class="btn-link">MORE SURPRISE &rarr;</a>
     </div>
-
-    <!-- The Hidden Passcode Modal -->
+    
     <div id="passcodeModal" class="modal-overlay">
         <div id="keypad-card" class="card keypad-container">
             <h3 class="keypad-header">ENTER PIN TO UNLOCK</h3>
-            
             <div class="passcode-display" id="dots">
-                <div class="dot"></div><div class="dot"></div> <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
             </div>
-
             <div class="keypad">
                 <button class="key" onclick="pressKey(1)">1</button>
                 <button class="key" onclick="pressKey(2)">2</button>
@@ -277,140 +408,158 @@
                 <button class="key" onclick="pressKey(9)">9</button>
                 <button class="key key-clear" onclick="clearPIN()">CLR</button>
                 <button class="key" onclick="pressKey(0)">0</button>
-                <div></div>
+                <button class="key key-clear" onclick="deleteLast()">DEL</button>
             </div>
-
             <button class="cancel-btn" onclick="closeModal()">Cancel</button>
         </div>
     </div>
-
-    <!-- Confetti Library -->
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     
-    <!-- Custom Logic -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script>
-        // SET THE PASSCODE HERE
-        const CORRECT_PIN = "021007"; 
-        
+        const CORRECT_PIN = "021008";
         let currentPin = "";
-        let pendingHref = "";
+        let pendingHref = "notepage.html"; 
+        let glowTimeout;
+        let isTouchScreen = false;
+        let isProcessing = false;
+
+        // Array of our 4 custom shape morphs
+        const shapeClasses = ['morph-star', 'morph-flower', 'morph-pill', 'morph-squircle'];
+
         const modal = document.getElementById('passcodeModal');
         const keypadCard = document.getElementById('keypad-card');
         const glowTrace = document.getElementById('glow-trace');
-
-        // 1. Button click opens the modal
-        document.getElementById('partyBtn').addEventListener('click', function(e) {
-            e.preventDefault(); 
-            pendingHref = this.href; 
-            modal.classList.add('active'); 
+        const partyBtn = document.getElementById('partyBtn');
+        
+        partyBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            modal.classList.add('active');
         });
-
-        // 2. Close modal function
+        
         function closeModal() {
             modal.classList.remove('active');
-            setTimeout(clearPIN, 400); 
+            setTimeout(clearPIN, 400);
         }
-
-        // 3. Keypad Logic
-        function pressKey(num) {
-            // FORCE background glow OFF immediately when a keypad button is pressed
+        
+        function pressKey(n) {
+            if (isProcessing) return;
             glowTrace.style.opacity = '0';
             clearTimeout(glowTimeout);
+            if (currentPin.length >= 6) return;
             
-            if (currentPin.length >= 6) return; 
-            currentPin += num;
+            currentPin += n;
             updateDots();
             
             if (currentPin.length === 6) {
-                setTimeout(checkPin, 200); 
+                isProcessing = true;
+                setTimeout(checkPin, 200);
             }
         }
-
+        
         function clearPIN() {
             glowTrace.style.opacity = '0';
-
             currentPin = "";
             updateDots();
             keypadCard.classList.remove('shake');
+            isProcessing = false;
         }
-
+        
+        function deleteLast() {
+            if (isProcessing) return;
+            glowTrace.style.opacity = '0';
+            clearTimeout(glowTimeout);
+            if (currentPin.length > 0) {
+                currentPin = currentPin.slice(0, -1);
+                updateDots();
+            }
+        }
+        
         function updateDots() {
-            const dots = document.querySelectorAll('.dot');
-            dots.forEach((dot, index) => {
-                if (index < currentPin.length) dot.classList.add('filled');
-                else dot.classList.remove('filled');
+            document.querySelectorAll('.dot').forEach((d, i) => {
+                // Remove all previous morph shapes to clean the slate
+                shapeClasses.forEach(cls => d.classList.remove(cls));
+                
+                if (i < currentPin.length) {
+                    d.classList.add('filled');
+                    if (i === currentPin.length - 1) {
+                        // Cycles sequentially through the array to give a highly dynamic feel
+                        const shape = shapeClasses[i % shapeClasses.length];
+                        d.classList.add(shape);
+                    }
+                } else {
+                    d.classList.remove('filled');
+                }
             });
         }
-
+        
         function checkPin() {
             if (currentPin === CORRECT_PIN) {
-                modal.classList.remove('active');
-                
+                document.querySelector('.keypad-header').innerHTML = 'LOADING... <div class="spinner-white"></div>';
                 confetti({
-                    particleCount: 150,
-                    spread: 100,
-                    origin: { y: 0.6 },
+                    particleCount: 150, 
+                    spread: 100, 
+                    origin: { y: 0.6 }, 
+                    zIndex: 9999, 
                     colors: ['#9333ea', '#e9d5ff', '#ffffff']
                 });
-
-                setTimeout(function() {
-                    window.location.href = pendingHref;
-                }, 1500); 
-                
+                setTimeout(() => window.location.href = pendingHref, 2200);
             } else {
                 keypadCard.classList.add('shake');
                 setTimeout(() => {
-                    clearPIN();
-                }, 500);
+                    currentPin = "";
+                    updateDots();
+                    keypadCard.classList.remove('shake');
+                    isProcessing = false;
+                }, 450);
             }
         }
-
-        // --- BACKGROUND GLOW LOGIC (MOBILE & PC) ---
-        let isTouchScreen = false;
-        let glowTimeout; 
-
-        function moveGlow(event) {
-            let x, y;
-
-            if (event.touches && event.touches.length > 0) {
-                x = event.touches[0].clientX;
-                y = event.touches[0].clientY;
-            } else {
-                x = event.clientX;
-                y = event.clientY;
-            }
-            
+        
+        function moveGlow(e) {
+            let x = e.touches ? e.touches[0].clientX : e.clientX;
+            let y = e.touches ? e.touches[0].clientY : e.clientY;
             if (x !== undefined && y !== undefined) {
                 glowTrace.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%)`;
                 glowTrace.style.opacity = '1';
-                
-                // Idle timer for PC: fades out if the mouse stops moving for 500ms
                 clearTimeout(glowTimeout);
-                glowTimeout = setTimeout(() => {
-                    glowTrace.style.opacity = '0';
-                }, 500);
+                glowTimeout = setTimeout(() => glowTrace.style.opacity = '0', 500);
             }
         }
-
-        // Only show glow on mobile WHEN the screen is actively being touched
+        
         document.addEventListener('touchstart', (e) => {
-            isTouchScreen = true; 
+            isTouchScreen = true;
             moveGlow(e);
         }, { passive: true });
         
         document.addEventListener('touchmove', moveGlow, { passive: true });
         
-        // Hide glow INSTANTLY when finger is lifted on mobile
-        document.addEventListener('touchend', () => { glowTrace.style.opacity = '0'; clearTimeout(glowTimeout); });
-        document.addEventListener('touchcancel', () => { glowTrace.style.opacity = '0'; clearTimeout(glowTimeout); });
-
-        // PC Mouse movement
+        document.addEventListener('touchend', () => {
+            glowTrace.style.opacity = '0';
+            clearTimeout(glowTimeout);
+        });
+        
+        document.addEventListener('touchcancel', () => {
+            glowTrace.style.opacity = '0';
+            clearTimeout(glowTimeout);
+        });
+        
         document.addEventListener('mousemove', (e) => {
             if (!isTouchScreen) moveGlow(e);
         });
         
-        // Hide glow if mouse leaves the screen
-        document.addEventListener('mouseleave', () => { glowTrace.style.opacity = '0'; clearTimeout(glowTimeout); });
+        document.addEventListener('mouseleave', () => {
+            glowTrace.style.opacity = '0';
+            clearTimeout(glowTimeout);
+        });
+        
+        window.addEventListener('pageshow', (event) => {
+            if (event.persisted || isProcessing) {
+                document.querySelector('.keypad-header').innerHTML = 'ENTER PIN TO UNLOCK';
+                currentPin = "";
+                updateDots();
+                isProcessing = false;
+                modal.classList.remove('active');
+            }
+        });
     </script>
 </body>
 </html>
