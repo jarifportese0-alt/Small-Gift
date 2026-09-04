@@ -3,22 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Birthday Wish</title>
+    <title>Birthday Wish - Final Chapter</title>
     
-    <!-- Importing the handwritten fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Pacifico&display=swap" rel="stylesheet">
 
     <style>
-        :root {
-            --primary-glow: rgba(255, 255, 255, 0.8);
-        }
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-user-select: none !important;
+            -moz-user-select: none !important;
+            -ms-user-select: none !important;
+            user-select: none !important;
+            /* Disables the default blue tap highlight on mobile browsers */
+            -webkit-tap-highlight-color: transparent !important; 
         }
 
         body, html {
@@ -27,18 +28,20 @@
             overflow-x: hidden;
         }
 
+        /* Removes any focus rings from buttons */
+        button {
+            outline: none !important; 
+            -webkit-tap-highlight-color: transparent !important;
+        }
+
         .page-background {
             width: 100vw;
             min-height: 100vh;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            background-image: url('1384.jpg');
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            background-position: center;
-            background-color: #7ab3d6; 
+            background-color: #4a5d4e; 
             padding: 20px;
         }
 
@@ -54,120 +57,414 @@
             z-index: 0;
             opacity: 0;
             transition: opacity 0.3s ease, transform 0.1s ease-out; 
-            will-change: transform, opacity; 
         }
 
-        .birthday-card {
-            background: #fdfbf7;
-            border-radius: 4px;
-            padding: 40px 30px;
-            width: 100%;
-            max-width: 580px; 
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+        /* --- BOOK WRAPPER --- */
+        .book-wrapper {
             position: relative;
+            width: 90vw; 
+            max-width: 420px;
             z-index: 10;
-            transform: rotate(-1.5deg); 
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
+            opacity: 0;
+            will-change: transform, opacity;
+            transform: translateZ(0);
+            animation: smoothDrop 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
         }
 
-        .birthday-card:hover {
-            transform: rotate(0deg) scale(1.02);
-            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.3), 0 0 25px var(--primary-glow);
+        @keyframes smoothDrop {
+            0% { opacity: 0; transform: translateY(25px) scale(0.95); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        .card-heading {
+        /* --- DIARY CONTAINER --- */
+        .diary-container {
+            position: relative;
+            width: 100%;
+            height: 550px; 
+            display: grid; 
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @media (min-width: 481px) {
+            .diary-container.is-open {
+                transform: translateX(30%);
+            }
+        }
+
+        /* --- BINDER RINGS --- */
+        .binding-rings {
+            position: absolute;
+            top: 40px;
+            bottom: 40px;
+            left: -15px; 
+            width: 35px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            z-index: 50;
+            pointer-events: none;
+        }
+
+        .ring {
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to bottom, #f0f0f0, #999);
+            border-radius: 3px;
+            position: relative;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .ring::after {
+            content: '';
+            position: absolute;
+            right: -6px;
+            top: -4.5px;
+            width: 14px;
+            height: 14px;
+            background: #1a1a1a;
+            border-radius: 50%;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.6);
+        }
+
+        /* --- PAGES --- */
+        .diary-page {
+            grid-area: 1 / 1; 
+            border-radius: 0 15px 15px 0; 
+            padding: 22px 22px 15px 35px; 
+            box-shadow: 10px 15px 30px rgba(0, 0, 0, 0.2);
+            transform-origin: left center;
+            transform-style: preserve-3d;
+            -webkit-transform-style: preserve-3d;
+            transition: transform 1.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .diary-page::after {
+            content: '';
+            position: absolute;
+            top: 0; bottom: 0; right: 0; left: 0;
+            background: #fdfbf7; 
+            background-image: linear-gradient(to right, rgba(0,0,0,0) 80%, rgba(0,0,0,0.06) 100%);
+            border-radius: 15px 0 0 15px; 
+            transform: translateZ(-1px) rotateY(180deg); 
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            pointer-events: none;
+            box-shadow: inset 10px 0 20px rgba(0,0,0,0.03); 
+        }
+
+        /* Stacking Order (5 Pages Total) */
+        .page-1 { z-index: 5; background: #c2d5c4; border-left: 15px solid #8fb393; } 
+        .page-1::after { background: #c2d5c4; border-right: 15px solid #8fb393; left: -15px; }
+
+        .page-2 { z-index: 4; background: #fdfbf7; border-left: none; } 
+        .page-3 { z-index: 3; background: #fdfbf7; border-left: none; }
+        .page-4 { z-index: 2; background: #fdfbf7; border-left: none; }
+        .page-5 { z-index: 1; background: #fdfbf7; border-left: none; }
+
+        .diary-page.flipped {
+            transform: perspective(1200px) rotateY(-178deg);
+            pointer-events: none; 
+            box-shadow: -15px 15px 25px rgba(0, 0, 0, 0.15); 
+        }
+
+        .page-header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px dashed #8fb393;
+            padding-bottom: 4px;
+            margin-bottom: 10px;
+            font-size: 1.15rem;
+            color: #6b8e6f;
+            letter-spacing: 1px;
+        }
+
+        /* --- COVER STYLING --- */
+        .cover-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .cover-polaroid {
+            background: #ffffff;
+            padding: 8px 8px 22px 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            border-radius: 2px;
+            transform: rotate(-2deg);
+            width: 75%;
+            max-width: 200px;
+            margin-bottom: 15px;
+        }
+
+        .cover-polaroid img {
+            -webkit-touch-callout: none !important;
+            pointer-events: none !important;
+            width: 100%;
+            height: 140px;
+            object-fit: cover;
+            object-position: center top;
+            border-radius: 1px;
+            display: block;
+        }
+
+        .cover-title {
             font-family: 'Pacifico', cursive;
+            color: white;
             font-size: 2.2rem;
-            color: #ff66a3;
+            line-height: 1.2;
             text-align: center;
-            margin-bottom: 20px;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.05);
         }
 
-        /* --- THE NOTEPAD EFFECT --- */
+        .cover-subtitle {
+            font-family: 'Caveat', cursive;
+            color: white;
+            font-size: 1.5rem;
+            margin-top: 5px;
+        }
+        
+        .circle-btn {
+            position: absolute;
+            bottom: 25px;
+            right: 25px;
+            width: 40px;
+            height: 40px;
+            /* Semi-transparent white background */
+            background: rgba(255, 255, 255, 0.2); 
+            /* The blur effect */
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px); 
+            /* Subtle white border to define the glass edge */
+            border: 1px solid rgba(255, 255, 255, 0.4); 
+            border-radius: 50%;
+            color: #ffffff; /* White arrow */
+            font-size: 1.6rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); 
+            transition: all 0.3s ease;
+        }
+
+        .circle-btn:hover {
+            transform: scale(1.1);
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.6);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        /* --- INNER PAGES --- */
         .notepad-lines {
-            /* Creates the repeating blue lines */
-            background-image: repeating-linear-gradient(
-                transparent,
-                transparent 38px,
-                #a2c1de 38px, /* Soft blue line color */
-                #a2c1de 40px
-            );
-            /* Red margin line on the left */
-            border-left: 2px solid #ff99c2; 
-            padding-left: 25px;
-            /* Small adjustment to push the text so its baseline sits ON the blue line */
-            padding-top: 6px; 
-            text-align: left;
+            background-image: repeating-linear-gradient(transparent, transparent 34px, rgba(143, 179, 147, 0.35) 34px, rgba(143, 179, 147, 0.35) 36px);
+            border-left: 2px solid #8fb393; 
+            padding-left: 15px;
+            padding-top: 2px; 
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
         }
 
         .card-paragraph {
-            font-size: 1.6rem;
+            font-size: 1.25rem;
             color: #333;
-            /* Line height MUST match the gradient spacing (40px) so the text stays aligned to the lines! */
-            line-height: 40px; 
-            letter-spacing: 0.5px;
-            margin: 0; /* Reset margins so breaks don't throw off the alignment */
-        }
-
-        .card-paragraph i {
-            font-style: normal; 
+            line-height: 36px; 
+            word-wrap: break-word;
         }
 
         .highlight-text {
-            color: #ff4d94;
+            color: #6b8e6f; 
             font-weight: 700;
             display: block;
             text-align: right;
-            padding-right: 20px;
+            padding-right: 15px;
+            margin-top: 8px;
+        }
+
+        .page-controls {
+            display: flex;
+            justify-content: space-between;
+            margin-top: auto; 
+            padding-top: 15px;
+            padding-bottom: 2px;
+            padding-right: 5px;
+            pointer-events: auto; 
+        }
+
+        .nav-btn {
+            background: transparent;
+            color: #8fb393; 
+            border: none;
+            padding: 5px 10px;
+            font-family: 'Caveat', cursive;
+            font-size: 1.4rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .nav-btn:hover {
+            color: #6b8e6f; 
+            transform: scale(1.05);
         }
 
         @media (max-width: 480px) {
-            .birthday-card {
-                padding: 30px 20px;
-            }
-            .card-heading {
-                font-size: 1.8rem;
-            }
-            .notepad-lines {
-                padding-left: 15px;
-            }
-            .card-paragraph {
-                font-size: 1.4rem;
-                /* Note: We do NOT change the line-height here, otherwise it won't match the background lines anymore! */
-            }
+            .diary-container { height: 500px; }
+            .diary-page { padding: 20px 18px 12px 32px; }
+            .card-paragraph { font-size: 1.15rem; line-height: 34px; }
         }
     </style>
 </head>
-<body>
+<body oncontextmenu="return false;">
 
     <div id="glow-trace"></div>
 
     <div class="page-background">
-        <div class="birthday-card">
-            
-            <!-- Title is separate, outside the lined area -->
-            <h1 class="card-heading">A story, well wishes.</h1>
-            
-            <!-- Lined notepad area starts here -->
-            <div class="notepad-lines">
-                <p class="card-paragraph"><i>
-                    Now, we’re at the end of this website, which has been under construction since August 20, 2026. 
-                    <br><br> 
-                    On this day of celebration, I would like to say something only for you -
-                    <br><br>
-                    “Wherever you are, or you will be, just never forget to smile. A smile is that thing which magically works in our life. Maintaining good health with a great mind works for every human, so maintain it no matter what goes on. Well wishes for your future. May Allah forever be by your side.”
-                    <br><br>
-                    Be happy always. Stay safe and sound and go for your dream.
-                    <br><br>
-                    <span class="highlight-text">SAYONARA</span>
-                </i></p>
+        
+        <div class="book-wrapper">
+            <div class="diary-container">
+                
+                <!-- Binder Rings -->
+                <div class="binding-rings">
+                    <div class="ring"></div><div class="ring"></div><div class="ring"></div>
+                    <div class="ring"></div><div class="ring"></div><div class="ring"></div>
+                    <div class="ring"></div><div class="ring"></div><div class="ring"></div>
+                    <div class="ring"></div><div class="ring"></div>
+                </div>
+
+                <!-- PAGE 5 (Final Page) -->
+                <div class="diary-page page-5" id="page-5">
+                    <div class="notepad-lines">
+                        <div class="page-header-bar">
+                            <span>Date: 02.10.2026</span>
+                            <span>Friday</span>
+                        </div>
+                        <p class="card-paragraph"><i>
+                            Be happy, always.
+                            <br><br>
+                            <span class="highlight-text">Sayonara.</span>
+                        </i></p>
+                        <div class="page-controls" style="justify-content: flex-start;">
+                            <button class="nav-btn" onclick="prevPage(5)">&larr; Back</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PAGE 4 -->
+                <div class="diary-page page-4" id="page-4">
+                    <div class="notepad-lines">
+                        <div class="page-header-bar">
+                            <span>Date: 02.10.2026</span>
+                            <span>Friday</span>
+                        </div>
+                        <p class="card-paragraph"><i>
+                            Life is short, and time never comes back. So cherish this short life that we have. Enjoy the little moments, make memories, and live in a way that leaves you with more smiles than regrets.
+                            <br><br>
+                            I genuinely wish you the best for whatever comes next in your life and for all the dreams you want to achieve. May Allah always be by your side.
+                        </i></p>
+                        <div class="page-controls">
+                            <button class="nav-btn" onclick="prevPage(4)">&larr; Back</button>
+                            <button class="nav-btn" onclick="nextPage(4)">Next &rarr;</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PAGE 3 -->
+                <div class="diary-page page-3" id="page-3">
+                    <div class="notepad-lines">
+                        <div class="page-header-bar">
+                            <span>Date: 02.10.2026</span>
+                            <span>Friday</span>
+                        </div>
+                        <p class="card-paragraph"><i>
+                            Wherever you are, or wherever you will be, just never ever forget to smile.
+                            <br><br>
+                            A smile is a little thing, but somehow it can make life feel a lot lighter. So take care of yourself, both physically and mentally. And remember, you don't have to be everything for everyone. You deserve to rest, to dream, and to live for yourself too. Don't forget that.
+                        </i></p>
+                        <div class="page-controls">
+                            <button class="nav-btn" onclick="prevPage(3)">&larr; Back</button>
+                            <button class="nav-btn" onclick="nextPage(3)">Next &rarr;</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PAGE 2 (Construction Note Only) -->
+                <div class="diary-page page-2" id="page-2">
+                    <div class="notepad-lines">
+                        <div class="page-header-bar">
+                            <span>Date: 02.10.2026</span>
+                            <span>Friday</span>
+                        </div>
+                        <p class="card-paragraph"><i>
+                            <br>
+                            <br>
+                            <br>
+                            Now, we’re at the end of this website, which was under construction since August 20, 2026. It was an unplanned website, so pardon my mistakes.
+                        </i></p>
+                        <div class="page-controls">
+                            <button class="nav-btn" onclick="prevPage(2)">&larr; Back</button>
+                            <button class="nav-btn" onclick="nextPage(2)">Next &rarr;</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PAGE 1 (Cover with Polaroid Photo img0210.jpeg) -->
+                <div class="diary-page page-1" id="page-1">
+                    <div class="cover-content">
+                        <div class="cover-polaroid">
+                            <img src="img0210.jpeg" alt="Tasnim" draggable="false">
+                        </div>
+                        <h2 class="cover-title">A story, a wish</h2>
+                        <p class="cover-subtitle">Chapter: Tasnim Binte</p>
+                    </div>
+                    <button class="circle-btn" onclick="nextPage(1)">&rarr;</button>
+                </div>
+
             </div>
-            
         </div>
     </div>
 
     <script>
+        let leftZIndex = 20;
+
+        function nextPage(currentPageNum) {
+            const page = document.getElementById('page-' + currentPageNum);
+            page.classList.add('flipped');
+            page.style.zIndex = leftZIndex++;
+            updateBookCenter();
+        }
+
+        function prevPage(currentPageNum) {
+            const page = document.getElementById('page-' + (currentPageNum - 1));
+            page.classList.remove('flipped');
+            
+            setTimeout(() => {
+                const defaultZ = [0, 5, 4, 3, 2, 1];
+                page.style.zIndex = defaultZ[currentPageNum - 1];
+            }, 1200); 
+            
+            updateBookCenter();
+        }
+
+        function updateBookCenter() {
+            const container = document.querySelector('.diary-container');
+            const flippedPages = document.querySelectorAll('.flipped').length;
+            
+            if (window.innerWidth > 480) {
+                if (flippedPages > 0) {
+                    container.classList.add('is-open');
+                } else {
+                    container.classList.remove('is-open');
+                }
+            }
+        }
+
         // --- GLOW TRACE LOGIC ---
         const glowTrace = document.getElementById('glow-trace');
 
