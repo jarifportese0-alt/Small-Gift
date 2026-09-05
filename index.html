@@ -13,7 +13,7 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
-            background: url('back.jpg') center/cover no-repeat fixed;
+            background: linear-gradient(to bottom, #1c2530, #0a0e14);
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -21,36 +21,35 @@
             color: #fff;
             overflow: hidden;
             -webkit-tap-highlight-color: transparent;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
 
-        #glow-trace {
+        #rain-window {
             position: fixed;
             top: 0;
             left: 0;
-            width: 200px;
-            height: 200px;
-            background: radial-gradient(circle, rgba(255,255,255,0.4) 0%, transparent 75%);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 0;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            will-change: transform, opacity;
+            width: 100%;
+            height: 100%;
+            z-index: 0; 
+            pointer-events: none; 
         }
 
         .card {
             position: relative;
             z-index: 10;
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 28px;
             padding: 50px 40px;
             text-align: center;
             max-width: 500px;
             width: 90%;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3), inset 0 1px 1px rgba(255,255,255,0.3);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4), inset 0 1px 1px rgba(255,255,255,0.3);
             animation: fadeIn 1.2s ease-out forwards;
             transform: translateZ(0);
             -webkit-transform: translateZ(0);
@@ -69,8 +68,6 @@
             background: url('200w (2).webp') center/contain no-repeat;
             pointer-events: none;
             -webkit-touch-callout: none;
-            -webkit-user-select: none;
-            user-select: none;
         }
 
         @keyframes bounceIn {
@@ -116,8 +113,6 @@
             transition: all 0.3s ease;
             cursor: pointer;
             -webkit-touch-callout: none;
-            -webkit-user-select: none;
-            user-select: none;
         }
 
         .btn-link:hover {
@@ -168,7 +163,7 @@
             align-items: flex-start;
             overflow-y: auto;
             padding: 40px 20px;
-            z-index: 1000;
+            z-index: 1000; 
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.4s ease;
@@ -231,9 +226,6 @@
                         0 0 24px 6px rgba(255, 255, 255, 0.6);
         }
 
-        /* --- ANDROID 16 SHAPE MORPHS --- */
-        
-        /* 1. Star / Diamond */
         .dot.morph-star { animation: starMorph 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
         @keyframes starMorph {
             0% { transform: scale(0.4) rotate(0deg); border-radius: 50%; opacity: 0.5; }
@@ -241,12 +233,11 @@
             100% { transform: scale(1) rotate(0deg); border-radius: 50%; width: 14px; height: 14px; opacity: 1; }
         }
 
-        /* 2. Eight-Lobed Starburst / Flower */
         .dot.morph-flower { animation: flowerMorphParent 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
         .dot.morph-flower::after {
             content: "";
             position: absolute;
-            inset: -1.5px; /* Aligns perfectly with the parent's border */
+            inset: -1.5px; 
             background: #fff;
             border-radius: inherit;
             box-shadow: 0 0 12px 2px rgba(255, 255, 255, 0.95), 0 0 24px 6px rgba(255, 255, 255, 0.6);
@@ -265,7 +256,6 @@
             100% { transform: rotate(45deg); opacity: 0; }
         }
 
-        /* 3. Horizontal Pill */
         .dot.morph-pill { animation: pillMorph 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
         @keyframes pillMorph {
             0% { transform: scale(0.4); border-radius: 50%; opacity: 0.5; }
@@ -273,14 +263,12 @@
             100% { transform: scale(1); border-radius: 50%; width: 14px; height: 14px; opacity: 1; }
         }
 
-        /* 4. Squircle (Bold rounded square) */
         .dot.morph-squircle { animation: squircleMorph 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
         @keyframes squircleMorph {
             0% { transform: scale(0.4); border-radius: 50%; opacity: 0.5; }
             50% { transform: scale(1.25); border-radius: 25%; width: 20px; height: 20px; }
             100% { transform: scale(1); border-radius: 50%; width: 14px; height: 14px; opacity: 1; }
         }
-
 
         .keypad {
             display: grid;
@@ -307,10 +295,6 @@
             backdrop-filter: blur(5px);
             -webkit-backdrop-filter: blur(5px);
             -webkit-touch-callout: none;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
         }
 
         .key:hover {
@@ -346,10 +330,6 @@
             transition: all 0.3s ease;
             text-decoration: none;
             -webkit-touch-callout: none;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
         }
 
         .cancel-btn:hover {
@@ -376,7 +356,8 @@
     </style>
 </head>
 <body>
-    <div id="glow-trace"></div>
+    
+    <canvas id="rain-window"></canvas>
     
     <div class="card">
         <div class="sticker" aria-label="Birthday Sticker"></div>
@@ -419,16 +400,12 @@
         const CORRECT_PIN = "021008";
         let currentPin = "";
         let pendingHref = "notepage.html"; 
-        let glowTimeout;
-        let isTouchScreen = false;
         let isProcessing = false;
 
-        // Array of our 4 custom shape morphs
         const shapeClasses = ['morph-star', 'morph-flower', 'morph-pill', 'morph-squircle'];
 
         const modal = document.getElementById('passcodeModal');
         const keypadCard = document.getElementById('keypad-card');
-        const glowTrace = document.getElementById('glow-trace');
         const partyBtn = document.getElementById('partyBtn');
         
         partyBtn.addEventListener('click', (e) => {
@@ -443,8 +420,6 @@
         
         function pressKey(n) {
             if (isProcessing) return;
-            glowTrace.style.opacity = '0';
-            clearTimeout(glowTimeout);
             if (currentPin.length >= 6) return;
             
             currentPin += n;
@@ -457,7 +432,6 @@
         }
         
         function clearPIN() {
-            glowTrace.style.opacity = '0';
             currentPin = "";
             updateDots();
             keypadCard.classList.remove('shake');
@@ -466,8 +440,6 @@
         
         function deleteLast() {
             if (isProcessing) return;
-            glowTrace.style.opacity = '0';
-            clearTimeout(glowTimeout);
             if (currentPin.length > 0) {
                 currentPin = currentPin.slice(0, -1);
                 updateDots();
@@ -476,13 +448,11 @@
         
         function updateDots() {
             document.querySelectorAll('.dot').forEach((d, i) => {
-                // Remove all previous morph shapes to clean the slate
                 shapeClasses.forEach(cls => d.classList.remove(cls));
                 
                 if (i < currentPin.length) {
                     d.classList.add('filled');
                     if (i === currentPin.length - 1) {
-                        // Cycles sequentially through the array to give a highly dynamic feel
                         const shape = shapeClasses[i % shapeClasses.length];
                         d.classList.add(shape);
                     }
@@ -514,43 +484,6 @@
             }
         }
         
-        function moveGlow(e) {
-            let x = e.touches ? e.touches[0].clientX : e.clientX;
-            let y = e.touches ? e.touches[0].clientY : e.clientY;
-            if (x !== undefined && y !== undefined) {
-                glowTrace.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%)`;
-                glowTrace.style.opacity = '1';
-                clearTimeout(glowTimeout);
-                glowTimeout = setTimeout(() => glowTrace.style.opacity = '0', 500);
-            }
-        }
-        
-        document.addEventListener('touchstart', (e) => {
-            isTouchScreen = true;
-            moveGlow(e);
-        }, { passive: true });
-        
-        document.addEventListener('touchmove', moveGlow, { passive: true });
-        
-        document.addEventListener('touchend', () => {
-            glowTrace.style.opacity = '0';
-            clearTimeout(glowTimeout);
-        });
-        
-        document.addEventListener('touchcancel', () => {
-            glowTrace.style.opacity = '0';
-            clearTimeout(glowTimeout);
-        });
-        
-        document.addEventListener('mousemove', (e) => {
-            if (!isTouchScreen) moveGlow(e);
-        });
-        
-        document.addEventListener('mouseleave', () => {
-            glowTrace.style.opacity = '0';
-            clearTimeout(glowTimeout);
-        });
-        
         window.addEventListener('pageshow', (event) => {
             if (event.persisted || isProcessing) {
                 document.querySelector('.keypad-header').innerHTML = 'ENTER PIN TO UNLOCK';
@@ -560,6 +493,85 @@
                 modal.classList.remove('active');
             }
         });
+
+        const canvas = document.getElementById('rain-window');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let drops = [];
+
+        function resizeCanvas() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+
+        function createDrop() {
+            return {
+                x: Math.random() * width,
+                y: Math.random() * -height,
+                length: Math.random() * 25 + 15,
+                speed: Math.random() * 18 + 12,
+                thickness: Math.random() * 1.2 + 0.3, 
+                opacity: Math.random() * 0.4 + 0.05 
+            };
+        }
+
+        function initRain() {
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+            for (let i = 0; i < 250; i++) {
+                drops.push(createDrop());
+            }
+            animateRain();
+        }
+
+        function animateRain() {
+            ctx.clearRect(0, 0, width, height);
+            
+            drops.forEach(drop => {
+                ctx.beginPath();
+                ctx.moveTo(drop.x, drop.y);
+                ctx.lineTo(drop.x - (drop.speed * 0.10), drop.y + drop.length);
+                ctx.strokeStyle = `rgba(255, 255, 255, ${drop.opacity})`;
+                ctx.lineWidth = drop.thickness;
+                ctx.lineCap = 'round';
+                ctx.stroke();
+
+                drop.y += drop.speed;
+                drop.x -= drop.speed * 0.10; 
+
+                if (drop.y > height) {
+                    drop.y = Math.random() * -50;
+                    drop.x = Math.random() * width + 50; 
+                }
+            });
+
+            requestAnimationFrame(animateRain);
+        }
+
+        initRain();
+
+        // Disable right-click menu
+        document.addEventListener('contextmenu', event => event.preventDefault());
+        
+        // Disable keyboard shortcuts for Developer Tools and View Source
+        document.onkeydown = function (e) {
+            // F12
+            if (e.keyCode === 123) {
+                return false;
+            }
+            // Ctrl+Shift+I (Windows) or Cmd+Option+I (Mac) - Inspect
+            if (e.ctrlKey && e.shiftKey && e.keyCode === 73) {
+                return false;
+            }
+            // Ctrl+Shift+J (Windows) or Cmd+Option+J (Mac) - Console
+            if (e.ctrlKey && e.shiftKey && e.keyCode === 74) {
+                return false;
+            }
+            // Ctrl+U (Windows) or Cmd+Option+U (Mac) - View Source
+            if (e.ctrlKey && e.keyCode === 85) {
+                return false;
+            }
+        };
     </script>
 </body>
 </html>
