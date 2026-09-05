@@ -211,9 +211,12 @@
             border-radius: 50%;
             border: 1.5px solid rgba(255, 255, 255, 0.6);
             background-color: transparent;
-            transition: all 0.2s ease;
             box-shadow: 0 1px 3px rgba(0,0,0,0.2);
             flex-shrink: 0;
+            
+            transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+            transform: translateZ(0);
+            will-change: transform, background-color, box-shadow;
         }
 
         .dot.filled {
@@ -290,11 +293,12 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            transition: all 0.09s ease;
             margin: 0 auto;
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
             -webkit-touch-callout: none;
+            
+            transition: transform 0.09s ease, background 0.09s ease, box-shadow 0.09s ease, border-color 0.09s ease;
+            transform: translateZ(0);
+            will-change: transform, background-color;
         }
 
         .key:hover {
@@ -302,9 +306,10 @@
             border-color: rgba(255, 255, 255, 0.4);
         }
 
-        .key:active {
+        /* Added .active-state to trigger exact same visuals on keyboard press */
+        .key:active, .key.active-state {
             background: rgba(255, 255, 255, 0.85) !important;
-            color: #0 !important;
+            color: #000 !important;
             transform: scale(0.92);
             box-shadow: 0 0 25px 8px rgba(255, 255, 255, 0.7), inset 0 0 15px rgba(255, 255, 255, 0.8);
         }
@@ -377,29 +382,30 @@
                 <div class="dot"></div>
                 <div class="dot"></div>
             </div>
+            <!-- Added data-val attributes to target elements with keyboard input -->
             <div class="keypad">
-                <button class="key" onclick="pressKey(1)">1</button>
-                <button class="key" onclick="pressKey(2)">2</button>
-                <button class="key" onclick="pressKey(3)">3</button>
-                <button class="key" onclick="pressKey(4)">4</button>
-                <button class="key" onclick="pressKey(5)">5</button>
-                <button class="key" onclick="pressKey(6)">6</button>
-                <button class="key" onclick="pressKey(7)">7</button>
-                <button class="key" onclick="pressKey(8)">8</button>
-                <button class="key" onclick="pressKey(9)">9</button>
-                <button class="key key-clear" onclick="clearPIN()">CLR</button>
-                <button class="key" onclick="pressKey(0)">0</button>
-                <button class="key key-clear" onclick="deleteLast()">DEL</button>
+                <button class="key" data-val="1" onclick="pressKey('1')">1</button>
+                <button class="key" data-val="2" onclick="pressKey('2')">2</button>
+                <button class="key" data-val="3" onclick="pressKey('3')">3</button>
+                <button class="key" data-val="4" onclick="pressKey('4')">4</button>
+                <button class="key" data-val="5" onclick="pressKey('5')">5</button>
+                <button class="key" data-val="6" onclick="pressKey('6')">6</button>
+                <button class="key" data-val="7" onclick="pressKey('7')">7</button>
+                <button class="key" data-val="8" onclick="pressKey('8')">8</button>
+                <button class="key" data-val="9" onclick="pressKey('9')">9</button>
+                <button class="key key-clear" data-val="clear" onclick="clearPIN()">CLR</button>
+                <button class="key" data-val="0" onclick="pressKey('0')">0</button>
+                <button class="key key-clear" data-val="backspace" onclick="deleteLast()">DEL</button>
             </div>
             <button class="cancel-btn" onclick="closeModal()">Cancel</button>
         </div>
     </div>
     
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script>
         const CORRECT_PIN = "021008";
         let currentPin = "";
-        let pendingHref = "notepage.html"; 
+        
+        let pendingHref = "cake.html"; 
         let isProcessing = false;
 
         const shapeClasses = ['morph-star', 'morph-flower', 'morph-pill', 'morph-squircle'];
@@ -465,14 +471,8 @@
         function checkPin() {
             if (currentPin === CORRECT_PIN) {
                 document.querySelector('.keypad-header').innerHTML = 'LOADING... <div class="spinner-white"></div>';
-                confetti({
-                    particleCount: 150, 
-                    spread: 100, 
-                    origin: { y: 0.6 }, 
-                    zIndex: 9999, 
-                    colors: ['#9333ea', '#e9d5ff', '#ffffff']
-                });
-                setTimeout(() => window.location.href = pendingHref, 2200);
+                
+                setTimeout(() => window.location.href = pendingHref, 800);
             } else {
                 keypadCard.classList.add('shake');
                 setTimeout(() => {
@@ -494,6 +494,7 @@
             }
         });
 
+        // --- BACKGROUND RAIN CANVAS ---
         const canvas = document.getElementById('rain-window');
         const ctx = canvas.getContext('2d');
         let width, height;
@@ -550,28 +551,53 @@
 
         initRain();
 
-        // Disable right-click menu
+        // --- COMBINED EVENT LISTENER: SECURITY & KEYBOARD INPUT ---
         document.addEventListener('contextmenu', event => event.preventDefault());
         
-        // Disable keyboard shortcuts for Developer Tools and View Source
-        document.onkeydown = function (e) {
-            // F12
-            if (e.keyCode === 123) {
+        document.addEventListener('keydown', function (e) {
+            // Security Intercept
+            if (e.keyCode === 123 || 
+               (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74)) || 
+               (e.ctrlKey && e.keyCode === 85)) {
+                e.preventDefault();
                 return false;
             }
-            // Ctrl+Shift+I (Windows) or Cmd+Option+I (Mac) - Inspect
-            if (e.ctrlKey && e.shiftKey && e.keyCode === 73) {
-                return false;
+
+            // Keyboard Passcode Input Logic
+            if (modal.classList.contains('active')) {
+                let mappedValue = null;
+
+                // Numbers 0-9
+                if (e.key >= '0' && e.key <= '9') {
+                    mappedValue = e.key;
+                    pressKey(mappedValue);
+                } 
+                // Backspace (Delete)
+                else if (e.key === 'Backspace') {
+                    mappedValue = 'backspace';
+                    deleteLast();
+                } 
+                // 'C' key (Clear)
+                else if (e.key.toLowerCase() === 'c') {
+                    mappedValue = 'clear';
+                    clearPIN();
+                } 
+                // Escape key (Close Modal)
+                else if (e.key === 'Escape') {
+                    closeModal();
+                }
+
+                // If a valid key was pressed, trigger the visual button press animation
+                if (mappedValue !== null) {
+                    const btn = document.querySelector(`.key[data-val="${mappedValue}"]`);
+                    if (btn) {
+                        btn.classList.add('active-state');
+                        // Remove the glowing class after 150ms to mimic a quick tap
+                        setTimeout(() => btn.classList.remove('active-state'), 150);
+                    }
+                }
             }
-            // Ctrl+Shift+J (Windows) or Cmd+Option+J (Mac) - Console
-            if (e.ctrlKey && e.shiftKey && e.keyCode === 74) {
-                return false;
-            }
-            // Ctrl+U (Windows) or Cmd+Option+U (Mac) - View Source
-            if (e.ctrlKey && e.keyCode === 85) {
-                return false;
-            }
-        };
+        });
     </script>
 </body>
 </html>
