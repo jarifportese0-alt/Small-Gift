@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Happy Birthday, Tasnim</title>
+    <!-- Preload heavy media to prevent blank screen delays -->
+    <link rel="preload" as="image" href="IMG_3965.JPG">
+    <link rel="preload" as="image" href="200w%20(1).gif">
+    <link rel="preload" as="image" href="200w%20(2).gif">
     <style>
         * {
             margin: 0;
@@ -89,37 +93,26 @@
             pointer-events: none;
         }
 
-        .sticker {
+        /* Top Sticker GIF */
+        .sticker-wrapper {
             position: absolute;
-            top: -60px;
+            top: -65px;
             left: 50%;
             transform: translateX(-50%);
             width: 120px;
             height: 120px;
             z-index: 20;
             pointer-events: none;
-            background-image: url('sticker-sprite.png');
-            background-repeat: no-repeat;
-            background-position: 0 0;
-            background-size: auto 100%;
-            animation: playSprite 1.2s steps(20) infinite;
         }
 
-        .sticker::before {
-            content: '';
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            right: 20px;
-            bottom: 10px;
-            border-radius: 50%;
-            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.45);
-            z-index: -1;
-        }
-
-        @keyframes playSprite {
-            from { background-position: 0 0; }
-            to { background-position: 100% 0; }
+        .sticker-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.45));
+            /* Force hardware acceleration on iOS/Android WebKit */
+            transform: translateZ(0);
+            -webkit-transform: translateZ(0);
         }
 
         h2 {
@@ -484,22 +477,16 @@
             100% { opacity: 1; transform: scale(1) translateY(0); }
         }
 
-        /* 14 frames sprite animation (130px frame width * 14 = 1820px total) */
-        .celebration-sprite {
+        /* Celebration GIF Display */
+        .celebration-gif {
             width: 130px;
             height: 130px;
+            object-fit: contain;
             margin: 10px auto;
-            background-image: url('200w (1).png');
-            background-repeat: no-repeat;
-            background-position: 0 0;
-            background-size: 1820px 130px;
-            animation: playCelebration 1.3s steps(14) infinite;
+            display: block;
             border-radius: 12px;
-        }
-
-        @keyframes playCelebration {
-            0% { background-position: 0 0; }
-            100% { background-position: -1820px 0; }
+            transform: translateZ(0);
+            -webkit-transform: translateZ(0);
         }
 
         .celebration-card h3 {
@@ -546,7 +533,9 @@
     <canvas id="rain-window"></canvas>
     
     <div class="card" id="mainCard">
-        <div class="sticker" aria-label="Birthday Sticker"></div>
+        <div class="sticker-wrapper">
+            <img id="topSticker" src="200w%20(2).gif" alt="Birthday Sticker" />
+        </div>
         <h2>Happy Birthday, TASNIM!</h2><br>
         <p>A different approach to wish you on your special day, mate!</p>
         <a id="partyBtn" class="btn-link">LET'S GO &rarr;</a>
@@ -591,7 +580,7 @@
 
             <h3>Great!</h3>
             <p>Let's Move, Tasnim</p>
-            <div class="celebration-sprite" role="img" aria-label="Celebration Animation"></div>
+            <img id="celebrationGif" class="celebration-gif" src="200w%20(1).gif" alt="Celebration Animation" />
             <br>
             <a href="notepage.html" class="proceed-btn">OPEN NOTE &rarr;</a>
         </div>
@@ -612,6 +601,7 @@
         const dots = document.querySelectorAll('.dot');
         const headerEl = document.querySelector('.keypad-header');
         const canvasEl = document.getElementById('rain-window');
+        const celebrationGif = document.getElementById('celebrationGif');
 
         function triggerConfetti() {
             const duration = 3000;
@@ -669,7 +659,6 @@
             if (isProcessing || currentPin.length >= 6) return;
             
             triggerGlow(`.key[data-val="${n}"]`);
-
             currentPin += n;
             updateDots();
             
@@ -722,6 +711,9 @@
                 setTimeout(() => {
                     modal.classList.remove('active');
                     headerEl.textContent = 'ENTER PIN TO UNLOCK';
+                    
+                    /* Bypasses iOS Safari GIF freeze by forcing active reload */
+                    celebrationGif.src = "200w%20(1).gif?t=" + Date.now();
                     celebrationModal.classList.add('active');
                     
                     triggerConfetti();
