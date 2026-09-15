@@ -74,8 +74,10 @@
             animation: smoothDrop 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
             perspective: 2000px;
             -webkit-perspective: 2000px;
-            /* নোটবুক ৮ পিক্সেল উপরে তোলার জন্য */
             translate: 0px -8px;
+            /* সার্বজনীন ফুল-বুক ড্রপ শ্যাডো যা আইওএস-এ কখনো কাটবে না */
+            filter: drop-shadow(0 20px 25px rgba(0, 0, 0, 0.35));
+            -webkit-filter: drop-shadow(0 20px 25px rgba(0, 0, 0, 0.35));
         }
 
         @keyframes smoothDrop {
@@ -138,7 +140,6 @@
         .diary-page {
             grid-area: 1 / 1; 
             border-radius: 0 15px 15px 0; 
-            box-shadow: 10px 15px 30px rgba(0, 0, 0, 0.2);
             transform-origin: left center;
             transform-style: preserve-3d;
             -webkit-transform-style: preserve-3d;
@@ -146,7 +147,7 @@
             background-color: #fdfbf7;
         }
 
-        .page-1 { z-index: 6; background: transparent !important; box-shadow: none !important; } 
+        .page-1 { z-index: 6; background: transparent !important; } 
         .page-2 { z-index: 5; } 
         .page-3 { z-index: 4; }
         .page-4 { z-index: 3; }
@@ -156,7 +157,6 @@
         .diary-page.flipped {
             transform: rotateY(-180deg) !important;
             pointer-events: none; 
-            box-shadow: -15px 15px 25px rgba(0, 0, 0, 0.15); 
         }
 
         .page-front {
@@ -198,7 +198,6 @@
             border-radius: 0 15px 15px 0;
             background: linear-gradient(135deg, #c2d5c4, #d8e8d9);
             border-left: 15px solid #8fb393;
-            box-shadow: 10px 15px 30px rgba(0, 0, 0, 0.2);
             display: flex;
             flex-direction: column;
             justify-content: center;
