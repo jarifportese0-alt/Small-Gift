@@ -74,6 +74,7 @@
             animation: smoothDrop 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
             perspective: 2000px;
             -webkit-perspective: 2000px;
+            /* নোটবুক ৮ পিক্সেল উপরে তোলার জন্য */
             translate: 0px -8px;
         }
 
@@ -158,14 +159,10 @@
             box-shadow: -15px 15px 25px rgba(0, 0, 0, 0.15); 
         }
 
-        /* 
-           iOS Safari Fix: পাতার সামনের এবং পেছনের সাইড সম্পূর্ণ আলাদা ফিজিক্যাল 
-           লেয়ার হিসেবে থাকা নিশ্চিত করা যাতে নিচের পাতার কোনো লেখা ভেদ করে না আসে 
-        */
         .page-front {
             position: absolute;
             inset: 0;
-            padding: 22px 22px 15px 35px; 
+            padding: 22px 22px 18px 35px; 
             border-radius: 0 15px 15px 0;
             background-color: #fdfbf7;
             backface-visibility: hidden;
@@ -174,6 +171,7 @@
             -webkit-transform: translateZ(1px);
             display: flex;
             flex-direction: column;
+            overflow: hidden;
         }
 
         .page-back {
@@ -189,6 +187,7 @@
             -webkit-transform: rotateY(180deg) translateZ(1px);
             pointer-events: none;
             box-shadow: inset 10px 0 20px rgba(0,0,0,0.03);
+            overflow: hidden;
         }
 
         .cover-front {
@@ -335,8 +334,8 @@
             display: flex;
             justify-content: space-between;
             margin-top: auto; 
-            padding-top: 8px;
-            padding-bottom: 2px;
+            padding-top: 6px;
+            padding-bottom: 6px;
             padding-right: 5px;
         }
 
