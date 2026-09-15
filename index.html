@@ -30,7 +30,7 @@
 
         body.notepage-theme {
             background: linear-gradient(rgba(55, 75, 65, 0.75), rgba(40, 60, 50, 0.85)), 
-                        url('IMG_3965.jpg') no-repeat center center fixed !important;
+                        url('IMG_3965.JPG') no-repeat center center fixed !important;
             background-size: cover !important;
         }
 
@@ -533,11 +533,11 @@
     
     <div class="card" id="mainCard">
         <div class="sticker" aria-label="Birthday Sticker">
-            <img src="200w (2).gif?v=3" alt="Birthday Sticker">
+            <img src="200w%20(2).gif?v=4" alt="Birthday Sticker">
         </div>
         <h2>Happy Birthday, TASNIM!</h2><br>
         <p>A different approach to wish you on your special day, mate!</p>
-        <a id="partyBtn" class="btn-link">LET'S GO &rarr;</a>
+        <a id="partyBtn" href="#" role="button" class="btn-link">LET'S GO &rarr;</a>
     </div>
     
     <div id="passcodeModal" class="modal-overlay">
@@ -579,7 +579,7 @@
 
             <h3>Great!</h3>
             <p>Let's Move, Tasnim</p>
-            <img src="200w (1).gif?v=3" alt="Celebration GIF">
+            <img src="200w%20(1).gif?v=4" alt="Celebration GIF">
             <br>
             <a href="notepage.html" class="proceed-btn">OPEN NOTE &rarr;</a>
         </div>
@@ -747,8 +747,14 @@
         let petals = [];
 
         function resizeCanvas() {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
+            const newWidth = window.innerWidth;
+            const newHeight = window.innerHeight;
+            
+            // Only update on meaningful viewport shifts (like screen rotation)
+            if (Math.abs(width - newWidth) > 50 || Math.abs(height - newHeight) > 100) {
+                width = canvas.width = newWidth;
+                height = canvas.height = newHeight;
+            }
         }
 
         function createPetal(randomY = false) {
@@ -766,7 +772,9 @@
         }
 
         function initPetals() {
-            resizeCanvas();
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            
             window.addEventListener('resize', resizeCanvas);
             for (let i = 0; i < 45; i++) {
                 petals.push(createPetal(true)); 
