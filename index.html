@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Happy Birthday, Tasnim</title>
     <style>
         * {
@@ -13,24 +13,37 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
-            background: linear-gradient(rgba(10, 3, 8, 0.45), rgba(15, 5, 12, 0.65)), 
-                        url('IMG_3965.JPG') no-repeat center center fixed;
-            background-size: cover;
             min-height: 100vh;
+            min-height: 100dvh;
             display: flex;
             justify-content: center;
             align-items: center;
             color: #fff;
             overflow: hidden;
+            background-color: #0a0308;
             -webkit-tap-highlight-color: transparent;
             -webkit-user-select: none;
             user-select: none;
+        }
+
+        /* Dedicated fixed full-bleed background for mobile Safari / iOS */
+        #bg-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+            z-index: -2;
+            background: linear-gradient(rgba(10, 3, 8, 0.45), rgba(15, 5, 12, 0.65)), 
+                        url('IMG_3965.JPG') no-repeat center center;
+            background-size: cover;
             transition: background 1.5s ease;
         }
 
-        body.notepage-theme {
+        body.notepage-theme #bg-layer {
             background: linear-gradient(rgba(55, 75, 65, 0.75), rgba(40, 60, 50, 0.85)), 
-                        url('IMG_3965.JPG') no-repeat center center fixed !important;
+                        url('IMG_3965.jpg') no-repeat center center !important;
             background-size: cover !important;
         }
 
@@ -38,9 +51,10 @@
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0; 
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+            z-index: -1; 
             pointer-events: none; 
             transition: opacity 1.2s ease;
         }
@@ -74,6 +88,7 @@
             pointer-events: none;
         }
 
+        /* Sprite sheet animation replaces the GIF to bypass iOS accessibility lock */
         .sticker {
             position: absolute;
             top: -60px;
@@ -82,8 +97,12 @@
             width: 120px;
             height: 120px;
             z-index: 20;
-            animation: bounceIn 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
             pointer-events: none;
+            background-image: url('sticker-sprite.png');
+            background-repeat: no-repeat;
+            background-position: 0 0;
+            background-size: auto 100%;
+            animation: playSprite 1.2s steps(20) infinite;
         }
 
         .sticker::before {
@@ -98,21 +117,9 @@
             z-index: -1;
         }
 
-        .sticker img, .celebration-card img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            background: transparent;
-            -webkit-transform: translateZ(0);
-            transform: translateZ(0);
-            will-change: transform;
-            image-rendering: auto;
-        }
-
-        @keyframes bounceIn {
-            0% { opacity: 0; transform: translateX(-50%) scale(0.3); }
-            50% { opacity: 1; transform: translateX(-50%) scale(1.05); }
-            100% { transform: translateX(-50%) scale(1); }
+        @keyframes playSprite {
+            from { background-position: 0 0; }
+            to { background-position: 100% 0; }
         }
 
         h2 {
@@ -479,13 +486,22 @@
             100% { opacity: 1; transform: scale(1) translateY(0); }
         }
 
-        .celebration-card img {
+        /* Sprite sheet animation replacing the GIF to guarantee autoplay on iOS */
+        .celebration-sprite {
             width: 130px;
             height: 130px;
-            object-fit: contain;
-            border-radius: 12px;
             margin: 10px auto;
-            display: block;
+            background-image: url('200w (1).png');
+            background-repeat: no-repeat;
+            background-position: 0 50%;
+            background-size: auto 100%;
+            animation: playCelebration 1.2s steps(13) infinite;
+            border-radius: 12px;
+        }
+
+        @keyframes playCelebration {
+            from { background-position: 0% 50%; }
+            to { background-position: 100% 50%; }
         }
 
         .celebration-card h3 {
@@ -529,15 +545,14 @@
 </head>
 <body>
     
+    <div id="bg-layer"></div>
     <canvas id="rain-window"></canvas>
     
     <div class="card" id="mainCard">
-        <div class="sticker" aria-label="Birthday Sticker">
-            <img src="200w%20(2).gif?v=4" alt="Birthday Sticker">
-        </div>
+        <div class="sticker" aria-label="Birthday Sticker"></div>
         <h2>Happy Birthday, TASNIM!</h2><br>
         <p>A different approach to wish you on your special day, mate!</p>
-        <a id="partyBtn" href="#" role="button" class="btn-link">LET'S GO &rarr;</a>
+        <a id="partyBtn" class="btn-link">LET'S GO &rarr;</a>
     </div>
     
     <div id="passcodeModal" class="modal-overlay">
@@ -579,7 +594,7 @@
 
             <h3>Great!</h3>
             <p>Let's Move, Tasnim</p>
-            <img src="200w%20(1).gif?v=4" alt="Celebration GIF">
+            <div class="celebration-sprite" role="img" aria-label="Celebration Animation"></div>
             <br>
             <a href="notepage.html" class="proceed-btn">OPEN NOTE &rarr;</a>
         </div>
@@ -747,14 +762,8 @@
         let petals = [];
 
         function resizeCanvas() {
-            const newWidth = window.innerWidth;
-            const newHeight = window.innerHeight;
-            
-            // Only update on meaningful viewport shifts (like screen rotation)
-            if (Math.abs(width - newWidth) > 50 || Math.abs(height - newHeight) > 100) {
-                width = canvas.width = newWidth;
-                height = canvas.height = newHeight;
-            }
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
         }
 
         function createPetal(randomY = false) {
@@ -772,9 +781,7 @@
         }
 
         function initPetals() {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
-            
+            resizeCanvas();
             window.addEventListener('resize', resizeCanvas);
             for (let i = 0; i < 45; i++) {
                 petals.push(createPetal(true)); 
