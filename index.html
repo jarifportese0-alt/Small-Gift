@@ -84,8 +84,16 @@
             z-index: 20;
             filter: drop-shadow(0 8px 20px rgba(0,0,0,0.4));
             animation: bounceIn 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-            background: url('200w (2).gif') center/contain no-repeat;
+            /* Removed the static background image property from here */
             pointer-events: none;
+        }
+
+        /* Added to ensure the video elements fit perfectly inside the sticker container */
+        .sticker video, .sticker img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background: transparent;
         }
 
         @keyframes bounceIn {
@@ -453,13 +461,15 @@
             100% { opacity: 1; transform: scale(1) translateY(0); }
         }
 
-        .celebration-card img {
+        /* Updated to target both img and video tags in the celebration card */
+        .celebration-card img, .celebration-card video {
             width: 130px;
             height: 130px;
             object-fit: contain;
             border-radius: 12px;
             margin: 10px auto;
             display: block;
+            background: transparent;
         }
 
         .celebration-card h3 {
@@ -505,7 +515,12 @@
     <canvas id="rain-window"></canvas>
     
     <div class="card" id="mainCard">
-        <div class="sticker" aria-label="Birthday Sticker"></div>
+        <div class="sticker" aria-label="Birthday Sticker">
+            <video autoplay muted loop playsinline>
+                <source src="200w (2).webm" type="video/webm">
+                <img src="200w (2).gif" alt="Birthday Sticker">
+            </video>
+        </div>
         <h2>Happy Birthday, TASNIM!</h2><br>
         <p>A different approach to wish you on your special day, mate!</p>
         <a id="partyBtn" class="btn-link">LET'S GO &rarr;</a>
@@ -551,7 +566,11 @@
 
             <h3>Great!</h3>
             <p>Let's Move, Tasnim</p>
-            <img src="200w (1).webp" alt="Celebration GIF">
+            
+            <video autoplay muted loop playsinline>
+                <source src="200w (1).webm" type="video/webm">
+                <img src="200w (1).webp" alt="Celebration GIF">
+            </video>
             <br>
             <a href="notepage.html" class="proceed-btn">OPEN NOTE &rarr;</a>
         </div>
