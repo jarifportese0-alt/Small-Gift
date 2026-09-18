@@ -70,9 +70,11 @@
             width: 90vw; 
             max-width: 390px;
             z-index: 10;
+            opacity: 0;
             perspective: 2000px;
             -webkit-perspective: 2000px;
-            animation: smoothDrop 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            /* Starts instantly with zero delay so white pages never flash */
+            animation: smoothDrop 1.1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
         @keyframes smoothDrop {
@@ -140,7 +142,7 @@
             transform-origin: left center;
             transform-style: preserve-3d;
             -webkit-transform-style: preserve-3d;
-            transition: transform 0.85s cubic-bezier(0.645, 0.045, 0.355, 1);
+            transition: transform 0.6s cubic-bezier(0.645, 0.045, 0.355, 1);
             display: flex;
             flex-direction: column;
             background-color: #fdfbf7;
@@ -162,7 +164,7 @@
         }
 
         /* Default Page Hierarchy */
-        .page-1 { z-index: 6; }
+        .page-1 { z-index: 10; }
         .page-2 { z-index: 5; } 
         .page-3 { z-index: 4; }
         .page-4 { z-index: 3; }
@@ -179,7 +181,6 @@
             pointer-events: none !important;
         }
 
-        /* Front & Back cover structure */
         .cover-front, .cover-back {
             position: absolute;
             inset: 0;
@@ -217,7 +218,7 @@
         }
 
         .page-1::after {
-            display: none !important; /* Disables the generic white page back on the cover */
+            display: none !important;
         }
 
         .page-header-bar {
@@ -511,64 +512,34 @@
         </div>
 
         <div class="diary-container" id="bookContainer">
-            <!-- PAGE 6 (Game Page) -->
-            <div class="diary-page page-6" id="page-6">
-                <div class="notepad-lines">
-                    <div class="page-header-bar">
-                        <span>Date: 02.10.2026</span>
-                        <span>Friday</span>
+            <!-- PAGE 1 (Cover - Placed FIRST in DOM so it renders on top by default) -->
+            <div class="diary-page page-1" id="page-1">
+                <div class="cover-front">
+                    <div class="drawn-doodle" style="top: 25px; right: 25px; font-size: 3rem; transform: rotate(15deg);">🪐</div>
+                    <div class="cover-content">
+                        <h2 class="cover-title">Fragments of Time</h2>
+                        <p class="cover-subtitle">Chapter: Tasnim Binte</p>
                     </div>
-                    
-                    <p class="caption" id="game-caption" style="margin-top: 10px;">Hint: Match the words to unlock...</p>
-                    
-                    <div class="memory-game" id="memory-board"></div>
-
-                    <div class="btn-container" id="final-btn">
-                        <a id="magic-btn" class="btn-link">
-                            <span class="btn-text">Let's Goooo</span>
-                        </a>
-                    </div>
-
-                    <div class="page-controls" style="justify-content: flex-start;">
-                        <button class="nav-btn" onclick="prevPage(6)">&larr; Back</button>
-                    </div>
+                    <button class="circle-btn" onclick="nextPage(1)" aria-label="Open Diary">&rarr;</button>
                 </div>
+                <div class="cover-back"></div>
             </div>
 
-            <!-- PAGE 5 -->
-            <div class="diary-page page-5" id="page-5">
+            <!-- PAGE 2 -->
+            <div class="diary-page page-2" id="page-2">
                 <div class="notepad-lines">
                     <div class="page-header-bar">
                         <span>Date: 02.10.2026</span>
                         <span>Friday</span>
                     </div>
-                    <div class="polaroid-page" style="transform: rotate(1deg);">
+                    <div class="polaroid-page" style="transform: rotate(-1deg);">
                         <span class="pin-icon">📎</span>
-                        <img src="IMG_3626.JPG" alt="Moon" draggable="false">
+                        <img src="img15~2.jpg" alt="a red feather" draggable="false">
                     </div>
-                    <p class="caption">When the Moon truly laughed</p>
+                    <p class="caption">A bird with a red feather</p>
                     <div class="page-controls">
-                        <button class="nav-btn" onclick="prevPage(5)">&larr; Back</button>
-                        <button class="nav-btn" onclick="nextPage(5)">Next &rarr;</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- PAGE 4 -->
-            <div class="diary-page page-4" id="page-4">
-                <div class="notepad-lines">
-                    <div class="page-header-bar">
-                        <span>Date: 02.10.2026</span>
-                        <span>Friday</span>
-                    </div>
-                    <div class="polaroid-page" style="transform: rotate(-0.5deg);">
-                        <span class="pin-icon">📎</span>
-                        <img src="red_.jpg" alt="checkmate" draggable="false">
-                    </div>
-                    <p class="caption">A friend who makes ordinary moments feel special</p>
-                    <div class="page-controls">
-                        <button class="nav-btn" onclick="prevPage(4)">&larr; Back</button>
-                        <button class="nav-btn" onclick="nextPage(4)">Next &rarr;</button>
+                        <button class="nav-btn" onclick="prevPage(2)">&larr; Back</button>
+                        <button class="nav-btn" onclick="nextPage(2)">Next &rarr;</button>
                     </div>
                 </div>
             </div>
@@ -592,38 +563,67 @@
                 </div>
             </div>
 
-            <!-- PAGE 2 -->
-            <div class="diary-page page-2" id="page-2">
+            <!-- PAGE 4 -->
+            <div class="diary-page page-4" id="page-4">
                 <div class="notepad-lines">
                     <div class="page-header-bar">
                         <span>Date: 02.10.2026</span>
                         <span>Friday</span>
                     </div>
-                    <div class="polaroid-page" style="transform: rotate(-1deg);">
+                    <div class="polaroid-page" style="transform: rotate(-0.5deg);">
                         <span class="pin-icon">📎</span>
-                        <img src="img15~2.jpg" alt="a red feather" draggable="false">
+                        <img src="red_.jpg" alt="checkmate" draggable="false">
                     </div>
-                    <p class="caption">A bird with a red feather</p>
+                    <p class="caption">A friend who makes ordinary moments feel special</p>
                     <div class="page-controls">
-                        <button class="nav-btn" onclick="prevPage(2)">&larr; Back</button>
-                        <button class="nav-btn" onclick="nextPage(2)">Next &rarr;</button>
+                        <button class="nav-btn" onclick="prevPage(4)">&larr; Back</button>
+                        <button class="nav-btn" onclick="nextPage(4)">Next &rarr;</button>
                     </div>
                 </div>
             </div>
 
-            <!-- PAGE 1 (Cover) -->
-            <div class="diary-page page-1" id="page-1">
-                <div class="cover-front">
-                    <div class="drawn-doodle" style="top: 25px; right: 25px; font-size: 3rem; transform: rotate(15deg);">🪐</div>
-                    <div class="cover-content">
-                        <h2 class="cover-title">Fragments of Time</h2>
-                        <p class="cover-subtitle">Chapter: Tasnim Binte</p>
+            <!-- PAGE 5 -->
+            <div class="diary-page page-5" id="page-5">
+                <div class="notepad-lines">
+                    <div class="page-header-bar">
+                        <span>Date: 02.10.2026</span>
+                        <span>Friday</span>
                     </div>
-                    <button class="circle-btn" onclick="nextPage(1)" aria-label="Open Diary">&rarr;</button>
+                    <div class="polaroid-page" style="transform: rotate(1deg);">
+                        <span class="pin-icon">📎</span>
+                        <img src="IMG_3626.JPG" alt="Moon" draggable="false">
+                    </div>
+                    <p class="caption">When the Moon truly laughed</p>
+                    <div class="page-controls">
+                        <button class="nav-btn" onclick="prevPage(5)">&larr; Back</button>
+                        <button class="nav-btn" onclick="nextPage(5)">Next &rarr;</button>
+                    </div>
                 </div>
-                <div class="cover-back"></div>
             </div>
 
+            <!-- PAGE 6 (Game Page) -->
+            <div class="diary-page page-6" id="page-6">
+                <div class="notepad-lines">
+                    <div class="page-header-bar">
+                        <span>Date: 02.10.2026</span>
+                        <span>Friday</span>
+                    </div>
+                    
+                    <p class="caption" id="game-caption" style="margin-top: 10px;">Hint: Match the words to unlock...</p>
+                    
+                    <div class="memory-game" id="memory-board"></div>
+
+                    <div class="btn-container" id="final-btn">
+                        <a id="magic-btn" class="btn-link">
+                            <span class="btn-text">Let's Goooo</span>
+                        </a>
+                    </div>
+
+                    <div class="page-controls" style="justify-content: flex-start;">
+                        <button class="nav-btn" onclick="prevPage(6)">&larr; Back</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -631,7 +631,7 @@
         let leftZIndex = 20;
         let isAnimating = false;
         const container = document.getElementById('bookContainer');
-        const defaultZ = [0, 6, 5, 4, 3, 2, 1];
+        const defaultZ = [0, 10, 5, 4, 3, 2, 1];
 
         function setLock(locked) {
             isAnimating = locked;
@@ -669,7 +669,7 @@
 
             setTimeout(() => {
                 setLock(false);
-            }, 850);
+            }, 600);
         }
 
         function prevPage(currentPageNum) {
@@ -682,15 +682,14 @@
                 return;
             }
 
-            // Bring the page returning to the right top of the stack IMMEDIATELY
+            // Immediately set high z-index so the returning page stays above everything
             page.style.zIndex = 100;
             page.classList.remove('flipped');
             
             setTimeout(() => {
-                // Restore default zIndex only after the animation completes
                 page.style.zIndex = defaultZ[currentPageNum - 1];
                 setLock(false);
-            }, 850); 
+            }, 600); 
 
             updateBookCenter();
         }
