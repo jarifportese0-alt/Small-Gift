@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#4a5d4e">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#4a5d4e">
     <title>Birthday Wish - Final Chapter</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,10 +21,18 @@
             -webkit-tap-highlight-color: transparent !important; 
         }
 
-        body, html {
+        /* Forces exact matching green over the entire Safari canvas & notch */
+        html {
+            background-color: #4a5d4e !important;
+            height: 100%;
+        }
+
+        body {
             min-height: 100%;
+            min-height: 100dvh;
             font-family: 'Caveat', cursive;
             overflow-x: hidden;
+            background-color: #4a5d4e !important;
         }
 
         button {
@@ -39,8 +49,8 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            background-color: #4a5d4e; 
-            padding: 20px;
+            background-color: #4a5d4e !important; 
+            padding: env(safe-area-inset-top, 20px) 20px env(safe-area-inset-bottom, 20px) 20px;
         }
 
         .book-wrapper {
@@ -109,7 +119,7 @@
             grid-area: 1 / 1; 
             border-radius: 0 15px 15px 0; 
             padding: 20px 20px 14px 34px; 
-            box-shadow: 10px 15px 30px rgba(0, 0, 0, 0.2);
+            box-shadow: 4px 6px 16px rgba(0, 0, 0, 0.12);
             transform-origin: left center;
             transform-style: preserve-3d;
             transition: transform 1.2s cubic-bezier(0.645, 0.045, 0.355, 1);
@@ -128,7 +138,7 @@
             transform: translateZ(-1px) rotateY(180deg); 
             backface-visibility: hidden;
             pointer-events: none;
-            box-shadow: inset 10px 0 20px rgba(0,0,0,0.03); 
+            box-shadow: inset 10px 0 15px rgba(0,0,0,0.03); 
         }
 
         .page-1 { z-index: 5; background: #c2d5c4; border-left: 15px solid #8fb393; } 
@@ -142,7 +152,7 @@
         .diary-page.flipped {
             transform: perspective(1200px) rotateY(-178deg);
             pointer-events: none !important; 
-            box-shadow: -15px 15px 25px rgba(0, 0, 0, 0.15); 
+            box-shadow: -8px 6px 14px rgba(0, 0, 0, 0.1); 
         }
         
         .diary-page.flipped * {
@@ -240,7 +250,6 @@
             transform: scale(0.95);
         }
 
-        /* STRICT BASELINE ALIGNMENT: 36px pitch everywhere */
         .notepad-lines {
             background-image: repeating-linear-gradient(to bottom, transparent, transparent 34px, rgba(143, 179, 147, 0.35) 34px, rgba(143, 179, 147, 0.35) 36px);
             background-position: 0 3px;
@@ -263,7 +272,7 @@
         }
 
         .card-paragraph p {
-            margin: 0 0 36px 0; /* Ensures line break shifts exactly one rule */
+            margin: 0 0 36px 0;
             line-height: 36px;
         }
 
