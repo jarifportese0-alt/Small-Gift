@@ -49,7 +49,7 @@
 
         body.notepage-theme #bg-layer {
             background: linear-gradient(rgba(55, 75, 65, 0.75), rgba(40, 60, 50, 0.85)), 
-                        url('IMG_3965.jpg') no-repeat center center !important;
+                        url('IMG_3965.JPG') no-repeat center center !important;
             background-size: cover !important;
         }
 
@@ -110,7 +110,6 @@
             height: 100%;
             object-fit: contain;
             filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.45));
-            /* Force hardware acceleration on iOS/Android WebKit */
             transform: translateZ(0);
             -webkit-transform: translateZ(0);
         }
@@ -711,8 +710,6 @@
                 setTimeout(() => {
                     modal.classList.remove('active');
                     headerEl.textContent = 'ENTER PIN TO UNLOCK';
-                    
-                    /* Bypasses iOS Safari GIF freeze by forcing active reload */
                     celebrationGif.src = "200w%20(1).gif?t=" + Date.now();
                     celebrationModal.classList.add('active');
                     
