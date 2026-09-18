@@ -57,12 +57,12 @@
             text-shadow: 2px 2px 0px #8fb393, 0 4px 15px rgba(255, 255, 255, 0.8);
             letter-spacing: 2px;
             text-align: center;
-            opacity: 0;
-            transition: opacity 0.5s ease;
+            animation: floatDown 1.2s ease-out forwards;
         }
 
-        h1.ready {
-            opacity: 1;
+        @keyframes floatDown {
+            0% { opacity: 0; transform: translateY(-20px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
 
         .book-wrapper {
@@ -72,9 +72,14 @@
             z-index: 10;
             perspective: 2000px;
             -webkit-perspective: 2000px;
+            animation: smoothDrop 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
-        /* Container remains completely hidden until window 'load' */
+        @keyframes smoothDrop {
+            0% { opacity: 0; transform: translateY(25px) scale(0.95); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
         .diary-container {
             position: relative;
             width: 100%;
@@ -82,19 +87,12 @@
             display: grid; 
             transform-style: preserve-3d;
             -webkit-transform-style: preserve-3d;
-            opacity: 0;
-            transform: translateY(20px) scale(0.96);
-            transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .diary-container.ready {
-            opacity: 1;
-            transform: translateY(0) scale(1);
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         @media (min-width: 481px) {
-            .diary-container.ready.is-open {
-                transform: translateX(30%) translateY(0) scale(1);
+            .diary-container.is-open {
+                transform: translateX(30%);
             }
         }
 
@@ -142,7 +140,7 @@
             transform-origin: left center;
             transform-style: preserve-3d;
             -webkit-transform-style: preserve-3d;
-            transition: transform 1.1s cubic-bezier(0.645, 0.045, 0.355, 1);
+            transition: transform 0.85s cubic-bezier(0.645, 0.045, 0.355, 1);
             display: flex;
             flex-direction: column;
             background-color: #fdfbf7;
@@ -163,12 +161,8 @@
             box-shadow: inset 10px 0 15px rgba(0,0,0,0.03); 
         }
 
-        .page-1 { 
-            z-index: 6; 
-            background: transparent !important; 
-            padding: 0 !important; 
-            box-shadow: none !important; 
-        } 
+        /* Default Page Hierarchy */
+        .page-1 { z-index: 6; }
         .page-2 { z-index: 5; } 
         .page-3 { z-index: 4; }
         .page-4 { z-index: 3; }
@@ -176,7 +170,7 @@
         .page-6 { z-index: 1; }
 
         .diary-page.flipped {
-            transform: rotateY(-180deg) !important;
+            transform: perspective(1400px) rotateY(-180deg) !important;
             pointer-events: none !important; 
             box-shadow: -8px 6px 14px rgba(0, 0, 0, 0.1); 
         }
@@ -185,6 +179,7 @@
             pointer-events: none !important;
         }
 
+        /* Front & Back cover structure */
         .cover-front, .cover-back {
             position: absolute;
             inset: 0;
@@ -213,6 +208,16 @@
             border-radius: 15px 0 0 15px;
             transform: rotateY(180deg);
             z-index: 1;
+        }
+
+        .page-1 {
+            background: transparent !important;
+            padding: 0 !important;
+            box-shadow: none !important;
+        }
+
+        .page-1::after {
+            display: none !important; /* Disables the generic white page back on the cover */
         }
 
         .page-header-bar {
@@ -495,7 +500,7 @@
 </head>
 <body oncontextmenu="return false;">
 
-    <h1 id="mainTitle">Happy <br> Birthday Girl!</h1>
+    <h1>Happy <br> Birthday Girl!</h1>
 
     <div class="book-wrapper">
         <div class="binding-rings">
@@ -626,15 +631,7 @@
         let leftZIndex = 20;
         let isAnimating = false;
         const container = document.getElementById('bookContainer');
-        const titleEl = document.getElementById('mainTitle');
-
-        // Reveal the book only when fonts and styles are completely loaded
-        window.addEventListener('load', () => {
-            requestAnimationFrame(() => {
-                container.classList.add('ready');
-                titleEl.classList.add('ready');
-            });
-        });
+        const defaultZ = [0, 6, 5, 4, 3, 2, 1];
 
         function setLock(locked) {
             isAnimating = locked;
@@ -672,7 +669,7 @@
 
             setTimeout(() => {
                 setLock(false);
-            }, 1100);
+            }, 850);
         }
 
         function prevPage(currentPageNum) {
@@ -685,13 +682,15 @@
                 return;
             }
 
+            // Bring the page returning to the right top of the stack IMMEDIATELY
+            page.style.zIndex = 100;
             page.classList.remove('flipped');
             
             setTimeout(() => {
-                const defaultZ = [0, 6, 5, 4, 3, 2, 1];
+                // Restore default zIndex only after the animation completes
                 page.style.zIndex = defaultZ[currentPageNum - 1];
                 setLock(false);
-            }, 1100); 
+            }, 850); 
 
             updateBookCenter();
         }
