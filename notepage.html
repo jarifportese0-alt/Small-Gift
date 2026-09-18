@@ -72,7 +72,7 @@
             z-index: 10;
             perspective: 2000px;
             -webkit-perspective: 2000px;
-            /* Changed to 'both' so opacity:0 applies instantly during the 0.15s delay */
+            /* 'both' ensures the initial opacity:0 holds during the delay */
             animation: smoothDrop 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
         }
 
@@ -137,7 +137,7 @@
             grid-area: 1 / 1; 
             border-radius: 0 15px 15px 0; 
             padding: 22px 22px 15px 35px; 
-            box-shadow: 4px 6px 16px rgba(0, 0, 0, 0.12); /* Softened shadow from earlier fix */
+            box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.08);
             transform-origin: left center;
             transform-style: preserve-3d;
             -webkit-transform-style: preserve-3d;
@@ -163,7 +163,7 @@
             box-shadow: inset 10px 0 15px rgba(0,0,0,0.03); 
         }
 
-        /* Hide inner pages strictly during the 1.2s smoothDrop to kill the white flash */
+        /* Hides inner white pages during the initial drop animation to prevent load flashes */
         .page-2, .page-3, .page-4, .page-5, .page-6 {
             visibility: hidden;
             animation: revealPages 0.1s 1.2s forwards;
@@ -174,7 +174,8 @@
         }
 
         .page-1 { z-index: 6; background: transparent !important; padding: 0 !important; box-shadow: none !important; } 
-        .page-1::after { background: #c2d5c4; border-right: 15px solid #8fb393; left: -15px; }
+        /* Disables the default generic notebook back-page for the cover */
+        .page-1::after { display: none !important; }
 
         .page-2 { z-index: 5; } 
         .page-3 { z-index: 4; }
@@ -183,7 +184,7 @@
         .page-6 { z-index: 1; }
 
         .diary-page.flipped {
-            transform: rotateY(-180deg) !important;
+            transform: perspective(1400px) rotateY(-180deg) !important;
             pointer-events: none; 
             box-shadow: -8px 6px 14px rgba(0, 0, 0, 0.1); 
         }
@@ -650,7 +651,6 @@
             page.style.zIndex = leftZIndex++;
             updateBookCenter();
 
-            // Set to 1100 to match the CSS exactly
             setTimeout(() => {
                 isAnimating = false;
             }, 1100);
@@ -666,10 +666,12 @@
                 return;
             }
 
+            // Stripped the buggy z-index 100 hack. 
+            // The natural leftZIndex correctly holds it above everything else during the swing.
             page.classList.remove('flipped');
             
-            // Set to 1100 to match the CSS exactly, preventing the mid-flip flash
             setTimeout(() => {
+                // Return it to the underlying base stack once the animation fully completes
                 const defaultZ = [0, 6, 5, 4, 3, 2, 1];
                 page.style.zIndex = defaultZ[currentPageNum - 1];
                 isAnimating = false;
