@@ -3,8 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="theme-color" content="#4a5d4e">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Birthday Wish - Final Chapter</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17,30 +15,24 @@
             padding: 0;
             box-sizing: border-box;
             -webkit-user-select: none !important;
-            -moz-user-select: none !important;
-            -ms-user-select: none !important;
             user-select: none !important;
-            /* Disables the default blue tap highlight on mobile browsers */
             -webkit-tap-highlight-color: transparent !important; 
         }
 
         body, html {
-            height: 100%;
-            min-height: 100vh;
-            min-height: 100dvh;
-            background-color: #4a5d4e;
+            min-height: 100%;
             font-family: 'Caveat', cursive;
             overflow-x: hidden;
         }
 
-        /* Removes any focus rings from buttons */
         button {
             outline: none !important; 
-            -webkit-tap-highlight-color: transparent !important;
+            border: none;
+            background: none;
         }
 
         .page-background {
-            width: 100%;
+            width: 100vw;
             min-height: 100vh;
             min-height: 100dvh;
             display: flex;
@@ -48,29 +40,9 @@
             justify-content: center;
             align-items: center;
             background-color: #4a5d4e; 
-            /* iOS Safe Area handling for Notch / Dynamic Island & Home indicator */
-            padding-top: max(20px, env(safe-area-inset-top));
-            padding-bottom: max(20px, env(safe-area-inset-bottom));
-            padding-left: max(20px, env(safe-area-inset-left));
-            padding-right: max(20px, env(safe-area-inset-right));
-            box-sizing: border-box;
+            padding: 20px;
         }
 
-        #glow-trace {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 120px;
-            height: 120px;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, transparent 70%);
-            border-radius: 50%;
-            pointer-events: none; 
-            z-index: 0;
-            opacity: 0;
-            transition: opacity 0.3s ease, transform 0.1s ease-out; 
-        }
-
-        /* --- BOOK WRAPPER --- */
         .book-wrapper {
             position: relative;
             width: 90vw; 
@@ -87,22 +59,18 @@
             100% { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        /* --- DIARY CONTAINER --- */
         .diary-container {
             position: relative;
             width: 100%;
-            height: 520px; 
+            height: 540px; 
             display: grid; 
             transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         @media (min-width: 481px) {
-            .diary-container.is-open {
-                transform: translateX(30%);
-            }
+            .diary-container.is-open { transform: translateX(30%); }
         }
 
-        /* --- BINDER RINGS --- */
         .binding-rings {
             position: absolute;
             top: 40px;
@@ -137,18 +105,17 @@
             box-shadow: inset 0 2px 4px rgba(0,0,0,0.6);
         }
 
-        /* --- PAGES --- */
         .diary-page {
             grid-area: 1 / 1; 
             border-radius: 0 15px 15px 0; 
-            padding: 22px 22px 15px 35px; 
+            padding: 20px 20px 14px 34px; 
             box-shadow: 10px 15px 30px rgba(0, 0, 0, 0.2);
             transform-origin: left center;
             transform-style: preserve-3d;
-            -webkit-transform-style: preserve-3d;
             transition: transform 1.2s cubic-bezier(0.645, 0.045, 0.355, 1);
             display: flex;
             flex-direction: column;
+            pointer-events: auto;
         }
 
         .diary-page::after {
@@ -160,24 +127,26 @@
             border-radius: 15px 0 0 15px; 
             transform: translateZ(-1px) rotateY(180deg); 
             backface-visibility: hidden;
-            -webkit-backface-visibility: hidden;
             pointer-events: none;
             box-shadow: inset 10px 0 20px rgba(0,0,0,0.03); 
         }
 
-        /* Stacking Order (5 Pages Total) */
         .page-1 { z-index: 5; background: #c2d5c4; border-left: 15px solid #8fb393; } 
         .page-1::after { background: #c2d5c4; border-right: 15px solid #8fb393; left: -15px; }
 
         .page-2 { z-index: 4; background: #fdfbf7; border-left: none; } 
-        .page-3 { z-index: 3; background: #fdfbf7; border-left: none; }
-        .page-4 { z-index: 2; background: #fdfbf7; border-left: none; }
-        .page-5 { z-index: 1; background: #fdfbf7; border-left: none; }
+        .page-3 { z-index: 3; background: #fdfbf7; border-left: none; } 
+        .page-4 { z-index: 2; background: #fdfbf7; border-left: none; } 
+        .page-5 { z-index: 1; background: #fdfbf7; border-left: none; } 
 
         .diary-page.flipped {
             transform: perspective(1200px) rotateY(-178deg);
-            pointer-events: none; 
+            pointer-events: none !important; 
             box-shadow: -15px 15px 25px rgba(0, 0, 0, 0.15); 
+        }
+        
+        .diary-page.flipped * {
+            pointer-events: none !important;
         }
 
         .page-header-bar {
@@ -185,14 +154,14 @@
             justify-content: space-between;
             align-items: center;
             border-bottom: 2px dashed #8fb393;
-            padding-bottom: 4px;
-            margin-bottom: 10px;
+            padding-bottom: 3px;
+            margin-bottom: 0px;
+            height: 32px;
             font-size: 1.15rem;
             color: #6b8e6f;
             letter-spacing: 1px;
         }
 
-        /* --- COVER STYLING --- */
         .cover-content {
             flex-grow: 1;
             display: flex;
@@ -207,14 +176,13 @@
             padding: 8px 8px 22px 8px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.15);
             border-radius: 2px;
-            transform: rotate(-2deg);
+            transform: rotate(-1.4deg);
             width: 75%;
             max-width: 200px;
             margin-bottom: 15px;
         }
 
         .cover-polaroid img {
-            -webkit-touch-callout: none !important;
             pointer-events: none !important;
             width: 100%;
             height: 140px;
@@ -244,80 +212,134 @@
             position: absolute;
             bottom: 25px;
             right: 25px;
-            width: 40px;
-            height: 40px;
-            /* Semi-transparent white background */
-            background: rgba(255, 255, 255, 0.2); 
-            /* The blur effect */
+            width: 44px;
+            height: 44px;
+            background: rgba(255, 255, 255, 0.25); 
             backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px); 
-            /* Subtle white border to define the glass edge */
-            border: 1px solid rgba(255, 255, 255, 0.4); 
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.5) !important; 
             border-radius: 50%;
-            color: #ffffff; /* White arrow */
-            font-size: 1.6rem;
+            color: #ffffff !important;
+            font-size: 1.8rem !important;
+            line-height: 1;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); 
-            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12); 
+            transition: transform 0.25s ease, background 0.25s ease;
+            z-index: 10;
         }
 
         .circle-btn:hover {
             transform: scale(1.1);
-            background: rgba(255, 255, 255, 0.3);
-            border-color: rgba(255, 255, 255, 0.6);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            background: rgba(255, 255, 255, 0.35);
         }
 
-        /* --- INNER PAGES --- */
+        .circle-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* STRICT BASELINE ALIGNMENT: 36px pitch everywhere */
         .notepad-lines {
-            background-image: repeating-linear-gradient(transparent, transparent 34px, rgba(143, 179, 147, 0.35) 34px, rgba(143, 179, 147, 0.35) 36px);
+            background-image: repeating-linear-gradient(to bottom, transparent, transparent 34px, rgba(143, 179, 147, 0.35) 34px, rgba(143, 179, 147, 0.35) 36px);
+            background-position: 0 3px;
             border-left: 2px solid #8fb393; 
-            padding-left: 15px;
-            padding-top: 2px; 
+            padding-left: 14px;
+            padding-top: 0px; 
             flex-grow: 1;
             display: flex;
             flex-direction: column;
+            position: relative;
         }
 
         .card-paragraph {
             font-size: 1.25rem;
             color: #333;
             line-height: 36px; 
+            margin: 0;
+            padding: 0;
             word-wrap: break-word;
+        }
+
+        .card-paragraph p {
+            margin: 0 0 36px 0; /* Ensures line break shifts exactly one rule */
+            line-height: 36px;
+        }
+
+        .card-paragraph p:last-child {
+            margin-bottom: 0;
+        }
+
+        .end-row {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 10px;
+            height: 72px;
+            padding-right: 15px;
         }
 
         .highlight-text {
             color: #6b8e6f; 
             font-weight: 700;
-            display: block;
-            text-align: right;
-            padding-right: 15px;
-            margin-top: 8px;
+            font-size: 1.35rem;
+            line-height: 36px;
+            margin: 0;
+        }
+
+        .cute-sticker {
+            width: 78px;
+            height: 70px;
+            object-fit: contain;
+            pointer-events: none;
+            filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.12));
         }
 
         .page-controls {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             margin-top: auto; 
-            padding-top: 15px;
-            padding-bottom: 2px;
+            height: 36px;
             padding-right: 5px;
-            pointer-events: auto; 
+            position: relative;
+            z-index: 100;
+        }
+
+        .final-page-controls {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            margin-top: auto;
+            height: 36px;
+            position: relative;
+            z-index: 100;
+        }
+
+        .restart-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 36px;
+            width: 100%;
+            position: relative;
+            z-index: 101;
         }
 
         .nav-btn {
             background: transparent;
             color: #8fb393; 
             border: none;
-            padding: 5px 10px;
+            padding: 4px 10px;
             font-family: 'Caveat', cursive;
             font-size: 1.4rem;
             font-weight: 700;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: color 0.2s ease, transform 0.2s ease;
+            position: relative;
+            z-index: 101;
+            touch-action: manipulation;
         }
 
         .nav-btn:hover {
@@ -325,23 +347,52 @@
             transform: scale(1.05);
         }
 
+        .nav-btn:active {
+            transform: scale(0.95);
+        }
+
+        .btn-locked {
+            pointer-events: none !important;
+            opacity: 0.6;
+        }
+
+        .restart-btn {
+            background: rgba(107, 142, 111, 0.15);
+            color: #4a5d4e;
+            border: 1.5px dashed #8fb393;
+            border-radius: 20px;
+            padding: 2px 16px;
+            font-family: 'Caveat', cursive;
+            font-size: 1.15rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.25s ease;
+            text-decoration: none;
+            touch-action: manipulation;
+        }
+
+        .restart-btn:hover {
+            background: #8fb393;
+            color: #ffffff;
+            transform: translateY(-2px);
+        }
+
         @media (max-width: 480px) {
-            .diary-container { height: 500px; }
-            .diary-page { padding: 20px 18px 12px 32px; }
-            .card-paragraph { font-size: 1.15rem; line-height: 34px; }
+            .diary-container { height: 540px; }
+            .diary-page { padding: 18px 16px 10px 30px; }
+            .card-paragraph { font-size: 1.2rem; }
         }
     </style>
 </head>
 <body oncontextmenu="return false;">
 
-    <div id="glow-trace"></div>
-
     <div class="page-background">
-        
         <div class="book-wrapper">
             <div class="diary-container">
                 
-                <!-- Binder Rings -->
                 <div class="binding-rings">
                     <div class="ring"></div><div class="ring"></div><div class="ring"></div>
                     <div class="ring"></div><div class="ring"></div><div class="ring"></div>
@@ -349,20 +400,29 @@
                     <div class="ring"></div><div class="ring"></div>
                 </div>
 
-                <!-- PAGE 5 (Final Page) -->
+                <!-- PAGE 5 -->
                 <div class="diary-page page-5" id="page-5">
                     <div class="notepad-lines">
                         <div class="page-header-bar">
                             <span>Date: 02.10.2026</span>
                             <span>Friday</span>
                         </div>
-                        <p class="card-paragraph"><i>
-                            Be happy, always.
-                            <br><br>
-                            <span class="highlight-text">Sayonara.</span>
-                        </i></p>
-                        <div class="page-controls" style="justify-content: flex-start;">
+                        <div class="card-paragraph"><i>
+                            <p>May Allah sends you so many reasons to smile that you forget all the hurt you've ever felt and the next time you cry, may they be tears of joy. Ameen.</p>
+                            <p>Thank you for being such a wonderful person. Always keep that pure smile on your face, through every high and low.</p>
+                        </i></div>
+
+                        <div class="end-row">
+                            <img src="2296.png" alt="Cute Sticker" class="cute-sticker" onerror="this.style.display='none'">
+                            <span class="highlight-text">-END-</span>
+                        </div>
+
+                        <div class="final-page-controls">
                             <button class="nav-btn" onclick="prevPage(5)">&larr; Back</button>
+                        </div>
+
+                        <div class="restart-wrapper">
+                            <a href="index.html" class="restart-btn">Start Over ↺</a>
                         </div>
                     </div>
                 </div>
@@ -374,11 +434,10 @@
                             <span>Date: 02.10.2026</span>
                             <span>Friday</span>
                         </div>
-                        <p class="card-paragraph"><i>
-                            Life is short, and time never comes back. So cherish this short life that we have. Enjoy the little moments, make memories, and live in a way that leaves you with more smiles than regrets.
-                            <br><br>
-                            I genuinely wish you the best for whatever comes next in your life and for all the dreams you want to achieve. May Allah always be by your side.
-                        </i></p>
+                        <div class="card-paragraph"><i>
+                            <p>Life is short, and time never comes back. So cherish this short life that we have. Enjoy the little moments, make memories, and live in a way that leaves you with more smiles than regrets.</p>
+                            <p>I pray that you win in life, achieve all your dreams. I really wanna see you win and become the person you wanted to.</p>
+                        </i></div>
                         <div class="page-controls">
                             <button class="nav-btn" onclick="prevPage(4)">&larr; Back</button>
                             <button class="nav-btn" onclick="nextPage(4)">Next &rarr;</button>
@@ -393,11 +452,10 @@
                             <span>Date: 02.10.2026</span>
                             <span>Friday</span>
                         </div>
-                        <p class="card-paragraph"><i>
-                            Wherever you are, or wherever you will be, just never ever forget to smile.
-                            <br><br>
-                            A smile is a little thing, but somehow it can make life feel a lot lighter. So take care of yourself, both physically and mentally. And remember, you don't have to be everything for everyone. You deserve to rest, to dream, and to live for yourself too. Don't forget that.
-                        </i></p>
+                        <div class="card-paragraph"><i>
+                            <p>Wherever you are, or wherever you will be, just never ever forget to smile.</p>
+                            <p>A smile is a little thing, but somehow it can make life feel a lot lighter. So take care of yourself, both physically and mentally. And remember, you don't have to be everything for everyone. You deserve to rest, to dream, and to live for yourself too. Don't forget that.</p>
+                        </i></div>
                         <div class="page-controls">
                             <button class="nav-btn" onclick="prevPage(3)">&larr; Back</button>
                             <button class="nav-btn" onclick="nextPage(3)">Next &rarr;</button>
@@ -405,19 +463,16 @@
                     </div>
                 </div>
 
-                <!-- PAGE 2 (Construction Note Only) -->
+                <!-- PAGE 2 -->
                 <div class="diary-page page-2" id="page-2">
                     <div class="notepad-lines">
                         <div class="page-header-bar">
                             <span>Date: 02.10.2026</span>
                             <span>Friday</span>
                         </div>
-                        <p class="card-paragraph"><i>
-                            <br>
-                            <br>
-                            <br>
-                            Now, we’re at the end of this website, which was under construction since August 20, 2026. It was an unplanned website, so pardon my mistakes.
-                        </i></p>
+                        <div class="card-paragraph"><i>
+                            <p style="margin-top: 72px;">Now, we’re at the end of this website, which was under construction since August 20, 2026. It was an unplanned website, so pardon my mistakes.</p>
+                        </i></div>
                         <div class="page-controls">
                             <button class="nav-btn" onclick="prevPage(2)">&larr; Back</button>
                             <button class="nav-btn" onclick="nextPage(2)">Next &rarr;</button>
@@ -425,7 +480,7 @@
                     </div>
                 </div>
 
-                <!-- PAGE 1 (Cover with Polaroid Photo img0210.jpeg) -->
+                <!-- PAGE 1 (Cover) -->
                 <div class="diary-page page-1" id="page-1">
                     <div class="cover-content">
                         <div class="cover-polaroid">
@@ -443,21 +498,42 @@
 
     <script>
         let leftZIndex = 20;
+        let isPaging = false;
+
+        function setLock(locked) {
+            isPaging = locked;
+            const buttons = document.querySelectorAll('.nav-btn, .circle-btn');
+            buttons.forEach(btn => {
+                if (locked) btn.classList.add('btn-locked');
+                else btn.classList.remove('btn-locked');
+            });
+        }
 
         function nextPage(currentPageNum) {
+            if (isPaging) return;
+            setLock(true);
+
             const page = document.getElementById('page-' + currentPageNum);
             page.classList.add('flipped');
             page.style.zIndex = leftZIndex++;
             updateBookCenter();
+
+            setTimeout(() => {
+                setLock(false);
+            }, 1200);
         }
 
         function prevPage(currentPageNum) {
+            if (isPaging) return;
+            setLock(true);
+
             const page = document.getElementById('page-' + (currentPageNum - 1));
             page.classList.remove('flipped');
             
             setTimeout(() => {
                 const defaultZ = [0, 5, 4, 3, 2, 1];
                 page.style.zIndex = defaultZ[currentPageNum - 1];
+                setLock(false);
             }, 1200); 
             
             updateBookCenter();
@@ -475,31 +551,6 @@
                 }
             }
         }
-
-        // --- GLOW TRACE LOGIC ---
-        const glowTrace = document.getElementById('glow-trace');
-
-        function moveGlow(event) {
-            let x = event.clientX;
-            let y = event.clientY;
-
-            if (event.touches && event.touches.length > 0) {
-                x = event.touches[0].clientX;
-                y = event.touches[0].clientY;
-            }
-            
-            if (x !== undefined && y !== undefined) {
-                glowTrace.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%)`;
-                glowTrace.style.opacity = '1';
-            }
-        }
-
-        document.addEventListener('mousemove', moveGlow);
-        document.addEventListener('mouseleave', () => glowTrace.style.opacity = '0');
-        document.addEventListener('touchmove', moveGlow, { passive: true });
-        document.addEventListener('touchend', () => glowTrace.style.opacity = '0');
-        document.addEventListener('touchstart', moveGlow, { passive: true });
-        document.addEventListener('click', () => glowTrace.style.opacity = '0');
     </script>
 </body>
 </html>
