@@ -71,14 +71,15 @@
             max-width: 390px;
             z-index: 10;
             opacity: 0;
-            animation: smoothDrop 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
+            visibility: hidden; /* Fixes weird initial flash */
+            animation: smoothDrop 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
             perspective: 2000px;
             -webkit-perspective: 2000px;
         }
 
         @keyframes smoothDrop {
-            0% { opacity: 0; transform: translateY(25px) scale(0.95); }
-            100% { opacity: 1; transform: translateY(0) scale(1); }
+            0% { opacity: 0; visibility: visible; transform: translateY(25px) scale(0.95); }
+            100% { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
         }
 
         .diary-container {
@@ -137,7 +138,8 @@
             grid-area: 1 / 1; 
             border-radius: 0 15px 15px 0; 
             padding: 22px 22px 15px 35px; 
-            box-shadow: 10px 15px 30px rgba(0, 0, 0, 0.2);
+            /* Reduced vertical shadow to fix bottom edge shadow leak */
+            box-shadow: 4px 6px 16px rgba(0, 0, 0, 0.12);
             transform-origin: left center;
             transform-style: preserve-3d;
             -webkit-transform-style: preserve-3d;
@@ -159,7 +161,7 @@
             backface-visibility: hidden;
             -webkit-backface-visibility: hidden;
             pointer-events: none;
-            box-shadow: inset 10px 0 20px rgba(0,0,0,0.04); 
+            box-shadow: inset 10px 0 15px rgba(0,0,0,0.03); 
         }
 
         .page-1 { 
@@ -177,7 +179,7 @@
         .diary-page.flipped {
             transform: rotateY(-180deg) !important;
             pointer-events: none !important; 
-            box-shadow: -15px 15px 25px rgba(0, 0, 0, 0.15); 
+            box-shadow: -8px 6px 14px rgba(0, 0, 0, 0.1); 
         }
 
         .diary-page.flipped * {
@@ -190,7 +192,7 @@
             backface-visibility: hidden;
             -webkit-backface-visibility: hidden;
             border-radius: 0 15px 15px 0;
-            box-shadow: 10px 15px 30px rgba(0, 0, 0, 0.2);
+            box-shadow: 4px 6px 16px rgba(0, 0, 0, 0.12);
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -296,7 +298,7 @@
         .polaroid-page {
             background: #ffffff;
             padding: 8px 8px 24px 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
             border-radius: 2px;
             width: 82%;
             max-width: 210px;
@@ -686,7 +688,6 @@
             updateBookCenter();
         }
 
-        // Memory game logic
         const memoryBoard = document.getElementById('memory-board');
         const gameCaption = document.getElementById('game-caption');
         const finalBtn = document.getElementById('final-btn');
