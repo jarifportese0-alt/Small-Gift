@@ -79,8 +79,10 @@
 
         @media (min-width: 481px) {
             .diary-container.is-open { transform: translateX(30%); }
+            .diary-container.is-open ~ .binding-rings { transform: translateX(30%); }
         }
 
+        /* Rings moved to root book-wrapper so they permanently sit on top */
         .binding-rings {
             position: absolute;
             top: 40px;
@@ -90,8 +92,9 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            z-index: 1000;
+            z-index: 9999;
             pointer-events: none;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .ring {
@@ -406,14 +409,16 @@
 
     <div class="page-background">
         <div class="book-wrapper">
+            
+            <!-- RINGS PLACED HERE OUTSIDE 3D CONTAINER -->
+            <div class="binding-rings">
+                <div class="ring"></div><div class="ring"></div><div class="ring"></div>
+                <div class="ring"></div><div class="ring"></div><div class="ring"></div>
+                <div class="ring"></div><div class="ring"></div><div class="ring"></div>
+                <div class="ring"></div><div class="ring"></div>
+            </div>
+
             <div class="diary-container">
-                
-                <div class="binding-rings">
-                    <div class="ring"></div><div class="ring"></div><div class="ring"></div>
-                    <div class="ring"></div><div class="ring"></div><div class="ring"></div>
-                    <div class="ring"></div><div class="ring"></div><div class="ring"></div>
-                    <div class="ring"></div><div class="ring"></div>
-                </div>
 
                 <!-- PAGE 5 -->
                 <div class="diary-page page-5" id="page-5">
