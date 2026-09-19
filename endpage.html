@@ -21,7 +21,7 @@
             -webkit-tap-highlight-color: transparent !important; 
         }
 
-        /* Forces exact matching green over the entire Safari canvas & notch */
+        /* Forces exact matching green over the entire canvas & notch */
         html {
             background-color: #4a5d4e !important;
             height: 100%;
@@ -74,6 +74,8 @@
             width: 100%;
             height: 540px; 
             display: grid; 
+            perspective: 1200px;
+            -webkit-perspective: 1200px;
             transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
@@ -120,12 +122,16 @@
             border-radius: 0 15px 15px 0; 
             padding: 20px 20px 14px 34px; 
             box-shadow: 4px 6px 16px rgba(0, 0, 0, 0.12);
-            transform-origin: left center;
+            transform-origin: 0% 50%; 
             transform-style: preserve-3d;
             transition: transform 1.2s cubic-bezier(0.645, 0.045, 0.355, 1);
             display: flex;
             flex-direction: column;
             pointer-events: auto;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            will-change: transform;
+            transform: translateZ(0);
         }
 
         .diary-page::after {
@@ -135,22 +141,34 @@
             background: #fdfbf7; 
             background-image: linear-gradient(to right, rgba(0,0,0,0) 80%, rgba(0,0,0,0.06) 100%);
             border-radius: 15px 0 0 15px; 
-            transform: translateZ(-1px) rotateY(180deg); 
+            transform: rotateY(180deg); 
             backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
             pointer-events: none;
             box-shadow: inset 10px 0 15px rgba(0,0,0,0.03); 
         }
 
-        .page-1 { z-index: 5; background: #c2d5c4; border-left: 15px solid #8fb393; } 
-        .page-1::after { background: #c2d5c4; border-right: 15px solid #8fb393; left: -15px; }
+        /* Page backgrounds & insets replacing coordinate-shifting borders */
+        .page-1 { 
+            z-index: 5; 
+            background: #c2d5c4; 
+            box-shadow: inset 15px 0 0 #8fb393, 4px 6px 16px rgba(0, 0, 0, 0.12);
+            border-left: none !important;
+        } 
+        .page-1::after { 
+            background: #c2d5c4; 
+            box-shadow: inset -15px 0 0 #8fb393;
+            left: 0 !important; 
+            border-right: none !important;
+        }
 
-        .page-2 { z-index: 4; background: #fdfbf7; border-left: none; } 
-        .page-3 { z-index: 3; background: #fdfbf7; border-left: none; } 
-        .page-4 { z-index: 2; background: #fdfbf7; border-left: none; } 
-        .page-5 { z-index: 1; background: #fdfbf7; border-left: none; } 
+        .page-2 { z-index: 4; background: #fdfbf7; } 
+        .page-3 { z-index: 3; background: #fdfbf7; } 
+        .page-4 { z-index: 2; background: #fdfbf7; } 
+        .page-5 { z-index: 1; background: #fdfbf7; } 
 
         .diary-page.flipped {
-            transform: perspective(1200px) rotateY(-178deg);
+            transform: rotateY(-180deg) translateZ(0);
             pointer-events: none !important; 
             box-shadow: -8px 6px 14px rgba(0, 0, 0, 0.1); 
         }
@@ -536,12 +554,16 @@
             if (isPaging) return;
             setLock(true);
 
-            const page = document.getElementById('page-' + (currentPageNum - 1));
+            const targetPageNum = currentPageNum - 1;
+            const page = document.getElementById('page-' + targetPageNum);
+            
+            // Raise z-index during unflip so it smoothly travels over remaining pages
+            page.style.zIndex = leftZIndex++;
             page.classList.remove('flipped');
             
             setTimeout(() => {
                 const defaultZ = [0, 5, 4, 3, 2, 1];
-                page.style.zIndex = defaultZ[currentPageNum - 1];
+                page.style.zIndex = defaultZ[targetPageNum];
                 setLock(false);
             }, 1200); 
             
