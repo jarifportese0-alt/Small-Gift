@@ -27,10 +27,10 @@
         }
 
         body {
-            height: 100%;
-            height: 100svh;
+            min-height: 100%;
+            min-height: 100svh;
             font-family: 'Caveat', cursive;
-            overflow: hidden;
+            overflow-x: hidden;
             background-color: #4a5d4e !important;
         }
 
@@ -42,7 +42,6 @@
 
         .page-background {
             width: 100vw;
-            height: 100svh;
             min-height: 100svh;
             display: flex;
             flex-direction: column;
@@ -50,7 +49,6 @@
             align-items: center;
             background-color: #4a5d4e !important; 
             padding: env(safe-area-inset-top, 20px) 20px env(safe-area-inset-bottom, 20px) 20px;
-            overflow: hidden;
         }
 
         .book-wrapper {
@@ -59,8 +57,8 @@
             max-width: 390px;
             z-index: 10;
             opacity: 0;
-            will-change: transform, opacity;
-            transform: translateZ(0);
+            perspective: 2000px;
+            -webkit-perspective: 2000px;
             animation: smoothDrop 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
         }
 
@@ -74,8 +72,9 @@
             width: 100%;
             height: 540px; 
             display: grid; 
+            transform-style: preserve-3d;
+            -webkit-transform-style: preserve-3d;
             transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-            contain: layout paint;
         }
 
         @media (min-width: 481px) {
@@ -91,8 +90,9 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            z-index: 50;
+            z-index: 999;
             pointer-events: none;
+            transform: translateZ(50px);
         }
 
         .ring {
@@ -123,10 +123,12 @@
             box-shadow: 4px 6px 16px rgba(0, 0, 0, 0.12);
             transform-origin: left center;
             transform-style: preserve-3d;
+            -webkit-transform-style: preserve-3d;
             transition: transform 1.2s cubic-bezier(0.645, 0.045, 0.355, 1);
             display: flex;
             flex-direction: column;
             pointer-events: auto;
+            will-change: transform;
         }
 
         .diary-page::after {
@@ -138,6 +140,7 @@
             border-radius: 15px 0 0 15px; 
             transform: translateZ(-1px) rotateY(180deg); 
             backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
             pointer-events: none;
             box-shadow: inset 10px 0 15px rgba(0,0,0,0.03); 
         }
@@ -151,7 +154,7 @@
         .page-5 { z-index: 1; background: #fdfbf7; border-left: none; } 
 
         .diary-page.flipped {
-            transform: perspective(1200px) rotateY(-178deg);
+            transform: rotateY(-178deg);
             pointer-events: none !important; 
             box-shadow: -8px 6px 14px rgba(0, 0, 0, 0.1); 
         }
@@ -524,8 +527,8 @@
             setLock(true);
 
             const page = document.getElementById('page-' + currentPageNum);
-            page.classList.add('flipped');
             page.style.zIndex = leftZIndex++;
+            page.classList.add('flipped');
             updateBookCenter();
 
             setTimeout(() => {
@@ -537,12 +540,16 @@
             if (isPaging) return;
             setLock(true);
 
-            const page = document.getElementById('page-' + (currentPageNum - 1));
+            const targetPageNum = currentPageNum - 1;
+            const page = document.getElementById('page-' + targetPageNum);
+            
+            // Elevate above left and right stacks so it doesn't clip underneath while un-flipping
+            page.style.zIndex = leftZIndex++;
             page.classList.remove('flipped');
             
             setTimeout(() => {
                 const defaultZ = [0, 5, 4, 3, 2, 1];
-                page.style.zIndex = defaultZ[currentPageNum - 1];
+                page.style.zIndex = defaultZ[targetPageNum];
                 setLock(false);
             }, 1200); 
             
