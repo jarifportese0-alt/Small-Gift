@@ -19,8 +19,6 @@
             -webkit-user-select: none !important;
             user-select: none !important;
             -webkit-tap-highlight-color: transparent !important; 
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
         }
 
         html {
@@ -30,7 +28,7 @@
 
         body {
             min-height: 100%;
-            min-height: 100dvh;
+            min-height: 100svh;
             font-family: 'Caveat', cursive;
             overflow-x: hidden;
             background-color: #4a5d4e !important;
@@ -44,8 +42,7 @@
 
         .page-background {
             width: 100vw;
-            min-height: 100vh;
-            min-height: 100dvh;
+            min-height: 100svh;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -62,8 +59,6 @@
             opacity: 0;
             perspective: 2000px;
             -webkit-perspective: 2000px;
-            transform: translate3d(0, 0, 0);
-            -webkit-transform: translate3d(0, 0, 0);
             animation: smoothDrop 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
         }
 
@@ -95,10 +90,8 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            z-index: 999;
+            z-index: 1000;
             pointer-events: none;
-            transform: translateZ(40px);
-            -webkit-transform: translateZ(40px);
         }
 
         .ring {
@@ -127,17 +120,15 @@
             border-radius: 0 15px 15px 0; 
             padding: 20px 20px 14px 34px; 
             box-shadow: 4px 6px 16px rgba(0, 0, 0, 0.12);
-            transform-origin: 0% 50%;
+            transform-origin: left center;
             transform-style: preserve-3d;
             -webkit-transform-style: preserve-3d;
             transition: transform 1.2s cubic-bezier(0.645, 0.045, 0.355, 1);
             display: flex;
             flex-direction: column;
             pointer-events: auto;
-            backface-visibility: hidden;
-            -webkit-backface-visibility: hidden;
             will-change: transform;
-            transform: translate3d(0,0,0) rotateY(0deg);
+            isolation: isolate;
         }
 
         .diary-page::after {
@@ -147,8 +138,8 @@
             background: #fdfbf7; 
             background-image: linear-gradient(to right, rgba(0,0,0,0) 80%, rgba(0,0,0,0.06) 100%);
             border-radius: 15px 0 0 15px; 
-            transform: rotateY(180deg) translateZ(1px); 
-            -webkit-transform: rotateY(180deg) translateZ(1px);
+            transform: rotateY(180deg); 
+            -webkit-transform: rotateY(180deg);
             backface-visibility: hidden;
             -webkit-backface-visibility: hidden;
             pointer-events: none;
@@ -164,7 +155,8 @@
         .page-5 { z-index: 1; background: #fdfbf7; border-left: none; } 
 
         .diary-page.flipped {
-            transform: rotateY(-180deg) translate3d(0, 0, 0);
+            transform: rotateY(-178deg);
+            -webkit-transform: rotateY(-178deg);
             pointer-events: none !important; 
             box-shadow: -8px 6px 14px rgba(0, 0, 0, 0.1); 
         }
@@ -184,7 +176,6 @@
             font-size: 1.15rem;
             color: #6b8e6f;
             letter-spacing: 1px;
-            transform: translateZ(2px);
         }
 
         .cover-content {
@@ -194,7 +185,6 @@
             justify-content: center;
             align-items: center;
             margin-top: 10px;
-            transform: translateZ(2px);
         }
 
         .cover-polaroid {
@@ -255,16 +245,15 @@
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12); 
             transition: transform 0.25s ease, background 0.25s ease;
             z-index: 10;
-            transform: translateZ(5px);
         }
 
         .circle-btn:hover {
-            transform: translateZ(5px) scale(1.1);
+            transform: scale(1.1);
             background: rgba(255, 255, 255, 0.35);
         }
 
         .circle-btn:active {
-            transform: translateZ(5px) scale(0.95);
+            transform: scale(0.95);
         }
 
         .notepad-lines {
@@ -277,8 +266,6 @@
             display: flex;
             flex-direction: column;
             position: relative;
-            transform: translateZ(2px);
-            -webkit-transform: translateZ(2px);
         }
 
         .card-paragraph {
@@ -333,7 +320,6 @@
             padding-right: 5px;
             position: relative;
             z-index: 100;
-            transform: translateZ(3px);
         }
 
         .final-page-controls {
@@ -344,7 +330,6 @@
             height: 36px;
             position: relative;
             z-index: 100;
-            transform: translateZ(3px);
         }
 
         .restart-wrapper {
@@ -355,7 +340,6 @@
             width: 100%;
             position: relative;
             z-index: 101;
-            transform: translateZ(3px);
         }
 
         .nav-btn {
@@ -546,11 +530,9 @@
 
             const page = document.getElementById('page-' + currentPageNum);
             
-            requestAnimationFrame(() => {
-                page.style.zIndex = leftZIndex++;
-                page.classList.add('flipped');
-                updateBookCenter();
-            });
+            page.style.zIndex = leftZIndex++;
+            page.classList.add('flipped');
+            updateBookCenter();
 
             setTimeout(() => {
                 setLock(false);
@@ -564,19 +546,16 @@
             const targetPageNum = currentPageNum - 1;
             const page = document.getElementById('page-' + targetPageNum);
             
-            // Give the un-flipping page the top z-index before starting the animation
-            page.style.zIndex = ++leftZIndex;
-
-            requestAnimationFrame(() => {
-                page.classList.remove('flipped');
-                updateBookCenter();
-            });
+            page.style.zIndex = leftZIndex++;
+            page.classList.remove('flipped');
             
             setTimeout(() => {
                 const defaultZ = [0, 5, 4, 3, 2, 1];
                 page.style.zIndex = defaultZ[targetPageNum];
                 setLock(false);
             }, 1200); 
+
+            updateBookCenter();
         }
 
         function updateBookCenter() {
