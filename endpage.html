@@ -82,7 +82,7 @@
             .diary-container.is-open ~ .binding-rings { transform: translateX(30%); }
         }
 
-        /* Rings moved to root book-wrapper so they permanently sit on top */
+        /* Rings stay outside 3D container so they permanently remain on top */
         .binding-rings {
             position: absolute;
             top: 40px;
@@ -132,15 +132,18 @@
             pointer-events: auto;
             will-change: transform;
             isolation: isolate;
+            /* Restores the green binding spine seen in the video under the rings */
+            border-left: 12px solid #8fb393;
         }
 
         .diary-page::after {
             content: '';
             position: absolute;
-            top: 0; bottom: 0; right: 0; left: 0;
+            top: 0; bottom: 0; right: 0; left: -12px;
             background: #fdfbf7; 
             background-image: linear-gradient(to right, rgba(0,0,0,0) 80%, rgba(0,0,0,0.06) 100%);
             border-radius: 15px 0 0 15px; 
+            border-right: 12px solid #8fb393;
             transform: rotateY(180deg); 
             -webkit-transform: rotateY(180deg);
             backface-visibility: hidden;
@@ -152,10 +155,10 @@
         .page-1 { z-index: 5; background: #c2d5c4; border-left: 15px solid #8fb393; } 
         .page-1::after { background: #c2d5c4; border-right: 15px solid #8fb393; left: -15px; }
 
-        .page-2 { z-index: 4; background: #fdfbf7; border-left: none; } 
-        .page-3 { z-index: 3; background: #fdfbf7; border-left: none; } 
-        .page-4 { z-index: 2; background: #fdfbf7; border-left: none; } 
-        .page-5 { z-index: 1; background: #fdfbf7; border-left: none; } 
+        .page-2 { z-index: 4; background: #fdfbf7; } 
+        .page-3 { z-index: 3; background: #fdfbf7; } 
+        .page-4 { z-index: 2; background: #fdfbf7; } 
+        .page-5 { z-index: 1; background: #fdfbf7; } 
 
         .diary-page.flipped {
             transform: rotateY(-178deg);
@@ -410,7 +413,6 @@
     <div class="page-background">
         <div class="book-wrapper">
             
-            <!-- RINGS PLACED HERE OUTSIDE 3D CONTAINER -->
             <div class="binding-rings">
                 <div class="ring"></div><div class="ring"></div><div class="ring"></div>
                 <div class="ring"></div><div class="ring"></div><div class="ring"></div>
