@@ -28,7 +28,7 @@
 
         body {
             min-height: 100%;
-            min-height: 100svh;
+            min-height: 100dvh;
             font-family: 'Caveat', cursive;
             overflow-x: hidden;
             background-color: #4a5d4e !important;
@@ -42,7 +42,8 @@
 
         .page-background {
             width: 100vw;
-            min-height: 100svh;
+            min-height: 100vh;
+            min-height: 100dvh;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -57,8 +58,6 @@
             max-width: 390px;
             z-index: 10;
             opacity: 0;
-            perspective: 2000px;
-            -webkit-perspective: 2000px;
             animation: smoothDrop 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
         }
 
@@ -72,8 +71,8 @@
             width: 100%;
             height: 540px; 
             display: grid; 
-            transform-style: preserve-3d;
-            -webkit-transform-style: preserve-3d;
+            perspective: 1500px;
+            -webkit-perspective: 1500px;
             transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
@@ -90,9 +89,8 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            z-index: 999;
+            z-index: 50;
             pointer-events: none;
-            transform: translateZ(50px);
         }
 
         .ring {
@@ -128,9 +126,13 @@
             display: flex;
             flex-direction: column;
             pointer-events: auto;
+            /* Prevents front surface bleed-through during reverse rotation */
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
             will-change: transform;
         }
 
+        /* Backside sheet styling with depth separation to eliminate Z-fighting */
         .diary-page::after {
             content: '';
             position: absolute;
@@ -138,7 +140,7 @@
             background: #fdfbf7; 
             background-image: linear-gradient(to right, rgba(0,0,0,0) 80%, rgba(0,0,0,0.06) 100%);
             border-radius: 15px 0 0 15px; 
-            transform: translateZ(-1px) rotateY(180deg); 
+            transform: rotateY(180deg) translateZ(1px); 
             backface-visibility: hidden;
             -webkit-backface-visibility: hidden;
             pointer-events: none;
@@ -264,6 +266,9 @@
             display: flex;
             flex-direction: column;
             position: relative;
+            /* Isolates inner text and lines onto the forward z-plane */
+            transform: translateZ(1px);
+            -webkit-transform: translateZ(1px);
         }
 
         .card-paragraph {
@@ -543,7 +548,7 @@
             const targetPageNum = currentPageNum - 1;
             const page = document.getElementById('page-' + targetPageNum);
             
-            // Elevate above left and right stacks so it doesn't clip underneath while un-flipping
+            // Keeps the un-flipping page hovering above both stacks throughout its motion
             page.style.zIndex = leftZIndex++;
             page.classList.remove('flipped');
             
