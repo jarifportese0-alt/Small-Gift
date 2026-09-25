@@ -12,7 +12,7 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&family=Pacifico&display=swap" rel="stylesheet">
     
     <style>
         * {
@@ -22,15 +22,14 @@
             -webkit-user-select: none !important;
             user-select: none !important;
             -webkit-tap-highlight-color: transparent !important;
-            touch-action: manipulation;
         }
 
         html, body {
             width: 100vw;
-            height: 100vh;
-            height: 100dvh;
-            overflow: hidden;
-            font-family: 'Caveat', cursive;
+            height: 100%;
+            min-height: 100svh;
+            overflow-x: hidden;
+            font-family: 'Kalam', cursive;
             background-color: #4a5d4e;
             background-image: url('1379.jpg');
             background-size: cover;
@@ -40,21 +39,25 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            touch-action: pan-x pan-y;
+            -webkit-text-size-adjust: 100%;
         }
 
         button {
             outline: none !important; 
+            border: none;
+            background: none;
             touch-action: manipulation;
         }
 
         h1 {
             position: relative;
             z-index: 10;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             color: #ffffff;
             font-family: 'Pacifico', cursive;
             font-size: 2.3rem;
-            text-shadow: 2px 2px 0px #8fb393, 0 4px 15px rgba(255, 255, 255, 0.8);
+            text-shadow: 2px 2px 0px #8fb393, 0 4px 15px rgba(255, 255, 255, 0.7);
             letter-spacing: 2px;
             text-align: center;
             animation: floatDown 1.2s ease-out forwards;
@@ -74,8 +77,6 @@
             animation: smoothDrop 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
             perspective: 2000px;
             -webkit-perspective: 2000px;
-            translate: 0px -8px;
-            /* সার্বজনীন ফুল-বুক ড্রপ শ্যাডো যা আইওএস-এ কখনো কাটবে না */
             filter: drop-shadow(0 20px 25px rgba(0, 0, 0, 0.35));
             -webkit-filter: drop-shadow(0 20px 25px rgba(0, 0, 0, 0.35));
         }
@@ -85,10 +86,11 @@
             100% { opacity: 1; transform: translateY(0) scale(1); }
         }
 
+        /* Matched directly to 540px height like endpage */
         .diary-container {
             position: relative;
             width: 100%;
-            height: 520px; 
+            height: 540px; 
             display: grid; 
             transform-style: preserve-3d;
             -webkit-transform-style: preserve-3d;
@@ -97,6 +99,9 @@
 
         @media (min-width: 481px) {
             .diary-container.is-open {
+                transform: translateX(30%);
+            }
+            .diary-container.is-open ~ .binding-rings {
                 transform: translateX(30%);
             }
         }
@@ -110,19 +115,18 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            z-index: 500;
-            transform: translateZ(90px);
-            -webkit-transform: translateZ(90px);
+            z-index: 9999;
             pointer-events: none;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .ring {
             width: 100%;
-            height: 6px;
-            background: linear-gradient(to bottom, #ffffff 0%, #d8d8d8 30%, #888888 100%);
+            height: 5px;
+            background: linear-gradient(to bottom, #f0f0f0, #999);
             border-radius: 3px;
             position: relative;
-            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.35);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
         .ring::after {
@@ -134,20 +138,48 @@
             height: 14px;
             background: #1a1a1a;
             border-radius: 50%;
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.7);
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.6);
         }
 
+        /* Transition timing and curve identically matched to endpage.html */
         .diary-page {
             grid-area: 1 / 1; 
             border-radius: 0 15px 15px 0; 
+            padding: 20px 20px 14px 34px;
             transform-origin: left center;
             transform-style: preserve-3d;
             -webkit-transform-style: preserve-3d;
-            transition: transform 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: transform 1.2s cubic-bezier(0.645, 0.045, 0.355, 1);
             background-color: #fdfbf7;
+            display: flex;
+            flex-direction: column;
+            pointer-events: auto;
+            will-change: transform;
+            isolation: isolate;
+            border-left: 12px solid #8fb393;
+            box-shadow: 4px 6px 16px rgba(0, 0, 0, 0.12);
         }
 
-        .page-1 { z-index: 6; background: transparent !important; } 
+        .diary-page::after {
+            content: '';
+            position: absolute;
+            top: 0; bottom: 0; right: 0; left: -12px;
+            background: #fdfbf7; 
+            background-image: repeating-linear-gradient(transparent, transparent 34px, rgba(143, 179, 147, 0.25) 34px, rgba(143, 179, 147, 0.25) 36px),
+                              linear-gradient(to right, rgba(0,0,0,0) 80%, rgba(0,0,0,0.06) 100%);
+            border-radius: 15px 0 0 15px; 
+            border-right: 12px solid #8fb393;
+            transform: rotateY(180deg); 
+            -webkit-transform: rotateY(180deg);
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            pointer-events: none;
+            box-shadow: inset 10px 0 15px rgba(0,0,0,0.03); 
+        }
+
+        .page-1 { z-index: 6; background: #c2d5c4; border-left: 15px solid #8fb393; } 
+        .page-1::after { background: #c2d5c4; border-right: 15px solid #8fb393; left: -15px; }
+
         .page-2 { z-index: 5; } 
         .page-3 { z-index: 4; }
         .page-4 { z-index: 3; }
@@ -155,68 +187,13 @@
         .page-6 { z-index: 1; }
 
         .diary-page.flipped {
-            transform: rotateY(-180deg) !important;
-            pointer-events: none; 
+            transform: rotateY(-178deg) !important;
+            pointer-events: none !important; 
+            box-shadow: -8px 6px 14px rgba(0, 0, 0, 0.1);
         }
 
-        .page-front {
-            position: absolute;
-            inset: 0;
-            padding: 22px 22px 18px 35px; 
-            border-radius: 0 15px 15px 0;
-            background-color: #fdfbf7;
-            backface-visibility: hidden;
-            -webkit-backface-visibility: hidden;
-            transform: translateZ(1px);
-            -webkit-transform: translateZ(1px);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        .page-back {
-            position: absolute;
-            inset: 0;
-            border-radius: 15px 0 0 15px;
-            background-color: #fdfbf7;
-            background-image: repeating-linear-gradient(transparent, transparent 34px, rgba(143, 179, 147, 0.25) 34px, rgba(143, 179, 147, 0.25) 36px),
-                              linear-gradient(to right, rgba(0,0,0,0) 85%, rgba(0,0,0,0.04) 100%);
-            backface-visibility: hidden;
-            -webkit-backface-visibility: hidden;
-            transform: rotateY(180deg) translateZ(1px);
-            -webkit-transform: rotateY(180deg) translateZ(1px);
-            pointer-events: none;
-            box-shadow: inset 10px 0 20px rgba(0,0,0,0.03);
-            overflow: hidden;
-        }
-
-        .cover-front {
-            position: absolute;
-            inset: 0;
-            backface-visibility: hidden;
-            -webkit-backface-visibility: hidden;
-            border-radius: 0 15px 15px 0;
-            background: linear-gradient(135deg, #c2d5c4, #d8e8d9);
-            border-left: 15px solid #8fb393;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            transform: translateZ(1px);
-            -webkit-transform: translateZ(1px);
-        }
-
-        .cover-back {
-            position: absolute;
-            inset: 0;
-            background: #c8decb;
-            border-right: 15px solid #8fb393;
-            border-radius: 15px 0 0 15px;
-            backface-visibility: hidden;
-            -webkit-backface-visibility: hidden;
-            transform: rotateY(180deg) translateZ(1px);
-            -webkit-transform: rotateY(180deg) translateZ(1px);
+        .diary-page.flipped * {
+            pointer-events: none !important;
         }
 
         .page-header-bar {
@@ -224,11 +201,13 @@
             justify-content: space-between;
             align-items: center;
             border-bottom: 2px dashed #8fb393;
-            padding-bottom: 4px;
-            margin-bottom: 8px;
-            font-size: 1.15rem;
+            padding-bottom: 3px;
+            margin-bottom: 4px;
+            height: 32px;
+            font-size: 1.05rem;
             color: #6b8e6f;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
+            font-weight: 700;
         }
 
         .cover-content {
@@ -237,44 +216,53 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            margin-top: 10px;
         }
 
         .cover-title {
             font-family: 'Pacifico', cursive;
             color: white;
-            font-size: 2.5rem;
+            font-size: 2.3rem;
             line-height: 1.2;
             text-align: center;
             text-shadow: 2px 2px 0px rgba(0,0,0,0.05);
         }
 
         .cover-subtitle {
-            font-family: 'Caveat', cursive;
+            font-family: 'Kalam', cursive;
             color: white;
-            font-size: 1.6rem;
-            margin-top: 5px;
+            font-size: 1.35rem;
+            margin-top: 6px;
+            font-weight: 400;
         }
         
         .circle-btn {
             position: absolute;
             bottom: 25px;
             right: 25px;
-            width: 42px;
-            height: 42px;
-            background: rgba(255, 255, 255, 0.55); 
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px); 
-            border: 1.5px solid rgba(255, 255, 255, 0.9); 
+            width: 44px;
+            height: 44px;
+            background: rgba(255, 255, 255, 0.25); 
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px); 
+            border: 1px solid rgba(255, 255, 255, 0.5) !important; 
             border-radius: 50%;
-            color: #4a5d4e;
-            font-size: 1.5rem;
-            font-weight: bold;
+            color: #ffffff !important;
+            font-size: 1.8rem !important;
+            line-height: 1;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            box-shadow: 0 4px 14px rgba(74, 93, 78, 0.25), inset 0 1px 2px rgba(255, 255, 255, 0.8); 
-            transition: all 0.2s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12); 
+            transition: transform 0.25s ease, background 0.25s ease;
+            z-index: 10;
+            touch-action: manipulation;
+        }
+
+        .circle-btn:hover {
+            transform: scale(1.1);
+            background: rgba(255, 255, 255, 0.35);
         }
 
         .circle-btn:active {
@@ -282,13 +270,15 @@
         }
 
         .notepad-lines {
-            background-image: repeating-linear-gradient(transparent, transparent 34px, rgba(143, 179, 147, 0.35) 34px, rgba(143, 179, 147, 0.35) 36px);
+            background-image: repeating-linear-gradient(to bottom, transparent, transparent 34px, rgba(143, 179, 147, 0.35) 34px, rgba(143, 179, 147, 0.35) 36px);
+            background-position: 0 3px;
             border-left: 2px solid #8fb393; 
-            padding-left: 15px;
-            padding-top: 2px; 
+            padding-left: 14px;
+            padding-top: 0px; 
             flex-grow: 1;
             display: flex;
             flex-direction: column;
+            position: relative;
         }
 
         .polaroid-page {
@@ -298,13 +288,13 @@
             border-radius: 2px;
             width: 82%;
             max-width: 210px;
-            margin: 5px auto;
+            margin: 6px auto;
             position: relative;
         }
 
         .polaroid-page img {
             width: 100%;
-            height: 210px;
+            height: 205px;
             object-fit: cover;
             object-position: center 15%;
             border-radius: 1px;
@@ -321,33 +311,37 @@
         }
 
         .caption {
-            font-size: 1.3rem;
-            color: #2b2b2b;
+            font-size: 1.15rem;
+            color: #2b382d;
             text-align: center;
             font-weight: 700;
             transform: rotate(-1deg);
-            margin: 4px 0 auto 0;
+            margin: 8px 0 auto 0;
+            line-height: 1.35;
         }
 
         .page-controls {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             margin-top: auto; 
-            padding-top: 6px;
-            padding-bottom: 6px;
+            height: 36px;
             padding-right: 5px;
+            position: relative;
+            z-index: 100;
         }
 
         .nav-btn {
             background: transparent;
             color: #8fb393; 
             border: none;
-            padding: 5px 10px;
-            font-family: 'Caveat', cursive;
-            font-size: 1.4rem;
+            padding: 4px 10px;
+            font-family: 'Kalam', cursive;
+            font-size: 1.25rem;
             font-weight: 700;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: color 0.2s ease, transform 0.2s ease;
+            touch-action: manipulation;
         }
 
         .nav-btn:hover {
@@ -355,25 +349,39 @@
             transform: scale(1.05);
         }
 
+        .nav-btn:active {
+            transform: scale(0.95);
+        }
+
+        .btn-locked {
+            pointer-events: none !important;
+            opacity: 0.6;
+        }
+
         .memory-game {
             width: 100%;
-            height: 105px;
+            height: 115px;
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
+            gap: 10px;
             justify-content: center;
             align-items: center;
-            margin: 10px auto;
+            margin: 14px auto 0;
             position: relative;
         }
         
         .memory-card {
-            width: 76px;  
-            height: 44px;
+            width: 78px;  
+            height: 48px;
             position: relative;
             cursor: pointer;
             border-radius: 8px;
             touch-action: manipulation;
+            transition: transform 0.12s ease;
+        }
+
+        .memory-card:active {
+            transform: scale(0.95);
         }
         
         .card-face {
@@ -384,8 +392,8 @@
             align-items: center;
             justify-content: center;
             box-shadow: 0 3px 6px rgba(0,0,0,0.12);
-            font-family: 'Caveat', cursive;
-            font-size: 1.25rem;
+            font-family: 'Kalam', cursive;
+            font-size: 1.15rem;
             font-weight: 700;
             transition: transform 0.25s ease, opacity 0.2s ease;
             pointer-events: none;
@@ -426,7 +434,7 @@
 
         .btn-container {
             position: relative;
-            margin: 2px auto; 
+            margin: 6px auto 0; 
             display: none; 
             animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
             text-align: center;
@@ -436,27 +444,28 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            padding: 8px 20px;
+            padding: 8px 24px;
             border-radius: 8px; 
-            background-color: rgba(255, 255, 255, 0.7); 
-            border: 1px solid rgba(255, 255, 255, 0.9); 
-            backdrop-filter: blur(4px);
+            background-color: rgba(255, 255, 255, 0.85); 
+            border: 1.5px solid rgba(255, 255, 255, 0.95); 
+            backdrop-filter: blur(6px);
             text-decoration: none;
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 0 15px rgba(143, 179, 147, 0.4);
+            box-shadow: 0 4px 15px rgba(143, 179, 147, 0.4);
+            touch-action: manipulation;
         }
 
         .btn-text {
             font-family: 'Pacifico', cursive;
-            font-size: 1.3rem;
-            letter-spacing: 1.5px;
+            font-size: 1.25rem;
+            letter-spacing: 1.2px;
             color: #6b8e6f; 
         }
 
         .btn-link:hover {
             background-color: #c2d5c4;
-            transform: translateY(-3px) scale(1.02);
+            transform: translateY(-2px) scale(1.02);
             box-shadow: 0 8px 25px rgba(143, 179, 147, 0.6);
         }
         
@@ -473,6 +482,11 @@
             filter: grayscale(100%) sepia(10%) contrast(160%) brightness(0.6);
             opacity: 0.45;
             mix-blend-mode: multiply;
+        }
+
+        @media (max-width: 480px) {
+            .diary-container { height: 540px; }
+            .diary-page { padding: 18px 16px 10px 30px; }
         }
     </style>
 </head>
@@ -491,129 +505,112 @@
         <div class="diary-container" id="bookContainer">
             <!-- PAGE 6 (Game) -->
             <div class="diary-page page-6" id="page-6">
-                <div class="page-front">
-                    <div class="notepad-lines">
-                        <div class="page-header-bar">
-                            <span>Date: 02.10.2026</span>
-                            <span>Friday</span>
-                        </div>
-                        
-                        <p class="caption" id="game-caption" style="margin-top: 10px;">Hint: Match the words to unlock...</p>
-                        
-                        <div class="memory-game" id="memory-board"></div>
+                <div class="notepad-lines">
+                    <div class="page-header-bar">
+                        <span>Date: 02.10.2026</span>
+                        <span>Friday</span>
+                    </div>
+                    
+                    <p class="caption" id="game-caption" style="margin-top: 10px;">Hint: Match the words to unlock...</p>
+                    
+                    <div class="memory-game" id="memory-board"></div>
 
-                        <div class="btn-container" id="final-btn">
-                            <a id="magic-btn" class="btn-link">
-                                <span class="btn-text">Let's Goooo</span>
-                            </a>
-                        </div>
+                    <div class="btn-container" id="final-btn">
+                        <a id="magic-btn" class="btn-link">
+                            <span class="btn-text">Let's Goooo</span>
+                        </a>
+                    </div>
 
-                        <div class="page-controls" style="justify-content: flex-start;">
-                            <button class="nav-btn" onclick="prevPage(6)">&larr; Back</button>
-                        </div>
+                    <div class="page-controls" style="justify-content: flex-start;">
+                        <button type="button" class="nav-btn" onclick="prevPage(6)">&larr; Back</button>
                     </div>
                 </div>
             </div>
 
             <!-- PAGE 5 -->
             <div class="diary-page page-5" id="page-5">
-                <div class="page-front">
-                    <div class="notepad-lines">
-                        <div class="page-header-bar">
-                            <span>Date: 02.10.2026</span>
-                            <span>Friday</span>
-                        </div>
-                        <div class="polaroid-page" style="transform: rotate(1deg);">
-                            <span class="pin-icon">📎</span>
-                            <img src="flower_gloom.webp" alt="Moon" draggable="false">
-                        </div>
-                        <p class="caption">When the Moon truly laughed</p>
-                        <div class="page-controls">
-                            <button class="nav-btn" onclick="prevPage(5)">&larr; Back</button>
-                            <button class="nav-btn" onclick="nextPage(5)">Next &rarr;</button>
-                        </div>
+                <div class="notepad-lines">
+                    <div class="page-header-bar">
+                        <span>Date: 02.10.2026</span>
+                        <span>Friday</span>
+                    </div>
+                    <div class="polaroid-page" style="transform: rotate(1deg);">
+                        <span class="pin-icon">📎</span>
+                        <img src="flower_gloom.webp" alt="Moon" draggable="false">
+                    </div>
+                    <p class="caption">When the Moon truly laughed</p>
+                    <div class="page-controls">
+                        <button type="button" class="nav-btn" onclick="prevPage(5)">&larr; Back</button>
+                        <button type="button" class="nav-btn" onclick="nextPage(5)">Next &rarr;</button>
                     </div>
                 </div>
-                <div class="page-back"></div>
             </div>
 
             <!-- PAGE 4 -->
             <div class="diary-page page-4" id="page-4">
-                <div class="page-front">
-                    <div class="notepad-lines">
-                        <div class="page-header-bar">
-                            <span>Date: 02.10.2026</span>
-                            <span>Friday</span>
-                        </div>
-                        <div class="polaroid-page" style="transform: rotate(-0.5deg);">
-                            <span class="pin-icon">📎</span>
-                            <img src="red_cherry.webp" alt="checkmate" draggable="false">
-                        </div>
-                        <p class="caption">A friend who makes ordinary moments feel special</p>
-                        <div class="page-controls">
-                            <button class="nav-btn" onclick="prevPage(4)">&larr; Back</button>
-                            <button class="nav-btn" onclick="nextPage(4)">Next &rarr;</button>
-                        </div>
+                <div class="notepad-lines">
+                    <div class="page-header-bar">
+                        <span>Date: 02.10.2026</span>
+                        <span>Friday</span>
+                    </div>
+                    <div class="polaroid-page" style="transform: rotate(-0.5deg);">
+                        <span class="pin-icon">📎</span>
+                        <img src="red_cherry.webp" alt="checkmate" draggable="false">
+                    </div>
+                    <p class="caption">A friend who makes ordinary moments feel special</p>
+                    <div class="page-controls">
+                        <button type="button" class="nav-btn" onclick="prevPage(4)">&larr; Back</button>
+                        <button type="button" class="nav-btn" onclick="nextPage(4)">Next &rarr;</button>
                     </div>
                 </div>
-                <div class="page-back"></div>
             </div>
 
             <!-- PAGE 3 -->
             <div class="diary-page page-3" id="page-3">
-                <div class="page-front">
-                    <div class="notepad-lines">
-                        <div class="page-header-bar">
-                            <span>Date: 02.10.2026</span>
-                            <span>Friday</span>
-                        </div>
-                        <div class="polaroid-page" style="transform: rotate(1.5deg);">
-                            <span class="pin-icon">📎</span>
-                            <img src="blue.webp" alt="blue" draggable="false">
-                        </div>
-                        <p class="caption">You were born with a beauty deeper than a butterfly's blue</p>
-                        <div class="page-controls">
-                            <button class="nav-btn" onclick="prevPage(3)">&larr; Back</button>
-                            <button class="nav-btn" onclick="nextPage(3)">Next &rarr;</button>
-                        </div>
+                <div class="notepad-lines">
+                    <div class="page-header-bar">
+                        <span>Date: 02.10.2026</span>
+                        <span>Friday</span>
+                    </div>
+                    <div class="polaroid-page" style="transform: rotate(1.5deg);">
+                        <span class="pin-icon">📎</span>
+                        <img src="blue.webp" alt="blue" draggable="false">
+                    </div>
+                    <p class="caption">You were born with a beauty deeper than a butterfly's blue</p>
+                    <div class="page-controls">
+                        <button type="button" class="nav-btn" onclick="prevPage(3)">&larr; Back</button>
+                        <button type="button" class="nav-btn" onclick="nextPage(3)">Next &rarr;</button>
                     </div>
                 </div>
-                <div class="page-back"></div>
             </div>
 
             <!-- PAGE 2 -->
             <div class="diary-page page-2" id="page-2">
-                <div class="page-front">
-                    <div class="notepad-lines">
-                        <div class="page-header-bar">
-                            <span>Date: 02.10.2026</span>
-                            <span>Friday</span>
-                        </div>
-                        <div class="polaroid-page" style="transform: rotate(-1deg);">
-                            <span class="pin-icon">📎</span>
-                            <img src="red_feather.webp" alt="a red feather" draggable="false">
-                        </div>
-                        <p class="caption">A bird with a red feather</p>
-                        <div class="page-controls">
-                            <button class="nav-btn" onclick="prevPage(2)">&larr; Back</button>
-                            <button class="nav-btn" onclick="nextPage(2)">Next &rarr;</button>
-                        </div>
+                <div class="notepad-lines">
+                    <div class="page-header-bar">
+                        <span>Date: 02.10.2026</span>
+                        <span>Friday</span>
+                    </div>
+                    <div class="polaroid-page" style="transform: rotate(-1deg);">
+                        <span class="pin-icon">📎</span>
+                        <img src="red_feather.webp" alt="a red feather" draggable="false">
+                    </div>
+                    <p class="caption">A bird with a red feather</p>
+                    <div class="page-controls">
+                        <button type="button" class="nav-btn" onclick="prevPage(2)">&larr; Back</button>
+                        <button type="button" class="nav-btn" onclick="nextPage(2)">Next &rarr;</button>
                     </div>
                 </div>
-                <div class="page-back"></div>
             </div>
 
             <!-- PAGE 1 (Cover) -->
             <div class="diary-page page-1" id="page-1">
-                <div class="cover-front">
+                <div class="cover-content">
                     <div class="drawn-doodle" style="top: 25px; right: 25px; font-size: 3rem; transform: rotate(15deg);">🪐</div>
-                    <div class="cover-content">
-                        <h2 class="cover-title">Fragments of Time</h2>
-                        <p class="cover-subtitle">Chapter: Tasnim Binte</p>
-                    </div>
-                    <button class="circle-btn" onclick="nextPage(1)" aria-label="Open Diary">&rarr;</button>
+                    <h2 class="cover-title">Fragments of Time</h2>
+                    <p class="cover-subtitle">Chapter: Tasnim Binte</p>
                 </div>
-                <div class="cover-back"></div>
+                <button type="button" class="circle-btn" onclick="nextPage(1)" aria-label="Open Diary">&rarr;</button>
             </div>
 
         </div>
@@ -621,10 +618,61 @@
 
     <script>
         let leftZIndex = 20;
-        let isAnimating = false;
-        const container = document.getElementById('bookContainer');
+        let isPaging = false;
+
+        function setLock(locked) {
+            isPaging = locked;
+            const buttons = document.querySelectorAll('.nav-btn, .circle-btn');
+            buttons.forEach(btn => {
+                if (locked) btn.classList.add('btn-locked');
+                else btn.classList.remove('btn-locked');
+            });
+        }
+
+        function nextPage(currentPageNum) {
+            if (isPaging) return;
+            setLock(true);
+
+            const page = document.getElementById('page-' + currentPageNum);
+            if (!page) {
+                setLock(false);
+                return;
+            }
+
+            page.style.zIndex = leftZIndex++;
+            page.classList.add('flipped');
+            updateBookCenter();
+
+            setTimeout(() => {
+                setLock(false);
+            }, 1200);
+        }
+
+        function prevPage(currentPageNum) {
+            if (isPaging) return;
+            setLock(true);
+
+            const targetPageNum = currentPageNum - 1;
+            const page = document.getElementById('page-' + targetPageNum);
+            if (!page) {
+                setLock(false);
+                return;
+            }
+
+            page.style.zIndex = leftZIndex++;
+            page.classList.remove('flipped');
+            
+            setTimeout(() => {
+                const defaultZ = [0, 6, 5, 4, 3, 2, 1];
+                page.style.zIndex = defaultZ[targetPageNum];
+                setLock(false);
+            }, 1200); 
+
+            updateBookCenter();
+        }
 
         function updateBookCenter() {
+            const container = document.getElementById('bookContainer');
             const flippedPages = document.querySelectorAll('.flipped').length;
             if (window.innerWidth > 480) {
                 if (flippedPages > 0) {
@@ -635,55 +683,23 @@
             }
         }
 
-        function nextPage(currentPageNum) {
-            if (isAnimating) return;
-            isAnimating = true;
-
-            const page = document.getElementById('page-' + currentPageNum);
-            if (!page) {
-                isAnimating = false;
-                return;
-            }
-
-            page.classList.add('flipped');
-            page.style.zIndex = leftZIndex++;
-            updateBookCenter();
-
-            setTimeout(() => {
-                isAnimating = false;
-            }, 600);
-        }
-
-        function prevPage(currentPageNum) {
-            if (isAnimating) return;
-            isAnimating = true;
-
-            const page = document.getElementById('page-' + (currentPageNum - 1));
-            if (!page) {
-                isAnimating = false;
-                return;
-            }
-
-            page.classList.remove('flipped');
-            
-            setTimeout(() => {
-                const defaultZ = [0, 6, 5, 4, 3, 2, 1];
-                page.style.zIndex = defaultZ[currentPageNum - 1];
-                isAnimating = false;
-            }, 600); 
-
-            updateBookCenter();
-        }
-
-        // Prevent double-tap zoom on iOS Safari
+        // --- iOS Safari Rapid Tap / Pinch Zoom Prevention ---
         let lastTouchEnd = 0;
         document.addEventListener('touchend', function(event) {
             const now = Date.now();
             if (now - lastTouchEnd <= 300) {
                 event.preventDefault();
+                const interactiveEl = event.target.closest('button, a, .memory-card');
+                if (interactiveEl) {
+                    interactiveEl.click();
+                }
             }
             lastTouchEnd = now;
         }, { passive: false });
+
+        document.addEventListener('gesturestart', function(e) { e.preventDefault(); });
+        document.addEventListener('gesturechange', function(e) { e.preventDefault(); });
+        document.addEventListener('gestureend', function(e) { e.preventDefault(); });
 
         // Memory game logic
         const memoryBoard = document.getElementById('memory-board');
