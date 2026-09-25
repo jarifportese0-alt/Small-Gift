@@ -9,7 +9,7 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&family=Pacifico&display=swap" rel="stylesheet">
 
     <style>
         * {
@@ -24,20 +24,25 @@
         html {
             background-color: #4a5d4e !important;
             height: 100%;
+            touch-action: pan-x pan-y;
+            -webkit-text-size-adjust: 100%;
         }
 
         body {
             min-height: 100%;
             min-height: 100svh;
-            font-family: 'Caveat', cursive;
+            font-family: 'Kalam', cursive;
             overflow-x: hidden;
             background-color: #4a5d4e !important;
+            touch-action: pan-x pan-y;
+            -webkit-text-size-adjust: 100%;
         }
 
         button {
             outline: none !important; 
             border: none;
             background: none;
+            touch-action: manipulation;
         }
 
         .page-background {
@@ -82,7 +87,6 @@
             .diary-container.is-open ~ .binding-rings { transform: translateX(30%); }
         }
 
-        /* Rings stay outside 3D container so they permanently remain on top */
         .binding-rings {
             position: absolute;
             top: 40px;
@@ -132,7 +136,6 @@
             pointer-events: auto;
             will-change: transform;
             isolation: isolate;
-            /* Restores the green binding spine seen in the video under the rings */
             border-left: 12px solid #8fb393;
         }
 
@@ -179,9 +182,10 @@
             padding-bottom: 3px;
             margin-bottom: 0px;
             height: 32px;
-            font-size: 1.15rem;
+            font-size: 1.05rem;
             color: #6b8e6f;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
+            font-weight: 700;
         }
 
         .cover-content {
@@ -224,10 +228,11 @@
         }
 
         .cover-subtitle {
-            font-family: 'Caveat', cursive;
+            font-family: 'Kalam', cursive;
             color: white;
-            font-size: 1.5rem;
+            font-size: 1.35rem;
             margin-top: 5px;
+            font-weight: 400;
         }
         
         .circle-btn {
@@ -251,6 +256,7 @@
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12); 
             transition: transform 0.25s ease, background 0.25s ease;
             z-index: 10;
+            touch-action: manipulation;
         }
 
         .circle-btn:hover {
@@ -275,12 +281,13 @@
         }
 
         .card-paragraph {
-            font-size: 1.25rem;
-            color: #333;
+            font-size: 1.05rem;
+            color: #2b382d;
             line-height: 36px; 
             margin: 0;
             padding: 0;
             word-wrap: break-word;
+            font-weight: 400;
         }
 
         .card-paragraph p {
@@ -304,7 +311,7 @@
         .highlight-text {
             color: #6b8e6f; 
             font-weight: 700;
-            font-size: 1.35rem;
+            font-size: 1.25rem;
             line-height: 36px;
             margin: 0;
         }
@@ -353,8 +360,8 @@
             color: #8fb393; 
             border: none;
             padding: 4px 10px;
-            font-family: 'Caveat', cursive;
-            font-size: 1.4rem;
+            font-family: 'Kalam', cursive;
+            font-size: 1.25rem;
             font-weight: 700;
             cursor: pointer;
             transition: color 0.2s ease, transform 0.2s ease;
@@ -383,8 +390,8 @@
             border: 1.5px dashed #8fb393;
             border-radius: 20px;
             padding: 2px 16px;
-            font-family: 'Caveat', cursive;
-            font-size: 1.15rem;
+            font-family: 'Kalam', cursive;
+            font-size: 1.05rem;
             font-weight: 700;
             cursor: pointer;
             display: inline-flex;
@@ -404,7 +411,7 @@
         @media (max-width: 480px) {
             .diary-container { height: 540px; }
             .diary-page { padding: 18px 16px 10px 30px; }
-            .card-paragraph { font-size: 1.2rem; }
+            .card-paragraph { font-size: 1.05rem; }
         }
     </style>
 </head>
@@ -429,10 +436,10 @@
                             <span>Date: 02.10.2026</span>
                             <span>Friday</span>
                         </div>
-                        <div class="card-paragraph"><i>
-                            <p> And when you share your darkness,I'll still be here to sit beside you untill you find your light again. Maybe that's whar friends are for.<p>
-                           <p>May Allah send you so many reasons to smile that you forget all the hurt you've ever felt and the next time you cry, may they be tears of joy. Ameen.</p>
-                        </i></div>
+                        <div class="card-paragraph">
+                            <p>Whenever things feel overwhelming or hard, remember you don't have to carry it all by yourself. That is really what friends are here for.</p>
+                            <p>May Allah give you so many reasons to smile that you forget every hurt, and whenever tears come, may they only be from pure happiness. Ameen.</p>
+                        </div>
 
                         <div class="end-row">
                             <img src="2296.png" alt="Cute Sticker" class="cute-sticker" onerror="this.style.display='none'">
@@ -456,13 +463,10 @@
                             <span>Date: 02.10.2026</span>
                             <span>Friday</span>
                         </div>
-                        <div class="card-paragraph"><i>
-                            <p>Life is short, and time never comes back. So cherish this short life that we have. <br> Enjoy the little moments, make memories, and live in a way that leaves you with more smiles than regrets.</p>
-                            <p>I pray that you win in life, achieve all your dreams. I really wanna see you win and become the person you wanted to.</p>
-<p>Thank you for being such a wonderful person. Always keep that pure smile on your face, through every high and low.</p>
-                    
-
-                        </i></div>
+                        <div class="card-paragraph">
+                            <p>Time moves really fast, so make sure to hold on to the little moments. Live in a way that gives you peace and good memories rather than regrets.</p>
+                            <p>I really want to see you succeed and reach every single goal you have. Thank you for just being yourself, and keep that genuine smile through all of it.</p>
+                        </div>
                         <div class="page-controls">
                             <button type="button" class="nav-btn" onclick="prevPage(4)">&larr; Back</button>
                             <button type="button" class="nav-btn" onclick="nextPage(4)">Next &rarr;</button>
@@ -477,10 +481,10 @@
                             <span>Date: 02.10.2026</span>
                             <span>Friday</span>
                         </div>
-                        <div class="card-paragraph"><i>
-                            <p>Wherever you are, or wherever you will be, just never ever forget to smile.</p>
-                            <p>A smile is a little thing, but somehow it can make life feel a lot lighter. So take care of yourself, both physically and mentally. And remember, you don't have to be everything for everyone. You deserve to rest, to dream, and to live for yourself too. Don't forget that.</p>
-                        </i></div>
+                        <div class="card-paragraph">
+                            <p>No matter where life takes you or how busy things get, never ever forget to smile.</p>
+                            <p>It sounds simple, but it really makes life feel lighter. Take care of yourself, both your mind and body. You don't have to be everything for everyone. You deserve to rest and live for yourself too.</p>
+                        </div>
                         <div class="page-controls">
                             <button type="button" class="nav-btn" onclick="prevPage(3)">&larr; Back</button>
                             <button type="button" class="nav-btn" onclick="nextPage(3)">Next &rarr;</button>
@@ -495,9 +499,10 @@
                             <span>Date: 02.10.2026</span>
                             <span>Friday</span>
                         </div>
-                        <div class="card-paragraph"><i>
-                            <p style="margin-top: 72px;">Now, we’re at the end of this website, which was under construction since August 20, 2026. It was an unplanned website, so pardon my mistakes.</p>
-                        </i></div>
+                        <div class="card-paragraph">
+                            <p style="margin-top: 72px;">So, here is the little corner I've been putting together since August 20th.</p>
+                            <p>I didn't really plan this out ahead of time, so pardon any little mistakes. I just wanted to leave a few honest words for you here.</p>
+                        </div>
                         <div class="page-controls">
                             <button type="button" class="nav-btn" onclick="prevPage(2)">&larr; Back</button>
                             <button type="button" class="nav-btn" onclick="nextPage(2)">Next &rarr;</button>
@@ -580,6 +585,31 @@
                 }
             }
         }
+
+        // --- iOS Safari Rapid Tap / Pinch Zoom Prevention ---
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function (event) {
+            const now = Date.now();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+                // Ensure target buttons/links still trigger on fast double taps
+                const interactiveEl = event.target.closest('button, a');
+                if (interactiveEl) {
+                    interactiveEl.click();
+                }
+            }
+            lastTouchEnd = now;
+        }, { passive: false });
+
+        document.addEventListener('gesturestart', function (e) {
+            e.preventDefault();
+        });
+        document.addEventListener('gesturechange', function (e) {
+            e.preventDefault();
+        });
+        document.addEventListener('gestureend', function (e) {
+            e.preventDefault();
+        });
     </script>
 </body>
 </html>
