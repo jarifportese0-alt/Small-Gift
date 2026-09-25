@@ -93,6 +93,7 @@
             }
         }
 
+        /* Spiral rings anchored directly inside container */
         .binding-rings {
             position: absolute;
             top: 40px;
@@ -144,6 +145,8 @@
             will-change: transform;
             border-left: 12px solid #8fb393;
             background-color: #fdfbf7;
+            /* Prevents transparent ghosting */
+            isolation: isolate;
         }
 
         .diary-page::after {
@@ -166,10 +169,10 @@
         .page-1 { z-index: 5; background: #c2d5c4; border-left: 15px solid #8fb393; } 
         .page-1::after { background: #c2d5c4; border-right: 15px solid #8fb393; left: -15px; }
 
-        .page-2 { z-index: 4; background: #fdfbf7; } 
-        .page-3 { z-index: 3; background: #fdfbf7; } 
-        .page-4 { z-index: 2; background: #fdfbf7; } 
-        .page-5 { z-index: 1; background: #fdfbf7; } 
+        .page-2 { z-index: 4; } 
+        .page-3 { z-index: 3; } 
+        .page-4 { z-index: 2; } 
+        .page-5 { z-index: 1; } 
 
         .diary-page.flipped {
             transform: rotateY(-180deg) !important;
@@ -251,7 +254,7 @@
             height: 44px;
             background: rgba(255, 255, 255, 0.25); 
             backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px); 
             border: 1px solid rgba(255, 255, 255, 0.5) !important; 
             border-radius: 50%;
             color: #ffffff !important;
@@ -263,7 +266,6 @@
             cursor: pointer;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12); 
             transition: transform 0.25s ease, background 0.25s ease;
-            z-index: 10;
             touch-action: manipulation;
         }
 
@@ -288,7 +290,6 @@
             position: relative;
         }
 
-        /* Ruled-line baseline alignment */
         .card-paragraph {
             font-size: 1.05rem;
             color: #2b382d;
@@ -334,27 +335,16 @@
             filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.12));
         }
 
-        .page-controls {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: auto; 
-            height: 36px;
-            padding-right: 5px;
-            position: relative;
-            z-index: 100;
-        }
-
-        /* Final page footer with side-by-side Back and Start Over */
+        /* Natural in-flow controls: No artificial z-index projections */
+        .page-controls,
         .final-page-footer {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: auto;
+            margin-top: auto; 
             height: 38px;
             padding-right: 5px;
             position: relative;
-            z-index: 100;
         }
 
         .nav-btn {
@@ -367,8 +357,6 @@
             font-weight: 700;
             cursor: pointer;
             transition: color 0.2s ease, transform 0.2s ease;
-            position: relative;
-            z-index: 101;
             touch-action: manipulation;
         }
 
@@ -431,7 +419,7 @@
                     <div class="ring"></div><div class="ring"></div>
                 </div>
 
-                <!-- PAGE 5 -->
+                <!-- PAGE 5 (Final) -->
                 <div class="diary-page page-5" id="page-5">
                     <div class="notepad-lines">
                         <div class="page-header-bar">
@@ -502,7 +490,6 @@
                             <p>So, here is the little corner I've been putting together since August 20th.</p>
                             <p>I didn't really plan this out ahead of time, so pardon any little mistakes. I just wanted to leave a few honest words for you here.</p>
                         </div>
-                        <!-- Restored missing controls on Page 2 -->
                         <div class="page-controls">
                             <button type="button" class="nav-btn" onclick="prevPage(2)">&larr; Back</button>
                             <button type="button" class="nav-btn" onclick="nextPage(2)">Next &rarr;</button>
@@ -532,7 +519,7 @@
 
         function setLock(locked) {
             isPaging = locked;
-            const buttons = document.querySelectorAll('.nav-btn, .circle-btn');
+            const buttons = document.querySelectorAll('.nav-btn, .circle-btn, .restart-btn');
             buttons.forEach(btn => {
                 if (locked) btn.classList.add('btn-locked');
                 else btn.classList.remove('btn-locked');
