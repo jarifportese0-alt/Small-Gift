@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#4a5d4e">
-    <meta name="apple-mobile-web-app-status-bar-style" content="#4a5d4e">
     <title>Birthday Wish - Final Chapter</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -59,17 +61,19 @@
         .book-wrapper {
             position: relative;
             width: 90vw; 
-            max-width: 390px;
+            max-width: 380px;
             z-index: 10;
             opacity: 0;
-            perspective: 2000px;
-            -webkit-perspective: 2000px;
+            perspective: 2500px;
+            -webkit-perspective: 2500px;
             animation: smoothDrop 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
+            filter: drop-shadow(0 14px 20px rgba(0, 0, 0, 0.22));
+            -webkit-filter: drop-shadow(0 14px 20px rgba(0, 0, 0, 0.22));
         }
 
         @keyframes smoothDrop {
             0% { opacity: 0; transform: translateY(25px) scale(0.95); }
-            100% { opacity: 1; transform: translateY(0) scale(1); }
+            100% { opacity: 1; transform: translateY(0); }
         }
 
         .diary-container {
@@ -82,11 +86,14 @@
             transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
+        /* Desktop shift: Shifts the container and internal rings together */
         @media (min-width: 481px) {
-            .diary-container.is-open { transform: translateX(30%); }
-            .diary-container.is-open ~ .binding-rings { transform: translateX(30%); }
+            .diary-container.is-open { 
+                transform: translateX(45%); 
+            }
         }
 
+        /* Rings placed inside the container so they stay locked to the spine */
         .binding-rings {
             position: absolute;
             top: 40px;
@@ -98,7 +105,8 @@
             justify-content: space-between;
             z-index: 9999;
             pointer-events: none;
-            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateZ(90px);
+            -webkit-transform: translateZ(90px);
         }
 
         .ring {
@@ -126,7 +134,7 @@
             grid-area: 1 / 1; 
             border-radius: 0 15px 15px 0; 
             padding: 20px 20px 14px 34px; 
-            box-shadow: 4px 6px 16px rgba(0, 0, 0, 0.12);
+            box-shadow: none;
             transform-origin: left center;
             transform-style: preserve-3d;
             -webkit-transform-style: preserve-3d;
@@ -137,6 +145,8 @@
             will-change: transform;
             isolation: isolate;
             border-left: 12px solid #8fb393;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
         }
 
         .diary-page::after {
@@ -144,15 +154,16 @@
             position: absolute;
             top: 0; bottom: 0; right: 0; left: -12px;
             background: #fdfbf7; 
-            background-image: linear-gradient(to right, rgba(0,0,0,0) 80%, rgba(0,0,0,0.06) 100%);
+            background-image: repeating-linear-gradient(to bottom, transparent, transparent 34px, rgba(143, 179, 147, 0.25) 34px, rgba(143, 179, 147, 0.25) 36px),
+                              linear-gradient(to right, rgba(0,0,0,0) 80%, rgba(0,0,0,0.06) 100%);
             border-radius: 15px 0 0 15px; 
             border-right: 12px solid #8fb393;
-            transform: rotateY(180deg); 
-            -webkit-transform: rotateY(180deg);
-            backface-visibility: hidden;
-            -webkit-backface-visibility: hidden;
+            transform: rotateY(180deg) translateZ(2px); 
+            -webkit-transform: rotateY(180deg) translateZ(2px);
+            backface-visibility: hidden !important;
+            -webkit-backface-visibility: hidden !important;
             pointer-events: none;
-            box-shadow: inset 10px 0 15px rgba(0,0,0,0.03); 
+            box-shadow: inset 10px 0 15px rgba(0,0,0,0.03), -6px 6px 14px rgba(0,0,0,0.08); 
         }
 
         .page-1 { z-index: 5; background: #c2d5c4; border-left: 15px solid #8fb393; } 
@@ -164,10 +175,9 @@
         .page-5 { z-index: 1; background: #fdfbf7; } 
 
         .diary-page.flipped {
-            transform: rotateY(-178deg);
-            -webkit-transform: rotateY(-178deg);
+            transform: rotateY(-180deg) !important;
+            -webkit-transform: rotateY(-180deg) !important;
             pointer-events: none !important; 
-            box-shadow: -8px 6px 14px rgba(0, 0, 0, 0.1); 
         }
         
         .diary-page.flipped * {
@@ -420,14 +430,15 @@
     <div class="page-background">
         <div class="book-wrapper">
             
-            <div class="binding-rings">
-                <div class="ring"></div><div class="ring"></div><div class="ring"></div>
-                <div class="ring"></div><div class="ring"></div><div class="ring"></div>
-                <div class="ring"></div><div class="ring"></div><div class="ring"></div>
-                <div class="ring"></div><div class="ring"></div>
-            </div>
-
-            <div class="diary-container">
+            <div class="diary-container" id="bookContainer">
+                
+                <!-- RINGS ARE NESTED DIRECTLY INSIDE THE DIARY-CONTAINER -->
+                <div class="binding-rings">
+                    <div class="ring"></div><div class="ring"></div><div class="ring"></div>
+                    <div class="ring"></div><div class="ring"></div><div class="ring"></div>
+                    <div class="ring"></div><div class="ring"></div><div class="ring"></div>
+                    <div class="ring"></div><div class="ring"></div>
+                </div>
 
                 <!-- PAGE 5 -->
                 <div class="diary-page page-5" id="page-5">
@@ -544,6 +555,10 @@
             setLock(true);
 
             const page = document.getElementById('page-' + currentPageNum);
+            if (!page) {
+                setLock(false);
+                return;
+            }
             
             page.style.zIndex = leftZIndex++;
             page.classList.add('flipped');
@@ -560,6 +575,10 @@
 
             const targetPageNum = currentPageNum - 1;
             const page = document.getElementById('page-' + targetPageNum);
+            if (!page) {
+                setLock(false);
+                return;
+            }
             
             page.style.zIndex = leftZIndex++;
             page.classList.remove('flipped');
@@ -574,7 +593,7 @@
         }
 
         function updateBookCenter() {
-            const container = document.querySelector('.diary-container');
+            const container = document.getElementById('bookContainer');
             const flippedPages = document.querySelectorAll('.flipped').length;
             
             if (window.innerWidth > 480) {
@@ -592,7 +611,6 @@
             const now = Date.now();
             if (now - lastTouchEnd <= 300) {
                 event.preventDefault();
-                // Ensure target buttons/links still trigger on fast double taps
                 const interactiveEl = event.target.closest('button, a');
                 if (interactiveEl) {
                     interactiveEl.click();
