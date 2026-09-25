@@ -53,10 +53,10 @@
         h1 {
             position: relative;
             z-index: 10;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             color: #ffffff;
             font-family: 'Pacifico', cursive;
-            font-size: 2.1rem;
+            font-size: 2.2rem;
             text-shadow: 2px 2px 0px #8fb393, 0 4px 15px rgba(255, 255, 255, 0.7);
             letter-spacing: 2px;
             text-align: center;
@@ -68,6 +68,7 @@
             100% { opacity: 1; transform: translateY(0); }
         }
 
+        /* Responsive Desktop Scale */
         .book-wrapper {
             position: relative;
             width: 90vw; 
@@ -75,10 +76,22 @@
             z-index: 10;
             opacity: 0;
             animation: smoothDrop 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
-            perspective: 2000px;
-            -webkit-perspective: 2000px;
-            filter: drop-shadow(0 14px 20px rgba(0, 0, 0, 0.22));
-            -webkit-filter: drop-shadow(0 14px 20px rgba(0, 0, 0, 0.22));
+            perspective: 2500px;
+            -webkit-perspective: 2500px;
+            filter: drop-shadow(0 16px 22px rgba(0, 0, 0, 0.25));
+            -webkit-filter: drop-shadow(0 16px 22px rgba(0, 0, 0, 0.25));
+            transition: transform 0.3s ease;
+        }
+
+        @media (min-width: 768px) {
+            .book-wrapper {
+                max-width: 440px;
+                transform: scale(1.08);
+            }
+            h1 {
+                font-size: 2.7rem;
+                margin-bottom: 25px;
+            }
         }
 
         @keyframes smoothDrop {
@@ -86,6 +99,7 @@
             100% { opacity: 1; transform: translateY(0) scale(1); }
         }
 
+        /* Centered & stable container */
         .diary-container {
             position: relative;
             width: 100%;
@@ -93,16 +107,7 @@
             display: grid; 
             transform-style: preserve-3d;
             -webkit-transform-style: preserve-3d;
-            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        @media (min-width: 481px) {
-            .diary-container.is-open {
-                transform: translateX(30%);
-            }
-            .diary-container.is-open ~ .binding-rings {
-                transform: translateX(30%);
-            }
+            margin: 0 auto;
         }
 
         .binding-rings {
@@ -116,7 +121,6 @@
             justify-content: space-between;
             z-index: 9999;
             pointer-events: none;
-            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .ring {
@@ -140,11 +144,12 @@
             box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.6);
         }
 
+        /* Strictly Y-axis flipping so nothing turns upside down */
         .diary-page {
             grid-area: 1 / 1; 
             border-radius: 0 15px 15px 0; 
             padding: 16px 18px 12px 30px;
-            transform-origin: left center;
+            transform-origin: 0% 50%;
             transform-style: preserve-3d;
             -webkit-transform-style: preserve-3d;
             transition: transform 1.2s cubic-bezier(0.645, 0.045, 0.355, 1);
@@ -153,46 +158,27 @@
             flex-direction: column;
             pointer-events: auto;
             will-change: transform;
-            isolation: isolate;
             border-left: 12px solid #8fb393;
             box-shadow: none;
-        }
-
-        .diary-page::after {
-            content: '';
-            position: absolute;
-            top: 0; bottom: 0; right: 0; left: -12px;
-            background: #fdfbf7; 
-            background-image: repeating-linear-gradient(transparent, transparent 34px, rgba(143, 179, 147, 0.25) 34px, rgba(143, 179, 147, 0.25) 36px),
-                              linear-gradient(to right, rgba(0,0,0,0) 80%, rgba(0,0,0,0.06) 100%);
-            border-radius: 15px 0 0 15px; 
-            border-right: 12px solid #8fb393;
-            transform: rotateY(180deg); 
-            -webkit-transform: rotateY(180deg);
             backface-visibility: hidden;
             -webkit-backface-visibility: hidden;
-            pointer-events: none;
-            box-shadow: inset 10px 0 15px rgba(0,0,0,0.03); 
         }
 
-        .page-1 { z-index: 6; background: #c2d5c4; border-left: 15px solid #8fb393; } 
-        .page-1::after { background: #c2d5c4; border-right: 15px solid #8fb393; left: -15px; }
-
-        .page-2 { z-index: 5; } 
-        .page-3 { z-index: 4; } 
-        .page-4 { z-index: 3; } 
-        .page-5 { z-index: 2; } 
-        .page-6 { z-index: 1; } 
-
         .diary-page.flipped {
-            transform: rotateY(-178deg) !important;
+            transform: rotateY(-180deg) !important;
             pointer-events: none !important; 
-            box-shadow: -6px 6px 12px rgba(0, 0, 0, 0.08);
         }
 
         .diary-page.flipped * {
             pointer-events: none !important;
         }
+
+        .page-1 { z-index: 6; background: #c2d5c4; border-left: 15px solid #8fb393; } 
+        .page-2 { z-index: 5; } 
+        .page-3 { z-index: 4; } 
+        .page-4 { z-index: 3; } 
+        .page-5 { z-index: 2; } 
+        .page-6 { z-index: 1; } 
 
         .page-header-bar {
             display: flex;
@@ -299,7 +285,6 @@
             display: block;
         }
 
-        /* Authentic Metallic Double-Loop Paperclip */
         .pin-icon {
             position: absolute;
             top: -14px;
@@ -651,7 +636,6 @@
 
             page.style.zIndex = leftZIndex++;
             page.classList.add('flipped');
-            updateBookCenter();
 
             setTimeout(() => {
                 setLock(false);
@@ -677,20 +661,6 @@
                 page.style.zIndex = defaultZ[targetPageNum];
                 setLock(false);
             }, 1200); 
-
-            updateBookCenter();
-        }
-
-        function updateBookCenter() {
-            const container = document.getElementById('bookContainer');
-            const flippedPages = document.querySelectorAll('.flipped').length;
-            if (window.innerWidth > 480) {
-                if (flippedPages > 0) {
-                    container.classList.add('is-open');
-                } else {
-                    container.classList.remove('is-open');
-                }
-            }
         }
 
         // --- iOS Safari Rapid Tap / Pinch Zoom Prevention ---
