@@ -86,14 +86,13 @@
             transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* Desktop shift: Shifts the container and internal rings together */
         @media (min-width: 481px) {
             .diary-container.is-open { 
-                transform: translateX(45%); 
+                transform: translateX(30%); 
             }
         }
 
-        /* Rings placed inside the container so they stay locked to the spine */
+        /* Spiral rings anchored directly inside the container */
         .binding-rings {
             position: absolute;
             top: 40px;
@@ -143,12 +142,11 @@
             flex-direction: column;
             pointer-events: auto;
             will-change: transform;
-            isolation: isolate;
             border-left: 12px solid #8fb393;
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
+            background-color: #fdfbf7;
         }
 
+        /* The back side of the page that appears on the left when flipped */
         .diary-page::after {
             content: '';
             position: absolute;
@@ -158,10 +156,10 @@
                               linear-gradient(to right, rgba(0,0,0,0) 80%, rgba(0,0,0,0.06) 100%);
             border-radius: 15px 0 0 15px; 
             border-right: 12px solid #8fb393;
-            transform: rotateY(180deg) translateZ(2px); 
-            -webkit-transform: rotateY(180deg) translateZ(2px);
-            backface-visibility: hidden !important;
-            -webkit-backface-visibility: hidden !important;
+            transform: rotateY(180deg) translateZ(1px); 
+            -webkit-transform: rotateY(180deg) translateZ(1px);
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
             pointer-events: none;
             box-shadow: inset 10px 0 15px rgba(0,0,0,0.03), -6px 6px 14px rgba(0,0,0,0.08); 
         }
@@ -432,7 +430,7 @@
             
             <div class="diary-container" id="bookContainer">
                 
-                <!-- RINGS ARE NESTED DIRECTLY INSIDE THE DIARY-CONTAINER -->
+                <!-- RINGS INSIDE CONTAINER: SYNCS PERFECTLY ON ALL FLIPS -->
                 <div class="binding-rings">
                     <div class="ring"></div><div class="ring"></div><div class="ring"></div>
                     <div class="ring"></div><div class="ring"></div><div class="ring"></div>
