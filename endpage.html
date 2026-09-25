@@ -13,6 +13,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&family=Pacifico&display=swap" rel="stylesheet">
 
+    <!-- Image Preloads for Instant Cache -->
+    <link rel="preload" as="image" href="diary.webp">
+    <link rel="preload" as="image" href="2296.png">
+
     <style>
         * {
             margin: 0;
@@ -93,7 +97,6 @@
             }
         }
 
-        /* Spiral rings locked inside the container */
         .binding-rings {
             position: absolute;
             top: 40px;
@@ -157,7 +160,6 @@
             pointer-events: none !important;
         }
 
-        /* Front Page Face */
         .page-front {
             position: absolute;
             inset: 0;
@@ -175,7 +177,6 @@
             box-shadow: 4px 6px 16px rgba(0,0,0,0.08);
         }
 
-        /* Back Page Face (Lined left leaf when flipped) */
         .page-back {
             position: absolute;
             inset: 0;
@@ -193,7 +194,6 @@
             border-right: 12px solid #8fb393;
         }
 
-        /* Cover Front & Back */
         .cover-front {
             position: absolute;
             inset: 0;
@@ -636,12 +636,10 @@
             }
         }
 
-        // Prevent iOS context menu on long presses
         document.addEventListener('contextmenu', function (e) {
             e.preventDefault();
         }, { passive: false });
 
-        // iOS Safari Rapid Tap / Pinch Zoom Prevention
         let lastTouchEnd = 0;
         document.addEventListener('touchend', function (event) {
             const now = Date.now();
