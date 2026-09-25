@@ -21,6 +21,7 @@
             box-sizing: border-box;
             -webkit-user-select: none !important;
             user-select: none !important;
+            -webkit-touch-callout: none !important;
             -webkit-tap-highlight-color: transparent !important;
         }
 
@@ -166,7 +167,6 @@
             pointer-events: none !important;
         }
 
-        /* Front Face */
         .page-front {
             position: absolute;
             inset: 0;
@@ -184,7 +184,6 @@
             box-shadow: 4px 6px 16px rgba(0,0,0,0.08);
         }
 
-        /* Back Face (Lined Page) */
         .page-back {
             position: absolute;
             inset: 0;
@@ -202,7 +201,6 @@
             border-right: 12px solid #8fb393;
         }
 
-        /* Cover Front & Back */
         .cover-front {
             position: absolute;
             inset: 0;
@@ -330,6 +328,7 @@
             position: relative;
         }
 
+        /* Image interaction completely disabled to prevent iOS Safari long-press menus */
         .polaroid-page img {
             width: 100%;
             height: 220px;
@@ -337,6 +336,10 @@
             object-position: center 20%;
             border-radius: 1px;
             display: block;
+            pointer-events: none !important;
+            -webkit-touch-callout: none !important;
+            -webkit-user-select: none !important;
+            user-select: none !important;
         }
 
         .pin-icon {
@@ -751,7 +754,12 @@
             updateBookCenter();
         }
 
-        // --- iOS Safari Rapid Tap / Pinch Zoom Prevention ---
+        // Global context menu blocker to prevent image save/share popups on iOS
+        document.addEventListener('contextmenu', function (e) {
+            e.preventDefault();
+        }, { passive: false });
+
+        // iOS Safari Rapid Tap / Pinch Zoom Prevention
         let lastTouchEnd = 0;
         document.addEventListener('touchend', function(event) {
             const now = Date.now();
