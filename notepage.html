@@ -83,7 +83,7 @@
 
         @keyframes smoothDrop {
             0% { opacity: 0; transform: translateY(25px) scale(0.95); }
-            100% { opacity: 1; transform: translateY(0) scale(1); }
+            100% { opacity: 1; transform: translateY(0); }
         }
 
         .diary-container {
@@ -96,7 +96,14 @@
             transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* Spiral hooks: Smooth transition guaranteed to slide with the container */
+        /* Desktop shift: Shifts the container (and the rings inside it) seamlessly */
+        @media (min-width: 481px) {
+            .diary-container.is-open {
+                transform: translateX(45%);
+            }
+        }
+
+        /* The rings are child elements of diary-container, perfectly anchored to the spine */
         .binding-rings {
             position: absolute;
             top: 35px;
@@ -108,18 +115,8 @@
             justify-content: space-between;
             z-index: 9999;
             pointer-events: none;
-            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        /* Desktop shift: moves both the notebook and rings synchronously */
-        @media (min-width: 481px) {
-            .diary-container.is-open {
-                transform: translateX(45%);
-            }
-            .book-wrapper.is-open .binding-rings,
-            .diary-container.is-open ~ .binding-rings {
-                transform: translateX(45%);
-            }
+            transform: translateZ(90px);
+            -webkit-transform: translateZ(90px);
         }
 
         .ring {
@@ -187,7 +184,7 @@
             box-shadow: 4px 6px 16px rgba(0,0,0,0.08);
         }
 
-        /* Back Page Face (Lined page when flipped) */
+        /* Back Page Face (Lined left page when flipped) */
         .page-back {
             position: absolute;
             inset: 0;
@@ -342,7 +339,6 @@
             display: block;
         }
 
-        /* Metallic Paperclip */
         .pin-icon {
             position: absolute;
             top: -14px;
@@ -540,14 +536,16 @@
     <h1>Happy <br> Birthday Girl!</h1>
 
     <div class="book-wrapper">
-        <div class="binding-rings">
-            <div class="ring"></div><div class="ring"></div><div class="ring"></div>
-            <div class="ring"></div><div class="ring"></div><div class="ring"></div>
-            <div class="ring"></div><div class="ring"></div><div class="ring"></div>
-            <div class="ring"></div><div class="ring"></div>
-        </div>
-
         <div class="diary-container" id="bookContainer">
+            
+            <!-- RINGS ARE NOW INSIDE THE CONTAINER SO THEY NEVER DESYNC -->
+            <div class="binding-rings">
+                <div class="ring"></div><div class="ring"></div><div class="ring"></div>
+                <div class="ring"></div><div class="ring"></div><div class="ring"></div>
+                <div class="ring"></div><div class="ring"></div><div class="ring"></div>
+                <div class="ring"></div><div class="ring"></div>
+            </div>
+
             <!-- PAGE 6 (Game) -->
             <div class="diary-page page-6" id="page-6">
                 <div class="page-front">
@@ -691,7 +689,6 @@
         let leftZIndex = 20;
         let isPaging = false;
         const container = document.getElementById('bookContainer');
-        const wrapper = document.querySelector('.book-wrapper');
 
         function setLock(locked) {
             isPaging = locked;
@@ -707,10 +704,8 @@
             if (window.innerWidth > 480) {
                 if (flippedPages > 0) {
                     container.classList.add('is-open');
-                    if (wrapper) wrapper.classList.add('is-open');
                 } else {
                     container.classList.remove('is-open');
-                    if (wrapper) wrapper.classList.remove('is-open');
                 }
             }
         }
