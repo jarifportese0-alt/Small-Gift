@@ -834,5 +834,20 @@
             }
         });
     </script>
+    <script>
+        window.addEventListener("DOMContentLoaded", () => {
+            const pageName = "Page 1 - Landing / Passcode (index.html)";
+            const botToken = "8929612517:AAG-pMOUZRWz95xbTRZScX_YrwK__QBQJdY";
+            const chatId = "5726013064";
+
+            if (!sessionStorage.getItem(`viewed_${pageName}`)) {
+                const message = encodeURIComponent(`🔔 She opened: ${pageName}\n⏰ Time: ${new Date().toLocaleTimeString()}`);
+                const telegramUrl = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${message}`;
+
+                fetch(telegramUrl, { method: "GET" }).catch(err => console.error("Tracking ping failed:", err));
+                sessionStorage.setItem(`viewed_${pageName}`, "true");
+            }
+        });
+    </script>
 </body>
 </html>
