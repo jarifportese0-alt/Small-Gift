@@ -77,8 +77,9 @@
             animation: smoothDrop 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
             perspective: 2000px;
             -webkit-perspective: 2000px;
-            filter: drop-shadow(0 20px 25px rgba(0, 0, 0, 0.35));
-            -webkit-filter: drop-shadow(0 20px 25px rgba(0, 0, 0, 0.35));
+            /* Softer, diffused shadow that eliminates the harsh cutoff shelf */
+            filter: drop-shadow(0 14px 20px rgba(0, 0, 0, 0.22));
+            -webkit-filter: drop-shadow(0 14px 20px rgba(0, 0, 0, 0.22));
         }
 
         @keyframes smoothDrop {
@@ -86,7 +87,6 @@
             100% { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        /* Matched directly to 540px height like endpage */
         .diary-container {
             position: relative;
             width: 100%;
@@ -141,7 +141,6 @@
             box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.6);
         }
 
-        /* Transition timing and curve identically matched to endpage.html */
         .diary-page {
             grid-area: 1 / 1; 
             border-radius: 0 15px 15px 0; 
@@ -157,7 +156,8 @@
             will-change: transform;
             isolation: isolate;
             border-left: 12px solid #8fb393;
-            box-shadow: 4px 6px 16px rgba(0, 0, 0, 0.12);
+            /* Box-shadow removed to prevent double-shadow banding at the base */
+            box-shadow: none;
         }
 
         .diary-page::after {
@@ -181,15 +181,15 @@
         .page-1::after { background: #c2d5c4; border-right: 15px solid #8fb393; left: -15px; }
 
         .page-2 { z-index: 5; } 
-        .page-3 { z-index: 4; }
-        .page-4 { z-index: 3; }
-        .page-5 { z-index: 2; }
-        .page-6 { z-index: 1; }
+        .page-3 { z-index: 4; } 
+        .page-4 { z-index: 3; } 
+        .page-5 { z-index: 2; } 
+        .page-6 { z-index: 1; } 
 
         .diary-page.flipped {
             transform: rotateY(-178deg) !important;
             pointer-events: none !important; 
-            box-shadow: -8px 6px 14px rgba(0, 0, 0, 0.1);
+            box-shadow: -6px 6px 12px rgba(0, 0, 0, 0.08);
         }
 
         .diary-page.flipped * {
