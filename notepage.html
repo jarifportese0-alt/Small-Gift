@@ -34,7 +34,8 @@
         html, body {
             width: 100vw;
             height: 100%;
-            min-height: 100svh;
+            min-height: 100vh;
+            min-height: 100dvh;
             overflow-x: hidden;
             font-family: 'Kalam', cursive;
             background-color: #4a5d4e;
@@ -592,7 +593,7 @@
                             <svg class="pin-icon" viewBox="0 0 24 50" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M7 14V38C7 42.4 10.6 46 15 46C19.4 46 23 42.4 23 38V8C23 4.1 19.9 1 16 1C12.1 1 9 4.1 9 8V35C9 37.8 11.2 40 14 40C16.8 40 19 37.8 19 35V12" stroke="#b0b8bf" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
-                            <img src="flower_gloom.webp" alt="Moon" draggable="false">
+                            <img src="flower_gloom.webp" alt="Moon" draggable="false" onerror="this.style.opacity='0'">
                         </div>
                         <p class="caption">When the Moon truly laughed</p>
                         <div class="page-controls">
@@ -616,7 +617,7 @@
                             <svg class="pin-icon" viewBox="0 0 24 50" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M7 14V38C7 42.4 10.6 46 15 46C19.4 46 23 42.4 23 38V8C23 4.1 19.9 1 16 1C12.1 1 9 4.1 9 8V35C9 37.8 11.2 40 14 40C16.8 40 19 37.8 19 35V12" stroke="#b0b8bf" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
-                            <img src="red_cherry.webp" alt="checkmate" draggable="false">
+                            <img src="red_cherry.webp" alt="checkmate" draggable="false" onerror="this.style.opacity='0'">
                         </div>
                         <p class="caption">A friend who makes ordinary moments feel special</p>
                         <div class="page-controls">
@@ -640,7 +641,7 @@
                             <svg class="pin-icon" viewBox="0 0 24 50" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M7 14V38C7 42.4 10.6 46 15 46C19.4 46 23 42.4 23 38V8C23 4.1 19.9 1 16 1C12.1 1 9 4.1 9 8V35C9 37.8 11.2 40 14 40C16.8 40 19 37.8 19 35V12" stroke="#b0b8bf" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
-                            <img src="blue.webp" alt="blue" draggable="false">
+                            <img src="blue.webp" alt="blue" draggable="false" onerror="this.style.opacity='0'">
                         </div>
                         <p class="caption">You were born with a beauty deeper than a butterfly's blue</p>
                         <div class="page-controls">
@@ -664,7 +665,7 @@
                             <svg class="pin-icon" viewBox="0 0 24 50" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M7 14V38C7 42.4 10.6 46 15 46C19.4 46 23 42.4 23 38V8C23 4.1 19.9 1 16 1C12.1 1 9 4.1 9 8V35C9 37.8 11.2 40 14 40C16.8 40 19 37.8 19 35V12" stroke="#b0b8bf" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
-                            <img src="red_feather.webp" alt="a red feather" draggable="false">
+                            <img src="red_feather.webp" alt="a red feather" draggable="false" onerror="this.style.opacity='0'">
                         </div>
                         <p class="caption">A bird with a red feather</p>
                         <div class="page-controls">
@@ -768,7 +769,8 @@
             const now = Date.now();
             if (now - lastTouchEnd <= 300) {
                 event.preventDefault();
-                const interactiveEl = event.target.closest('button, a, .memory-card');
+                // Exclude .memory-card to prevent duplicate pointer/click firing
+                const interactiveEl = event.target.closest('button, a');
                 if (interactiveEl) {
                     interactiveEl.click();
                 }
@@ -823,7 +825,9 @@
         }
 
         function checkForMatch() {
+            lockBoard = true; // Lock immediately to stop rapid 3rd-card taps
             let isMatch = firstCard.dataset.word === secondCard.dataset.word;
+            
             if (isMatch) {
                 firstCard.classList.add('matched');
                 secondCard.classList.add('matched');
@@ -840,7 +844,6 @@
                     }, 400);
                 }
             } else {
-                lockBoard = true;
                 setTimeout(() => {
                     if (firstCard) firstCard.classList.remove('flip');
                     if (secondCard) secondCard.classList.remove('flip');
@@ -862,21 +865,6 @@
                 setTimeout(() => window.location.href = "endpage.html", 400);
             });
         }
-    </script>
-    <script>
-        window.addEventListener("DOMContentLoaded", () => {
-            const pageName = "Page 2 - Note / Diary (notepage.html)";
-            const botToken = "8929612517:AAG-pMOUZRWz95xbTRZScX_YrwK__QBQJdY";
-            const chatId = "5726013064";
-
-            if (!sessionStorage.getItem(`viewed_${pageName}`)) {
-                const message = encodeURIComponent(`🔔 She opened: ${pageName}\n⏰ Time: ${new Date().toLocaleTimeString()}`);
-                const telegramUrl = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${message}`;
-
-                fetch(telegramUrl, { method: "GET" }).catch(err => console.error("Tracking ping failed:", err));
-                sessionStorage.setItem(`viewed_${pageName}`, "true");
-            }
-        });
     </script>
 </body>
 </html>
