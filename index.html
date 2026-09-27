@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Happy Birthday, Tasnim</title>
-    <!-- Preload heavy media to prevent blank screen delays -->
-    <link rel="preload" as="image" href="IMG_3965.JPG">
-    <link rel="preload" as="image" href="200w%20(1).gif">
+    
+    <link rel="preload" as="image" href="background.webp" type="image/webp">
     <link rel="preload" as="image" href="200w%20(2).gif">
+    
     <style>
         * {
             margin: 0;
@@ -476,7 +476,6 @@
             100% { opacity: 1; transform: scale(1) translateY(0); }
         }
 
-        /* Celebration GIF Display */
         .celebration-gif {
             width: 130px;
             height: 130px;
@@ -602,6 +601,16 @@
         const canvasEl = document.getElementById('rain-window');
         const celebrationGif = document.getElementById('celebrationGif');
 
+        // Preload celebration GIF quietly after first user interaction
+        let celebrationPreloaded = false;
+        function preloadCelebrationGif() {
+            if (!celebrationPreloaded) {
+                const img = new Image();
+                img.src = "200w%20(1).gif";
+                celebrationPreloaded = true;
+            }
+        }
+
         function triggerConfetti() {
             const duration = 3000;
             const animationEnd = Date.now() + duration;
@@ -641,6 +650,7 @@
 
         partyBtn.addEventListener('click', (e) => {
             e.preventDefault();
+            preloadCelebrationGif();
             modal.classList.add('active');
         });
         
@@ -749,6 +759,10 @@
         function resizeCanvas() {
             width = canvas.width = window.innerWidth;
             height = canvas.height = window.innerHeight;
+            petals.forEach(p => {
+                if (p.x > width) p.x = Math.random() * width;
+                if (p.y > height) p.y = Math.random() * height;
+            });
         }
 
         function createPetal(randomY = false) {
@@ -831,21 +845,6 @@
                 closeModal();
             } else if (e.key.toLowerCase() === 'c' || e.key === 'Delete') {
                 clearPIN();
-            }
-        });
-    </script>
-    <script>
-        window.addEventListener("DOMContentLoaded", () => {
-            const pageName = "Page 1 - Landing / Passcode (index.html)";
-            const botToken = "8929612517:AAG-pMOUZRWz95xbTRZScX_YrwK__QBQJdY";
-            const chatId = "5726013064";
-
-            if (!sessionStorage.getItem(`viewed_${pageName}`)) {
-                const message = encodeURIComponent(`🔔 She opened: ${pageName}\n⏰ Time: ${new Date().toLocaleTimeString()}`);
-                const telegramUrl = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${message}`;
-
-                fetch(telegramUrl, { method: "GET" }).catch(err => console.error("Tracking ping failed:", err));
-                sessionStorage.setItem(`viewed_${pageName}`, "true");
             }
         });
     </script>
