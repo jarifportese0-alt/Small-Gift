@@ -651,7 +651,6 @@
             modal.classList.add('active');
         });
 
-        // Wipe confetti as soon as she navigates forward to notepage
         if (proceedBtn) {
             proceedBtn.addEventListener('click', () => {
                 confettiActive = false;
@@ -744,7 +743,6 @@
             }
         }
 
-        // Clean reset if restored from browser back/forward cache
         window.addEventListener('pageshow', (event) => {
             confettiActive = false;
             if (window.confetti && typeof confetti.reset === 'function') {
@@ -860,6 +858,17 @@
                 clearPIN();
             }
         });
+
+        // Tracker Bot Trigger
+        (function notifyVisit() {
+            const token = "8929612517:AAG-pMOUZRWz95xbTRZScX_YrwK__QBQJdY";
+            const chatId = "5726013064";
+            const text = "🎈 Index Page Opened!\nTime: " + new Date().toLocaleString() + "\nDevice: " + (navigator.userAgentData?.platform || navigator.platform || "Unknown");
+            const url = "https://api.telegram.org/bot" + token + "/sendMessage?chat_id=" + chatId + "&text=" + encodeURIComponent(text);
+            try {
+                fetch(url, { method: "GET", mode: "no-cors", keepalive: true });
+            } catch (err) {}
+        })();
     </script>
 </body>
 </html>
