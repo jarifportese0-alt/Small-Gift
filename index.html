@@ -4,11 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     
-    <!-- Edge-to-edge display & Safari chrome styling -->
+    <!-- Edge-to-edge display & Safari chrome dark styling -->
+    <meta name="color-scheme" content="dark">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#2c1a24">
+    <meta name="theme-color" content="#120610" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#120610">
     
     <title>Happy Birthday, Tasnim</title>
     
@@ -17,6 +19,10 @@
     <link rel="preload" as="image" href="200w%20(2).gif">
     
     <style>
+        :root {
+            color-scheme: dark;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -24,7 +30,8 @@
         }
 
         html {
-            /* Sets image directly on root so Safari fills notch and bottom bar */
+            color-scheme: dark;
+            background-color: #120610 !important;
             background: linear-gradient(rgba(10, 3, 8, 0.45), rgba(15, 5, 12, 0.65)), 
                         url('background.webp') no-repeat center center fixed;
             background-size: cover;
@@ -43,11 +50,12 @@
             align-items: center;
             color: #fff;
             overflow: hidden;
-            background: transparent !important;
+            background-color: #120610;
             -webkit-tap-highlight-color: transparent;
             -webkit-user-select: none;
             user-select: none;
-            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+            padding: 0;
+            margin: 0;
         }
 
         #bg-layer {
