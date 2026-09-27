@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Happy Birthday, Tasnim</title>
     
+    <!-- Preload visible assets for instant loading -->
     <link rel="preload" as="image" href="background.webp" type="image/webp">
     <link rel="preload" as="image" href="200w%20(2).gif">
     
@@ -476,6 +477,7 @@
             100% { opacity: 1; transform: scale(1) translateY(0); }
         }
 
+        /* Celebration GIF Display */
         .celebration-gif {
             width: 130px;
             height: 130px;
@@ -580,7 +582,7 @@
             <p>Let's Move, Tasnim</p>
             <img id="celebrationGif" class="celebration-gif" src="200w%20(1).gif" alt="Celebration Animation" />
             <br>
-            <a href="notepage.html" class="proceed-btn">OPEN NOTE &rarr;</a>
+            <a href="notepage.html" class="proceed-btn" id="proceedBtn">OPEN NOTE &rarr;</a>
         </div>
     </div>
     
@@ -588,6 +590,7 @@
         const CORRECT_PIN = "021008";
         let currentPin = "";
         let isProcessing = false;
+        let confettiActive = false;
 
         const shapeClasses = ['morph-star', 'morph-flower', 'morph-pill', 'morph-squircle'];
 
@@ -595,27 +598,21 @@
         const keypadCard = document.getElementById('keypad-card');
         const mainCard = document.getElementById('mainCard');
         const partyBtn = document.getElementById('partyBtn');
+        const proceedBtn = document.getElementById('proceedBtn');
         const celebrationModal = document.getElementById('celebrationModal');
         const dots = document.querySelectorAll('.dot');
         const headerEl = document.querySelector('.keypad-header');
         const canvasEl = document.getElementById('rain-window');
         const celebrationGif = document.getElementById('celebrationGif');
 
-        // Preload celebration GIF quietly after first user interaction
-        let celebrationPreloaded = false;
-        function preloadCelebrationGif() {
-            if (!celebrationPreloaded) {
-                const img = new Image();
-                img.src = "200w%20(1).gif";
-                celebrationPreloaded = true;
-            }
-        }
-
         function triggerConfetti() {
+            confettiActive = true;
             const duration = 3000;
             const animationEnd = Date.now() + duration;
 
             const frame = () => {
+                if (!confettiActive) return;
+
                 confetti({
                     particleCount: 5,
                     angle: 60,
@@ -635,6 +632,8 @@
 
                 if (Date.now() < animationEnd) {
                     requestAnimationFrame(frame);
+                } else {
+                    confettiActive = false;
                 }
             };
             frame();
@@ -650,9 +649,18 @@
 
         partyBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            preloadCelebrationGif();
             modal.classList.add('active');
         });
+
+        // Wipe confetti as soon as she navigates forward to notepage
+        if (proceedBtn) {
+            proceedBtn.addEventListener('click', () => {
+                confettiActive = false;
+                if (window.confetti && typeof confetti.reset === 'function') {
+                    confetti.reset();
+                }
+            });
+        }
         
         function closeModal() {
             triggerGlow('.cancel-btn');
@@ -737,7 +745,13 @@
             }
         }
 
+        // Clean reset if restored from browser back/forward cache
         window.addEventListener('pageshow', (event) => {
+            confettiActive = false;
+            if (window.confetti && typeof confetti.reset === 'function') {
+                confetti.reset();
+            }
+
             if (event.persisted) {
                 document.body.classList.remove('notepage-theme');
                 mainCard.classList.remove('hidden-card');
