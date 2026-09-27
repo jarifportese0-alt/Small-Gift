@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="color-scheme" content="dark">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -14,10 +15,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&family=Pacifico&display=swap" rel="stylesheet">
 
     <!-- Image Preloads for Instant Cache -->
-    <link rel="preload" as="image" href="diary.webp">
+    <link rel="preload" as="image" href="diary.webp" type="image/webp">
     <link rel="preload" as="image" href="2296.png">
 
     <style>
+        :root {
+            color-scheme: dark;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -31,13 +36,15 @@
         html {
             background-color: #4a5d4e !important;
             height: 100%;
+            min-height: -webkit-fill-available;
             touch-action: pan-x pan-y;
             -webkit-text-size-adjust: 100%;
         }
 
         body {
-            min-height: 100%;
-            min-height: 100svh;
+            min-height: 100vh;
+            min-height: 100dvh;
+            min-height: -webkit-fill-available;
             font-family: 'Kalam', cursive;
             overflow-x: hidden;
             background-color: #4a5d4e !important;
@@ -54,7 +61,8 @@
 
         .page-background {
             width: 100vw;
-            min-height: 100svh;
+            min-height: 100vh;
+            min-height: 100dvh;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -118,7 +126,7 @@
             background: linear-gradient(to bottom, #f0f0f0, #999);
             border-radius: 3px;
             position: relative;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
         .ring::after {
@@ -130,7 +138,7 @@
             height: 14px;
             background: #1a1a1a;
             border-radius: 50%;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.6);
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.6);
         }
 
         .diary-page {
@@ -468,7 +476,7 @@
                                 <span>Friday</span>
                             </div>
                             <div class="card-paragraph" style="margin-top: 18px;">
-                                <p>Whenever things feel overwhelming or hard, remember you don't have to carry it all by yourself. That is really what friends are here for.</p>
+                                <p>May you always be protected from ill intentions, and surrounded only by those who genuinely celebrate your wins and want you to grow.</p>
                                 <p>May Allah give you so many reasons to smile that you forget every hurt, and whenever tears come, may they only be from pure happiness. Ameen.</p>
                             </div>
 
@@ -495,8 +503,8 @@
                                 <span>Friday</span>
                             </div>
                             <div class="card-paragraph" style="margin-top: 18px;">
-                                <p>Time moves really fast, so make sure to hold on to the little moments. Live in a way that gives you peace and good memories rather than regrets.</p>
-                                <p>I really want to see you succeed and reach every single goal you have. Thank you for just being yourself, and keep that genuine smile through all of it.</p>
+                                <p>Time moves really fast, so hold on to the little moments. Live in a way that brings you peace and genuine memories rather than regrets.</p>
+                                <p>Whenever things feel heavy or overwhelming, remember you never have to carry it all alone. That’s really what friends are here for—and I truly want to see you reach every single goal you have.</p>
                             </div>
                             <div class="page-controls">
                                 <button type="button" class="nav-btn" onclick="prevPage(4)">&larr; Back</button>
@@ -554,7 +562,7 @@
                     <div class="cover-front">
                         <div class="cover-content">
                             <div class="cover-polaroid">
-                                <img src="diary.webp" alt="Tasnim" draggable="false">
+                                <img src="diary.webp" alt="Tasnim" draggable="false" onerror="this.style.opacity='0'">
                             </div>
                             <h2 class="cover-title">A story, a wish</h2>
                             <p class="cover-subtitle">Chapter: Tasnim Binte</p>
@@ -661,21 +669,6 @@
         });
         document.addEventListener('gestureend', function (e) {
             e.preventDefault();
-        });
-    </script>
-    <script>
-        window.addEventListener("DOMContentLoaded", () => {
-            const pageName = "Page 3 - Final Chapter / Wishes (endpage.html)";
-            const botToken = "8929612517:AAG-pMOUZRWz95xbTRZScX_YrwK__QBQJdY";
-            const chatId = "5726013064";
-
-            if (!sessionStorage.getItem(`viewed_${pageName}`)) {
-                const message = encodeURIComponent(`🔔 She opened: ${pageName}\n⏰ Time: ${new Date().toLocaleTimeString()}`);
-                const telegramUrl = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${message}`;
-
-                fetch(telegramUrl, { method: "GET" }).catch(err => console.error("Tracking ping failed:", err));
-                sessionStorage.setItem(`viewed_${pageName}`, "true");
-            }
         });
     </script>
 </body>
