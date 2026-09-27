@@ -3,15 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    
-    <!-- Edge-to-edge display & Safari chrome dark styling -->
-    <meta name="color-scheme" content="dark">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#120610" media="(prefers-color-scheme: dark)">
-    <meta name="theme-color" content="#120610">
-    
     <title>Happy Birthday, Tasnim</title>
     
     <!-- Preload visible assets for instant loading -->
@@ -19,10 +10,6 @@
     <link rel="preload" as="image" href="200w%20(2).gif">
     
     <style>
-        :root {
-            color-scheme: dark;
-        }
-
         * {
             margin: 0;
             padding: 0;
@@ -30,43 +17,30 @@
         }
 
         html {
-            color-scheme: dark;
-            background-color: #120610 !important;
-            background: linear-gradient(rgba(10, 3, 8, 0.45), rgba(15, 5, 12, 0.65)), 
-                        url('background.webp') no-repeat center center fixed;
-            background-size: cover;
+            background-color: #0a0308;
             min-height: 100%;
-            min-height: -webkit-fill-available;
-            transition: background 1.5s ease;
         }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
             min-height: 100vh;
             min-height: 100dvh;
-            min-height: -webkit-fill-available;
             display: flex;
             justify-content: center;
             align-items: center;
             color: #fff;
             overflow: hidden;
-            background-color: #120610;
             -webkit-tap-highlight-color: transparent;
             -webkit-user-select: none;
             user-select: none;
-            padding: 0;
-            margin: 0;
         }
 
         #bg-layer {
             position: fixed;
-            top: -100px;
-            bottom: -100px;
-            left: 0;
-            right: 0;
+            inset: 0;
             width: 100vw;
-            height: calc(100vh + 200px);
-            height: calc(100dvh + 200px);
+            height: 100vh;
+            height: 100dvh;
             z-index: -2;
             background: linear-gradient(rgba(10, 3, 8, 0.45), rgba(15, 5, 12, 0.65)), 
                         url('background.webp') no-repeat center center;
