@@ -3,6 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    
+    <!-- Edge-to-edge display & Safari chrome styling -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#2c1a24">
+    
     <title>Happy Birthday, Tasnim</title>
     
     <!-- Preload visible assets for instant loading -->
@@ -17,30 +24,41 @@
         }
 
         html {
-            background-color: #0a0308;
+            /* Sets image directly on root so Safari fills notch and bottom bar */
+            background: linear-gradient(rgba(10, 3, 8, 0.45), rgba(15, 5, 12, 0.65)), 
+                        url('background.webp') no-repeat center center fixed;
+            background-size: cover;
             min-height: 100%;
+            min-height: -webkit-fill-available;
+            transition: background 1.5s ease;
         }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
             min-height: 100vh;
             min-height: 100dvh;
+            min-height: -webkit-fill-available;
             display: flex;
             justify-content: center;
             align-items: center;
             color: #fff;
             overflow: hidden;
+            background: transparent !important;
             -webkit-tap-highlight-color: transparent;
             -webkit-user-select: none;
             user-select: none;
+            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
         }
 
         #bg-layer {
             position: fixed;
-            inset: 0;
+            top: -100px;
+            bottom: -100px;
+            left: 0;
+            right: 0;
             width: 100vw;
-            height: 100vh;
-            height: 100dvh;
+            height: calc(100vh + 200px);
+            height: calc(100dvh + 200px);
             z-index: -2;
             background: linear-gradient(rgba(10, 3, 8, 0.45), rgba(15, 5, 12, 0.65)), 
                         url('background.webp') no-repeat center center;
