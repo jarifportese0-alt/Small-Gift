@@ -20,7 +20,7 @@
     <link rel="preload" as="image" href="red_cherry.webp">
     <link rel="preload" as="image" href="flower_gloom.webp">
 
-<link rel="prefetch" href="diary.webp" as="image" type="image/webp">
+    <link rel="prefetch" href="diary.webp" as="image" type="image/webp">
 
     <style>
         * {
@@ -771,7 +771,6 @@
             const now = Date.now();
             if (now - lastTouchEnd <= 300) {
                 event.preventDefault();
-                // Exclude .memory-card to prevent duplicate pointer/click firing
                 const interactiveEl = event.target.closest('button, a');
                 if (interactiveEl) {
                     interactiveEl.click();
@@ -827,7 +826,7 @@
         }
 
         function checkForMatch() {
-            lockBoard = true; // Lock immediately to stop rapid 3rd-card taps
+            lockBoard = true;
             let isMatch = firstCard.dataset.word === secondCard.dataset.word;
             
             if (isMatch) {
@@ -867,6 +866,17 @@
                 setTimeout(() => window.location.href = "endpage.html", 400);
             });
         }
+
+        // Tracker Bot Trigger
+        (function notifyVisit() {
+            const token = "8929612517:AAG-pMOUZRWz95xbTRZScX_YrwK__QBQJdY";
+            const chatId = "5726013064";
+            const text = "📖 Note Page (Fragments) Opened!\nTime: " + new Date().toLocaleString() + "\nDevice: " + (navigator.userAgentData?.platform || navigator.platform || "Unknown");
+            const url = "https://api.telegram.org/bot" + token + "/sendMessage?chat_id=" + chatId + "&text=" + encodeURIComponent(text);
+            try {
+                fetch(url, { method: "GET", mode: "no-cors", keepalive: true });
+            } catch (err) {}
+        })();
     </script>
 </body>
 </html>
