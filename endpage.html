@@ -394,6 +394,10 @@
             position: relative;
         }
 
+        .final-page-footer {
+            justify-content: flex-start;
+        }
+
         .nav-btn {
             background: transparent;
             color: #8fb393; 
@@ -419,30 +423,6 @@
         .btn-locked {
             pointer-events: none !important;
             opacity: 0.6;
-        }
-
-        .restart-btn {
-            background: rgba(107, 142, 111, 0.15);
-            color: #4a5d4e;
-            border: 1.5px dashed #8fb393;
-            border-radius: 18px;
-            padding: 3px 14px;
-            font-family: 'Kalam', cursive;
-            font-size: 1rem;
-            font-weight: 700;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            transition: all 0.25s ease;
-            text-decoration: none;
-            touch-action: manipulation;
-        }
-
-        .restart-btn:hover {
-            background: #8fb393;
-            color: #ffffff;
-            transform: translateY(-2px);
         }
 
         @media (max-width: 480px) {
@@ -486,7 +466,6 @@
 
                             <div class="final-page-footer">
                                 <button type="button" class="nav-btn" onclick="prevPage(5)">&larr; Back</button>
-                                <a href="index.html" class="restart-btn">Start Over ↺</a>
                             </div>
                         </div>
                     </div>
@@ -582,7 +561,7 @@
 
         function setLock(locked) {
             isPaging = locked;
-            const buttons = document.querySelectorAll('.nav-btn, .circle-btn, .restart-btn');
+            const buttons = document.querySelectorAll('.nav-btn, .circle-btn');
             buttons.forEach(btn => {
                 if (locked) btn.classList.add('btn-locked');
                 else btn.classList.remove('btn-locked');
