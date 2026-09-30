@@ -3,19 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="color-scheme" content="dark">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#120610">
     <title>Happy Birthday, Tasnim</title>
    
     <link rel="preload" as="image" href="background.webp" type="image/webp">
     <link rel="preload" as="image" href="200w%20(2).gif">
     
     <style>
+        :root {
+            color-scheme: dark;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-touch-callout: none !important;
         }
 
         html {
+            color-scheme: dark;
             background-color: #0a0308;
             min-height: 100%;
         }
@@ -133,24 +144,33 @@
             text-shadow: 0 1px 3px rgba(0,0,0,0.5);
         }
 
+        /* Restored Smooth Pill Button */
         .btn-link {
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
-            padding: 14px 32px;
+            padding: 14px 34px;
             font-size: 1rem;
+            font-family: inherit;
             font-weight: 600;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
             text-transform: uppercase;
             text-decoration: none;
             color: #1c1c1e;
             background-color: rgba(255, 255, 255, 0.95);
-            border-radius: 30px;
+            border: none !important;
+            outline: none !important;
+            border-radius: 9999px !important;
+            -webkit-border-radius: 9999px !important;
+            appearance: none;
+            -webkit-appearance: none;
             box-shadow: 0 4px 15px rgba(0,0,0,0.2);
             transition: all 0.3s ease;
             cursor: pointer;
             touch-action: manipulation;
+            -webkit-touch-callout: none !important;
+            line-height: 1;
         }
 
         .btn-link:hover {
@@ -307,6 +327,7 @@
             margin: 0 auto;
             transition: transform 0.09s ease, background 0.09s ease, box-shadow 0.09s ease, border-color 0.09s ease;
             touch-action: manipulation;
+            -webkit-touch-callout: none !important;
         }
 
         .key:hover {
@@ -348,6 +369,7 @@
             margin: 10px auto 0;
             transition: all 0.3s ease;
             touch-action: manipulation;
+            -webkit-touch-callout: none !important;
         }
 
         .cancel-btn:hover {
@@ -486,6 +508,8 @@
             border-radius: 12px;
             transform: translateZ(0);
             -webkit-transform: translateZ(0);
+            pointer-events: none !important;
+            -webkit-touch-callout: none !important;
         }
 
         .celebration-card h3 {
@@ -502,11 +526,15 @@
         }
 
         .proceed-btn {
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 150px;
+            height: 42px;
             background: rgba(255, 255, 255, 0.95);
             color: #2e4638;
             border: none;
-            padding: 10px 24px;
+            padding: 0 24px;
             font-size: 0.85rem;
             font-weight: 600;
             letter-spacing: 0.8px;
@@ -517,12 +545,46 @@
             transition: all 0.3s ease;
             box-shadow: 0 3px 10px rgba(0,0,0,0.15);
             touch-action: manipulation;
+            -webkit-touch-callout: none !important;
+            position: relative;
         }
 
         .proceed-btn:hover {
             background: #fff;
             transform: translateY(-2px);
             box-shadow: 0 0 15px rgba(168, 230, 207, 0.5);
+        }
+
+        .proceed-btn.is-loading {
+            pointer-events: none !important;
+            opacity: 0.92;
+        }
+
+        .flower-graffiti-spinner {
+            display: none;
+            width: 22px;
+            height: 22px;
+            animation: spinFlower 0.9s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        }
+
+        .flower-graffiti-spinner svg {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .proceed-btn.is-loading .btn-text-content {
+            display: none;
+        }
+
+        .proceed-btn.is-loading .flower-graffiti-spinner {
+            display: inline-block;
+        }
+
+        @keyframes spinFlower {
+            0% { transform: rotate(0deg) scale(0.92); }
+            50% { transform: rotate(180deg) scale(1.08); }
+            100% { transform: rotate(360deg) scale(0.92); }
         }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
@@ -537,7 +599,7 @@
         </div>
         <h2>Happy Birthday, TASNIM!</h2><br>
         <p>A different approach to wish you on your special day, mate!</p>
-        <a id="partyBtn" class="btn-link">LET'S GO &rarr;</a>
+        <button id="partyBtn" class="btn-link">LET'S GO &rarr;</button>
     </div>
     
     <div id="passcodeModal" class="modal-overlay">
@@ -581,7 +643,18 @@
             <p>Waiting right behind this button</p>
             <img id="celebrationGif" class="celebration-gif" src="200w%20(1).gif" alt="Celebration Animation" />
             <br>
-            <a href="notepage.html" class="proceed-btn" id="proceedBtn">OPEN NOTE &rarr;</a>
+            <button class="proceed-btn" id="proceedBtn">
+                <span class="btn-text-content">OPEN NOTE &rarr;</span>
+                <span class="flower-graffiti-spinner">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#2e4638" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 7.5C12 7.5 9.5 3 6.5 5.5C3.5 8 7.5 10.5 7.5 10.5"/>
+                        <path d="M7.5 13.5C7.5 13.5 3 16 5.5 19C8 22 10.5 18 10.5 18"/>
+                        <path d="M13.5 16.5C13.5 16.5 16 21 19 18.5C22 16 18 13.5 18 13.5"/>
+                        <path d="M16.5 10.5C16.5 10.5 21 8 18.5 5C16 2 13.5 6 13.5 6"/>
+                        <circle cx="12" cy="12" r="2.2" fill="#2e4638"/>
+                    </svg>
+                </span>
+            </button>
         </div>
     </div>
     
@@ -652,11 +725,16 @@
         });
 
         if (proceedBtn) {
-            proceedBtn.addEventListener('click', () => {
+            proceedBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                proceedBtn.classList.add('is-loading');
                 confettiActive = false;
                 if (window.confetti && typeof confetti.reset === 'function') {
                     confetti.reset();
                 }
+                setTimeout(() => {
+                    window.location.href = "notepage.html";
+                }, 400);
             });
         }
         
@@ -719,6 +797,19 @@
             if (currentPin === CORRECT_PIN) {
                 headerEl.textContent = 'SUCCESS! ✨';
                 
+                // Silently pre-cache notepage photos while she views the celebration modal
+                const nextAssets = [
+                    '1379.jpg',
+                    'red_feather.webp',
+                    'blue.webp',
+                    'red_cherry.webp',
+                    'flower_gloom.webp'
+                ];
+                nextAssets.forEach(src => {
+                    const img = new Image();
+                    img.src = src;
+                });
+
                 document.body.classList.add('notepage-theme');
                 mainCard.classList.add('hidden-card');
                 canvasEl.style.opacity = '0';
@@ -747,6 +838,10 @@
             confettiActive = false;
             if (window.confetti && typeof confetti.reset === 'function') {
                 confetti.reset();
+            }
+
+            if (proceedBtn) {
+                proceedBtn.classList.remove('is-loading');
             }
 
             if (event.persisted) {
