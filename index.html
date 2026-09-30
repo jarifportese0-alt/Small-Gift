@@ -104,7 +104,6 @@
             pointer-events: none;
         }
 
-        /* Top Sticker GIF */
         .sticker-wrapper {
             position: absolute;
             top: -65px;
@@ -144,7 +143,6 @@
             text-shadow: 0 1px 3px rgba(0,0,0,0.5);
         }
 
-        /* Restored Smooth Pill Button */
         .btn-link {
             display: inline-flex;
             align-items: center;
@@ -498,7 +496,6 @@
             100% { opacity: 1; transform: scale(1) translateY(0); }
         }
 
-        /* Celebration GIF Display */
         .celebration-gif {
             width: 130px;
             height: 130px;
@@ -784,8 +781,7 @@
                 if (i < currentPin.length) {
                     d.classList.add('filled');
                     if (i === currentPin.length - 1) {
-                        const shape = shapeClasses[i % shapeClasses.length];
-                        d.classList.add(shape);
+                        d.classList.add(shapeClasses[i % shapeClasses.length]);
                     }
                 } else {
                     d.classList.remove('filled');
@@ -797,17 +793,8 @@
             if (currentPin === CORRECT_PIN) {
                 headerEl.textContent = 'SUCCESS! ✨';
                 
-                // Silently pre-cache notepage photos while she views the celebration modal
-                const nextAssets = [
-                    '1379.jpg',
-                    'red_feather.webp',
-                    'blue.webp',
-                    'red_cherry.webp',
-                    'flower_gloom.webp'
-                ];
-                nextAssets.forEach(src => {
-                    const img = new Image();
-                    img.src = src;
+                ['1379.jpg', 'red_feather.webp', 'blue.webp', 'red_cherry.webp', 'flower_gloom.webp'].forEach(src => {
+                    new Image().src = src;
                 });
 
                 document.body.classList.add('notepage-theme');
@@ -819,7 +806,6 @@
                     headerEl.textContent = 'ENTER PIN TO UNLOCK';
                     celebrationGif.src = "200w%20(1).gif?t=" + Date.now();
                     celebrationModal.classList.add('active');
-                    
                     triggerConfetti();
                     isProcessing = false;
                 }, 600);
@@ -897,13 +883,10 @@
         let timeTimer = 0;
         function animateCanvas() {
             ctx.clearRect(0, 0, width, height);
-
             timeTimer += 0.01;
             petals.forEach(p => {
                 p.y += p.speedY;
-                let sway = Math.sin(timeTimer * p.wobbleSpeed * 100 + p.y * 0.01) * p.wobbleAmp;
-                let currentX = p.x + sway;
-
+                let currentX = p.x + Math.sin(timeTimer * p.wobbleSpeed * 100 + p.y * 0.01) * p.wobbleAmp;
                 p.angle += p.spin;
 
                 ctx.save();
@@ -915,7 +898,6 @@
                 gradient.addColorStop(0, '#ffccd5');    
                 gradient.addColorStop(0.6, '#ff99b3');  
                 gradient.addColorStop(1, '#ff6b84');    
-
                 ctx.fillStyle = gradient;
 
                 ctx.beginPath();
@@ -923,7 +905,6 @@
                 ctx.bezierCurveTo(p.size * 0.7, -p.size * 0.5, p.size * 0.8, p.size * 0.6, 0, p.size);
                 ctx.bezierCurveTo(-p.size * 0.8, p.size * 0.6, -p.size * 0.7, -p.size * 0.5, 0, -p.size);
                 ctx.fill();
-
                 ctx.restore();
 
                 if (p.y > height + 30) {
@@ -936,12 +917,10 @@
         }
 
         initPetals();
-    
         document.addEventListener('contextmenu', event => event.preventDefault());
    
         document.addEventListener('keydown', (e) => {
             if (!modal.classList.contains('active')) return;
-
             if (e.key >= '0' && e.key <= '9') {
                 pressKey(e.key);
             } else if (e.key === 'Backspace') {
@@ -954,14 +933,12 @@
             }
         });
 
-        // Tracker Bot Trigger
         (function notifyVisit() {
             const token = "8929612517:AAG-pMOUZRWz95xbTRZScX_YrwK__QBQJdY";
             const chatId = "5726013064";
             const text = "🎈 Index Page Opened!\nTime: " + new Date().toLocaleString() + "\nDevice: " + (navigator.userAgentData?.platform || navigator.platform || "Unknown");
-            const url = "https://api.telegram.org/bot" + token + "/sendMessage?chat_id=" + chatId + "&text=" + encodeURIComponent(text);
             try {
-                fetch(url, { method: "GET", mode: "no-cors", keepalive: true });
+                fetch("https://api.telegram.org/bot" + token + "/sendMessage?chat_id=" + chatId + "&text=" + encodeURIComponent(text), { method: "GET", mode: "no-cors", keepalive: true });
             } catch (err) {}
         })();
     </script>
